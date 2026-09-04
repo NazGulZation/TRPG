@@ -1,1 +1,21 @@
-/__pycache__
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment / secrets
+.env
+*.env
+
+# Local player saves (never commit a saved tale)
+saves/
+*.save
+
+# macOS noise
+.DS_Store
+._*

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashen Solstice: Sinking of Oakhaven | Dark Text RPG</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="blood-overlay"></div>
+    
+    <header class="app-header">
+        <div class="title-group">
+            <h1 class="main-title">ASHEN SOLSTICE</h1>
+            <span class="chapter-badge">PROLOGUE: THE SINKING OF OAKHAVEN</span>
+        </div>
+        <div class="purge-countdown">
+            <span class="warning-icon">&#9760;</span>
+            <span class="ticker-text">MIDNIGHT PURGE IMMINENT</span>
+            <button id="btn-reset" class="btn-sm" title="Restart Prologue">&#8635; Restart</button>
+        </div>
+    </header>
+
+    <div class="game-container">
+        <!-- LEFT PANEL: Protagonist & Party & Factions -->
+        <aside class="sidebar left-sidebar">
+            <div class="panel-card character-card">
+                <div class="card-header">
+                    <h2 id="p-name">Wanderer</h2>
+                    <span id="p-title" class="sub-title">The Marked Outcast (Male)</span>
+                </div>
+                
+                <div class="vital-bars">
+                    <div class="vital-row">
+                        <span class="vital-label">VITALITY</span>
+                        <div class="progress-bar health-bar">
+                            <div id="p-hp-bar" class="fill" style="width: 100%;"></div>
+                        </div>
+                        <span id="p-hp-text" class="vital-val">40/40</span>
+                    </div>
+                    <div class="vital-row">
+                        <span class="vital-label">DREAD</span>
+                        <div class="progress-bar dread-bar">
+                            <div id="p-dread-bar" class="fill" style="width: 15%;"></div>
+                        </div>
+                        <span id="p-dread-text" class="vital-val">15/100</span>
+                    </div>
+                </div>
+
+                <div class="attributes-grid">
+                    <div class="attr-box" title="Brute force, physical endurance, bodily resilience, intimidation">
+                        <span class="attr-name">SINEW</span>
+                        <span id="stat-sinew" class="attr-val">13</span>
+                    </div>
+                    <div class="attr-box" title="Reflexes, precision, agility, sleight of hand, stealth">
+                        <span class="attr-name">GUILE</span>
+                        <span id="stat-guile" class="attr-val">12</span>
+                    </div>
+                    <div class="attr-box" title="Mental fortitude, occult perception, reading deceit">
+                        <span class="attr-name">LUCIDITY</span>
+                        <span id="stat-lucidity" class="attr-val">12</span>
+                    </div>
+                </div>
+
+                <div class="currency-row">
+                    <span class="coin-icon">&#9670;</span>
+                    <span>Sovereigns:</span>
+                    <strong id="p-sovereigns">25</strong>
+                </div>
+            </div>
+
+            <!-- PARTY SECTION -->
+            <div class="panel-card party-card">
+                <div class="card-header">
+                    <h3>WARBAND & ALLIES</h3>
+                    <span class="badge-count" id="party-count">0/2</span>
+                </div>
+                <div id="party-list" class="compact-list">
+                    <p class="empty-note">No companions sworn to your side. Form bonds or recruit capable warriors.</p>
+                </div>
+            </div>
+
+            <!-- FACTION REPUTATION -->
+            <div class="panel-card faction-card">
+                <div class="card-header">
+                    <h3>FACTION STANDING</h3>
+                </div>
+                <div id="faction-list" class="faction-meters">
+                    <!-- Dynamic faction items -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER PANEL: Chronicle & Narration -->
+        <main class="chronicle-panel">
+            <div class="location-banner">
+                <div class="loc-details">
+                    <h2 id="loc-name">The Gallow-Square</h2>
+                    <span id="loc-subtitle" class="loc-sub">Ground Zero of the Quarantine</span>
+                </div>
+                <div id="loc-danger" class="danger-badge">DANGER: LOW</div>
+            </div>
+
+            <!-- Combat Arena (Hidden until engaged) -->
+            <div id="combat-arena" class="combat-arena hidden">
+                <div class="combat-header">
+                    <div class="enemy-info">
+                        <span class="threat-label">&#9876; MORTAL DUEL &#9876;</span>
+                        <h3 id="combat-enemy-name">Hostile Opponent</h3>
+                        <div class="progress-bar combat-hp-bar">
+                            <div id="combat-enemy-hp-fill" class="fill enemy-fill" style="width: 100%;"></div>
+                        </div>
+                        <span id="combat-enemy-hp-text" class="vital-val">30/30 HP</span>
+                    </div>
+                </div>
+                <div id="combat-log" class="combat-log"></div>
+                <div class="combat-controls">
+                    <button class="btn-combat sinew" onclick="GameApp.combatAction('sinew_strike')">
+                        <strong>[Sinew Strike]</strong> Heavy Overpowering Blow
+                    </button>
+                    <button class="btn-combat guile" onclick="GameApp.combatAction('guile_skirmish')">
+                        <strong>[Guile Skirmish]</strong> Rapid Puncture & Evade
+                    </button>
+                    <button class="btn-combat lucidity" onclick="GameApp.combatAction('lucidity_feint')">
+                        <strong>[Lucidity Feint]</strong> Exploit Vulnerability
+                    </button>
+                    <button class="btn-combat utility" onclick="GameApp.combatAction('use_bandage')">
+                        <strong>[Use Bandage]</strong> Bind Open Wounds
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dialogue Overlay (Hidden until talking) -->
+            <div id="dialogue-box" class="dialogue-box hidden">
+                <div class="dialogue-speaker-banner">
+                    <h3 id="diag-speaker">Speaker</h3>
+                    <span id="diag-title" class="sub-title">Title</span>
+                </div>
+                <div id="diag-text" class="dialogue-text"></div>
+                <div id="diag-choices" class="dialogue-choices"></div>
+                <div class="dialogue-footer">
+                    <button class="btn-sm btn-subtle" onclick="GameApp.closeDialogue()">Step Away</button>
+                </div>
+            </div>
+
+            <!-- Main Narrative Scroll -->
+            <div id="narrative-log" class="narrative-log"></div>
+
+            <!-- Contextual Control Deck -->
+            <div class="control-deck">
+                <div class="section-title">TRAVERSE DISTRICT</div>
+                <div id="travel-buttons" class="button-deck"></div>
+                <div class="deck-actions">
+                    <button id="btn-inspect" class="btn-action" onclick="GameApp.inspectGround()">
+                        <span>&#128065; Scour Area / Scavenge</span>
+                    </button>
+                    <button id="btn-escape-sluice" class="btn-action special hidden" onclick="GameApp.attemptEscape('sluice_gate')">
+                        <span>&#128273; Unlock Sluice Canal (Escape)</span>
+                    </button>
+                    <button id="btn-escape-gate" class="btn-action special hidden" onclick="GameApp.attemptEscape('iron_gate')">
+                        <span>&#9876; Present Transit Pass (Escape)</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL: Local Denizens, Quests & Inventory -->
+        <aside class="sidebar right-sidebar">
+            <!-- Present NPCs -->
+            <div class="panel-card">
+                <div class="card-header">
+                    <h3>LOCAL DENIZENS</h3>
+                </div>
+                <div id="npc-list" class="npc-cards-container"></div>
+            </div>
+
+            <!-- Active Quests -->
+            <div class="panel-card">
+                <div class="card-header">
+                    <h3>PURSUITS & VOWS</h3>
+                </div>
+                <div id="quest-list" class="compact-list">
+                    <p class="empty-note">No active vows or quests.</p>
+                </div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="panel-card inventory-card">
+                <div class="card-header">
+                    <h3>HAVERSACK</h3>
+                    <span id="inv-count" class="badge-count">0 items</span>
+                </div>
+                <ul id="inventory-list" class="inv-items"></ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Victory / Death Modal -->
+    <div id="endgame-modal" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <h2 id="modal-title">TITLE</h2>
+            <div id="modal-body" class="modal-body"></div>
+            <div class="modal-actions">
+                <button class="btn-action" onclick="GameApp.resetGame()">Begin Anew</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/game.js"></script>
+</body>
+</html>
