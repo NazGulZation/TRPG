@@ -2,7 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeTypewriterEffect();
-    initializeChoiceAnimations();
     initializeSmoothTransitions();
 });
 
@@ -23,7 +22,11 @@ function initializeTypewriterEffect() {
     let currentIndex = 0;
     
     function typeNextParagraph() {
-        if (currentIndex >= paragraphData.length) return;
+        if (currentIndex >= paragraphData.length) {
+            // All paragraphs finished, show choices
+            initializeChoiceAnimations();
+            return;
+        }
         
         const { element, text } = paragraphData[currentIndex];
         currentIndex++;
@@ -58,7 +61,7 @@ function initializeChoiceAnimations() {
             button.style.transition = 'all 0.5s ease';
             button.style.opacity = '1';
             button.style.transform = 'translateY(0)';
-        }, 1000 + (index * 200));
+        }, 300 + (index * 200));
         
         // Add hover sound effect (visual feedback)
         button.addEventListener('mouseenter', function() {
