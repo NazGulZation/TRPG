@@ -8,6 +8,7 @@ from game.data.prologue import (
     get_prologue_npcs,
     get_prologue_quests,
     get_prologue_factions,
+    SUITABLE_INTIMACY_LOCATIONS,
 )
 
 
@@ -232,6 +233,16 @@ class GameEngine:
 
         return {"error": f"{item_name} has no immediate active use here."}
 
+    def can_initiate_companion_erotic(self, npc_id: str) -> bool:
+        """Check if companion is eligible for initiating an erotic scene in the current location."""
+        if npc_id not in self.player.party or self.combat_state:
+            return False
+        npc = self.npcs.get(npc_id)
+        if not npc or npc.gender != "female" or not npc.can_romance:
+            return False
+        allowed = SUITABLE_INTIMACY_LOCATIONS.get(npc_id, [])
+        return self.player.current_location_id in allowed
+
     def get_state(self) -> Dict[str, Any]:
         curr_loc = self.locations.get(self.player.current_location_id)
         loc_npcs = []
@@ -266,7 +277,8 @@ class GameEngine:
                     "is_romanced": npc.is_romanced,
                     "gender": npc.gender,
                     "can_romance": npc.can_romance,
-                    "relationship": npc.relationship
+                    "relationship": npc.relationship,
+                    "can_initiate_erotic": self.can_initiate_companion_erotic(npc.id)
                 })
 
         active_quests = []
@@ -469,6 +481,10 @@ class GameEngine:
 
         formatted_choices = []
         for ch in node.choices:
+            # If in party and this choice initiates an intimate scene, only display if in a suitable location
+            if npc.is_in_party and ch.is_intimacy_action and not self.can_initiate_companion_erotic(npc.id):
+                continue
+
             stat_met = True
             if ch.required_stat:
                 p_stat = self.get_effective_stat(ch.required_stat)
@@ -690,6 +706,12 @@ class GameEngine:
         if next_node_id in ("vanya_recruited", "malakor_recruited", "silve_recruited"):
             self.recruit_party(npc.id)
 
+        # Dynamic location-unique routing when initiating companion intimacy
+        if npc.is_in_party and next_node_id in ("vanya_companion_intimacy_start", "silve_companion_intimacy_start"):
+            loc_scene = self.get_companion_erotic_node_id(npc)
+            if loc_scene and loc_scene in npc.dialogue_nodes:
+                next_node_id = loc_scene
+
         self.load_dialogue_node(npc, next_node_id)
         return self.get_state()
 
@@ -704,7 +726,25 @@ class GameEngine:
                 return c
         return npc.dialogue_root
 
-    def get_companion_erotic_node_id(self, npc: NPC) -> Optional[str]:
+    def get_companion_erotic_node_id(self, npc: NPC, location_id: Optional[str] = None) -> Optional[str]:
+        curr_loc = location_id or self.player.current_location_id
+
+        # Location-unique scene mappings
+        location_scenes = {
+            "sister_vanya": {
+                "ruined_chantry": "vanya_chantry_step1_initiate",
+                "gilded_rat": "vanya_gilded_step1_initiate"
+            },
+            "madame_silve": {
+                "gilded_rat": "silve_gilded_step1_initiate",
+                "ruined_chantry": "silve_chantry_step1_initiate"
+            }
+        }
+        if npc.id in location_scenes and curr_loc in location_scenes[npc.id]:
+            target_node = location_scenes[npc.id][curr_loc]
+            if target_node in npc.dialogue_nodes:
+                return target_node
+
         short_id = npc.id.replace("sister_", "").replace("commander_", "").replace("madame_", "")
         candidates = [
             f"{short_id}_companion_intimacy_start",
@@ -719,7 +759,7 @@ class GameEngine:
 
     # --- Party Companion Intimacy & Erotic Scenes ---
     def start_party_erotic_scene(self, npc_id: str) -> Dict[str, Any]:
-        """Initiate a lengthy, explicit narrative erotic scene with an adult female companion in the party."""
+        """Initiate a lengthy, explicit narrative erotic scene with an adult female companion in a suitable location."""
         if self.combat_state:
             return {"error": "You cannot seek carnal solace during life-or-death battle!"}
 
@@ -732,6 +772,11 @@ class GameEngine:
 
         if npc.gender != "female" or not npc.can_romance:
             return {"error": f"{npc.name} cannot be courted intimately."}
+
+        if not self.can_initiate_companion_erotic(npc_id):
+            curr_loc = self.locations.get(self.player.current_location_id)
+            loc_name = curr_loc.name if curr_loc else "This area"
+            return {"error": f"{loc_name} is not suitable for an intimate encounter with {npc.name}. Seek a secluded haven such as the Chantry or the Gilded Rat."}
 
         scene_node = self.get_companion_erotic_node_id(npc)
         if scene_node and scene_node in npc.dialogue_nodes:

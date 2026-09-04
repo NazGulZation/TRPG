@@ -152,7 +152,7 @@ const GameApp = {
                     </div>
                     <div class="party-member-actions">
                         <button class="btn-sm btn-party-talk" onclick="GameApp.talkNpc('${c.id}')">Talk</button>
-                        ${c.can_romance && c.gender === 'female' ? `
+                        ${c.can_romance && c.gender === 'female' && c.can_initiate_erotic ? `
                             <button class="btn-sm btn-party-erotic" onclick="GameApp.startEroticScene('${c.id}')">&#9829; Erotic Scene</button>
                         ` : ''}
                         <button class="btn-sm btn-party-dismiss" onclick="GameApp.dismiss('${c.id}')">Dismiss</button>

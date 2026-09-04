@@ -3,6 +3,11 @@
 from typing import Dict
 from game.models import Stats, NPC, Location, Quest, QuestStage, DialogueNode, DialogueChoice
 
+SUITABLE_INTIMACY_LOCATIONS = {
+    "sister_vanya": ["ruined_chantry", "gilded_rat"],
+    "madame_silve": ["gilded_rat", "ruined_chantry"]
+}
+
 def get_prologue_locations() -> Dict[str, Location]:
     return {
         "gallow_square": Location(
@@ -337,7 +342,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ]
         ),
 
-        # --- Eroge Spicy Multi-Stage Intimacy Sequence: Sister Vanya ---
+        # --- Sister Vanya 10-Step Erotic Sequence: The Desecrated Chantry (Default Scene) ---
+        # Step 1: Initiating (Seclusion & Disrobing)
         "vanya_intimacy_scene": DialogueNode(
             id="vanya_intimacy_scene",
             speaker_name="Sister Vanya",
@@ -350,11 +356,89 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_eroge_unveil",
+                    id="c_vanya_chantry_to_step2",
                     text="Reach for the lacings of her habit, gently stripping away her sacred vows.",
-                    next_node="vanya_eroge_unveil",
+                    next_node="vanya_chantry_step2_foreplay",
                     is_intimacy_action=True,
                     relationship_change=15
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_unveil",
+                    text="Reach for the lacings of her habit, gently stripping away her sacred vows.",
+                    next_node="vanya_chantry_step2_foreplay",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                )
+            ]
+        ),
+        "vanya_chantry_step1_initiate": DialogueNode(
+            id="vanya_chantry_step1_initiate",
+            speaker_name="Sister Vanya",
+            text=(
+                "Leading you behind the heavy tattered velvet altar curtain into the consecrated crypt, Vanya shuts out the toxic smog of Oakhaven. "
+                "A solitary wax taper flickers upon an alabaster pedestal, casting golden warmth across her flushed skin. "
+                "Her dark hair spills loose over her shoulders as she unpins her wimple. "
+                "'All my life I was taught that the flesh is a vessel of sin,' she whispers, her breath trembling against your collarbone. "
+                "'Yet tonight, with the fire hours away... all I want is to feel your heat, wanderer. Show me what life feels like before we burn.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_step1_choice",
+                    text="Reach for the lacings of her habit, gently stripping away her sacred vows.",
+                    next_node="vanya_chantry_step2_foreplay",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                )
+            ]
+        ),
+        # Step 2: Foreplay & Branching Choices
+        "vanya_chantry_step2_foreplay": DialogueNode(
+            id="vanya_chantry_step2_foreplay",
+            speaker_name="Sister Vanya",
+            text=(
+                "With patient, deliberate care, your fingers untie the stained cord of her habit. The heavy white cloth slips to the stone, "
+                "leaving her dressed only in a sheer linen chemise damp with perspiration. Beneath the translucent fabric, her full, rose-tipped breasts "
+                "heave with every breath, her taut nipples pressing visibly against the cloth. "
+                "She shivers not from cold, but from sheer sensory overload as your hands cup her waist. Her lips part with a shuddering gasp, "
+                "inviting you deeper into her sanctuary."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_branch_tender",
+                    text="[Tender Romance] Gently push the chemise off her shoulders and kiss down her throat to her breasts.",
+                    next_node="vanya_chantry_step3_tender",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_chantry_branch_dominant",
+                    text="[Dominant Passion] Lift her bodily onto the stone altar, parting her bare thighs before you.",
+                    next_node="vanya_chantry_step3_dominant",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_chantry_branch_oral",
+                    text="[Devoted Worship] Kneel between her trembling thighs and lavish her glistening core with oral devotion.",
+                    next_node="vanya_chantry_step3_oral",
+                    is_intimacy_action=True
+                ),
+                # Aliases for backward compatibility
+                DialogueChoice(
+                    id="c_vanya_eroge_tender",
+                    text="Gently push the chemise off her shoulders and kiss down her throat to her breasts.",
+                    next_node="vanya_chantry_step3_tender",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_dominant",
+                    text="Lift her bodily onto the stone altar, parting her bare thighs before you.",
+                    next_node="vanya_chantry_step3_dominant",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_oral",
+                    text="Kneel between her trembling thighs and lavish her glistening core with devoted oral worship.",
+                    next_node="vanya_chantry_step3_oral",
+                    is_intimacy_action=True
                 )
             ]
         ),
@@ -370,21 +454,46 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_eroge_tender",
+                    id="c_vanya_eroge_tender_alias",
                     text="Gently push the chemise off her shoulders and kiss down her throat to her breasts.",
-                    next_node="vanya_eroge_foreplay_tender",
+                    next_node="vanya_chantry_step3_tender",
                     is_intimacy_action=True
                 ),
                 DialogueChoice(
-                    id="c_vanya_eroge_dominant",
+                    id="c_vanya_eroge_dominant_alias",
                     text="Lift her bodily onto the stone altar, parting her bare thighs before you.",
-                    next_node="vanya_eroge_foreplay_dominant",
+                    next_node="vanya_chantry_step3_dominant",
                     is_intimacy_action=True
                 ),
                 DialogueChoice(
-                    id="c_vanya_eroge_oral",
+                    id="c_vanya_eroge_oral_alias",
                     text="Kneel between her trembling thighs and lavish her glistening core with devoted oral worship.",
-                    next_node="vanya_eroge_foreplay_oral",
+                    next_node="vanya_chantry_step3_oral",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 3: Deepening Foreplay (Branch Outcomes)
+        "vanya_chantry_step3_tender": DialogueNode(
+            id="vanya_chantry_step3_tender",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your mouth traces the delicate curve of her collarbone down to the soft swell of her breast. When your lips capture her erect nipple, "
+                "suckling with gentle heat, Vanya lets out an arched, quivering cry, her nails digging into your back. "
+                "Your hand slides down her silken belly into the humid heat between her thighs, finding her already slick and drenched with longing. "
+                "She whimpers, grinding her hips into your palm with uninhibited hunger. 'Wanderer... please... I feel as though my entire soul is catching fire...'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_tender_to_step4",
+                    text="Slide your fingers into her drenched warmth, stroking her with deliberate passion.",
+                    next_node="vanya_chantry_step4_caress",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_enter_tender",
+                    text="Align your hips with hers and push smoothly into her velvet warmth.",
+                    next_node="vanya_chantry_step4_caress",
                     is_intimacy_action=True
                 )
             ]
@@ -400,9 +509,33 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_eroge_enter_tender",
+                    id="c_vanya_eroge_enter_tender_fwd",
                     text="Align your hips with hers and push smoothly into her velvet warmth.",
-                    next_node="vanya_eroge_climax",
+                    next_node="vanya_chantry_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_chantry_step3_dominant": DialogueNode(
+            id="vanya_chantry_step3_dominant",
+            speaker_name="Sister Vanya",
+            text=(
+                "You lift her onto the altar slab, her smooth bare thighs spreading wide in the candlelight. Stepping between them, you grasp her hips, "
+                "your thumbs stroking the damp heat of her inner thighs. Her dark eyes darken with submission and desire. "
+                "'Do with me as you will, wanderer,' she whispers raggedly. 'Cleanse me of this dreadful silence.' "
+                "She watches with parted lips and heavy breathing as you unbuckle your trousers and position yourself against her soaking cleft."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_dom_to_step4",
+                    text="Trace your palms along her trembling thighs into her soaked feminine core.",
+                    next_node="vanya_chantry_step4_caress",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_enter_dom",
+                    text="Thrust deeply into her tight, glistening depths with fierce, possessive rhythm.",
+                    next_node="vanya_chantry_step4_caress",
                     is_intimacy_action=True
                 )
             ]
@@ -412,15 +545,39 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             speaker_name="Sister Vanya",
             text=(
                 "You lift her onto the altar slab, her smooth bare thighs spreading wide in the candlelight. Stepping between them, you grasp her hips, "
-                "your thumbs stroking the damp heat of her inner thighs. Her eyes darken with submission and desire. "
+                "your thumbs stroking the damp heat of her inner thighs. Her dark eyes darken with submission and desire. "
                 "'Do with me as you will, wanderer,' she whispers raggedly. 'Cleanse me of this dreadful silence.' "
                 "She watches with parted lips and heavy breathing as you unbuckle your trousers and position yourself against her soaking cleft."
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_eroge_enter_dom",
+                    id="c_vanya_eroge_enter_dom_fwd",
                     text="Thrust deeply into her tight, glistening depths with fierce, possessive rhythm.",
-                    next_node="vanya_eroge_climax",
+                    next_node="vanya_chantry_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_chantry_step3_oral": DialogueNode(
+            id="vanya_chantry_step3_oral",
+            speaker_name="Sister Vanya",
+            text=(
+                "Kneeling between her trembling, parted thighs, your hands slide up to cup her soft buttocks, drawing her hips forward over the altar edge. "
+                "Her feminine folds glisten with nectar in the warm candlelight. When your tongue traces along her swollen clitoris and laps at her soaking entrance, "
+                "Vanya cries out in sheer disbelief, her fingers tangling frantically in your hair as her hips buck upward against your mouth. "
+                "'Merciful martyrs... ah, wanderer! Yes! Don't stop... I cannot bear how sweet it feels!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_oral_to_step4",
+                    text="Caress her slick inner thighs and gently part her glistening folds further.",
+                    next_node="vanya_chantry_step4_caress",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_oral_to_climax",
+                    text="Rise up and prepare to sheath your rigid length inside her drenched core.",
+                    next_node="vanya_chantry_step4_caress",
                     is_intimacy_action=True
                 )
             ]
@@ -436,10 +593,148 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_eroge_oral_to_climax",
-                    text="Rise up and sheath your rigid length to the hilt inside her drenched core.",
-                    next_node="vanya_eroge_climax",
+                    id="c_vanya_eroge_oral_alias_fwd",
+                    text="Rise up and prepare to sheath your rigid length inside her drenched core.",
+                    next_node="vanya_chantry_step4_caress",
                     is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 4: Intimate Caresses & Lubrication
+        "vanya_chantry_step4_caress": DialogueNode(
+            id="vanya_chantry_step4_caress",
+            speaker_name="Sister Vanya",
+            text=(
+                "Rising to your feet, your fingers glide through her dripping cleft, finding her burning with fevered, unbearable need. "
+                "Vanya's hips undulate eagerly against your palm, her breathing ragged and needy as slick nectar coats your fingers and drips onto the altar stone. "
+                "'Wanderer... please... my body is on fire...' she gasps, reaching down to trace the rigid steel of your shaft. "
+                "'I need to feel you inside me. Don't make me wait another breath.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_step5",
+                    text="Align your hardening shaft against her weeping entrance and prepare to enter.",
+                    next_node="vanya_chantry_step5_entry",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 5: Penetration & Alignment
+        "vanya_chantry_step5_entry": DialogueNode(
+            id="vanya_chantry_step5_entry",
+            speaker_name="Sister Vanya",
+            text=(
+                "Unbuckling your trousers, you press your rigid head against her glistening aperture. With a slow, deliberate thrust, you breach her snug sheath. "
+                "Her tight inner walls stretch to accommodate your girth, drawing a long, shuddering gasp from her lips as you sink smoothly to the root. "
+                "Vanya wraps her arms tightly around your neck, weeping softly in overwhelmed gratification as she takes every inch of your length into her velvet heat."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_step6",
+                    text="Pause to let her adjust to your fullness before establishing a slow, deep rhythm.",
+                    next_node="vanya_chantry_step6_rhythm",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 6: Initial Cadence & Deep Friction
+        "vanya_chantry_step6_rhythm": DialogueNode(
+            id="vanya_chantry_step6_rhythm",
+            speaker_name="Sister Vanya",
+            text=(
+                "Holding her waist firmly, you begin a deep, measured cadence. Each long stroke pulls your length almost clear before plunging back into her feverish depths. "
+                "Her velvet walls clamp greedily around your shaft, milking every inch with involuntary suction. "
+                "Vanya's breathless whimpers echo in the quiet crypt as her hips meet yours in hypnotic, wet friction, her eyes swimming with adoration."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_step7",
+                    text="Hook her legs over your hips and increase the depth of each thrust.",
+                    next_node="vanya_chantry_step7_shift",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 7: Positional Shift & Escalation
+        "vanya_chantry_step7_shift": DialogueNode(
+            id="vanya_chantry_step7_shift",
+            speaker_name="Sister Vanya",
+            text=(
+                "Lifting her slender legs higher, you alter the angle of entry to strike her deepest, most sensitive nerves. "
+                "Wet rhythmic slaps resound against the altar stones as your pelvic bones meet. "
+                "Vanya's cries become higher, more desperate, her fingernails digging through your tunic as she arches her spine into every driving impact."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_step8",
+                    text="Pick up the tempo into a fierce, relentless pace.",
+                    next_node="vanya_chantry_step8_frenzy",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 8: Fierce Cadence & Vocal Surrender
+        "vanya_chantry_step8_frenzy": DialogueNode(
+            id="vanya_chantry_step8_frenzy",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your thrusts turn frantic, possessive, and heavy. Both bodies are bathed in glistening sweat, chests crashing together with bruising fervor. "
+                "Vanya abandons all reserve, tossing her head as her dark hair fans across the altar, calling out your name in unrestrained, wanton moans "
+                "that drown out the tolling bell above. 'Ah... yes! Harder, my love... take all of me!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_step9",
+                    text="Drive relentlessly toward the edge, feeling her walls flutter and tighten.",
+                    next_node="vanya_chantry_step9_precipice",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 9: The Precipice / Edging
+        "vanya_chantry_step9_precipice": DialogueNode(
+            id="vanya_chantry_step9_precipice",
+            speaker_name="Sister Vanya",
+            text=(
+                "The summit approaches like a roaring inferno. Vanya's inner passage begins to convulse in violent pre-orgasmic tremors, "
+                "squeezing your shaft with fierce, rhythmic contractions. Her breath hitches in ragged sobs of pleasure, her legs locking desperately around your waist. "
+                "'I am coming... wanderer, oh gods, don't stop... right there!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_step10",
+                    text="Thrust to the hilt with everything you have and surrender to the explosive climax.",
+                    next_node="vanya_chantry_step10_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 10: Explosive Climax
+        "vanya_chantry_step10_climax": DialogueNode(
+            id="vanya_chantry_step10_climax",
+            speaker_name="Sister Vanya",
+            text=(
+                "Driving to the absolute root with overwhelming power, you trigger a violent, toe-curling climax that shatters through both of you. "
+                "Vanya screams into your shoulder, her body coiling and spasming in pure transcendent bliss as her tight core milks you relentlessly. "
+                "A guttural roar tears from your throat as you pump voluminous waves of boiling release deep within her womb, collapsing together in spent, breathless surrender."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_chantry_to_afterglow",
+                    text="Hold her tightly against your chest as your breathing slows in the warm candlelight.",
+                    next_node="vanya_chantry_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25,
+                    item_reward="Sister Vanya's Embroidered Rosary"
+                ),
+                # Aliases for existing tests
+                DialogueChoice(
+                    id="c_vanya_eroge_afterglow",
+                    text="Hold her gently as your breathing slows in the warm candlelight.",
+                    next_node="vanya_chantry_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25,
+                    item_reward="Sister Vanya's Embroidered Rosary"
                 )
             ]
         ),
@@ -447,21 +742,42 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="vanya_eroge_climax",
             speaker_name="Sister Vanya",
             text=(
-                "Sheathing yourself completely within her snug, shuddering core, a guttural groan escapes your chest as her tight walls clench around you. "
-                "Vanya throws her head back, her ivory throat exposed, gasping in breathless ecstasy as you begin a relentless, driving cadence. "
-                "Each deep stroke draws wanton cries from the chirurgeon's lips, echoing softly off the ancient chantry stones. "
-                "Her legs wrap tightly around your waist, pulling you deeper, her slick center milking you with urgent spasms. "
-                "With a final, desperate cry into your neck, she shatters into a violent, toe-curling climax, her inner muscles clamping fiercely "
-                "as you pour your hot release deep inside her, collapsing together into breathless, sweat-slicked communion."
+                "Driving to the absolute root with overwhelming power, you trigger a violent, toe-curling climax that shatters through both of you. "
+                "Vanya screams into your shoulder, her body coiling and spasming in pure transcendent bliss as her tight core milks you relentlessly. "
+                "A guttural roar tears from your throat as you pump voluminous waves of boiling release deep within her womb, collapsing together in spent, breathless surrender."
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_eroge_afterglow",
+                    id="c_vanya_eroge_afterglow_alias",
                     text="Hold her gently as your breathing slows in the warm candlelight.",
-                    next_node="vanya_eroge_afterglow",
+                    next_node="vanya_chantry_afterglow",
                     is_intimacy_action=True,
                     relationship_change=25,
                     item_reward="Sister Vanya's Embroidered Rosary"
+                )
+            ]
+        ),
+        # Afterglow & Bonding
+        "vanya_chantry_afterglow": DialogueNode(
+            id="vanya_chantry_afterglow",
+            speaker_name="Sister Vanya",
+            text=(
+                "Wrapped together in the heavy chantry vestments on the crypt floor, Vanya's head rests against your bare chest, her fingers lazily tracing "
+                "the executioner's brand on your neck. A peaceful, radiant smile touches her lips—all terror of the purge banished into complete calm. "
+                "'I never knew such devotion existed,' she murmurs softly. She places a velvet cord holding her sanctified silver rosary around your neck. "
+                "'Keep this. It is embroidered with the blessings of the Quiet Dawn. It will shield your mind from dread. Now, let me fight at your side.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_post_intimacy_recruit",
+                    text="'You belong with me now, Vanya. Take up your chirurgeon kit and let us break through the perimeter.'",
+                    next_node="vanya_recruited",
+                    relationship_change=20
+                ),
+                DialogueChoice(
+                    id="c_vanya_companion_return_hub",
+                    text="Resume traveling together.",
+                    next_node="vanya_companion_hub"
                 )
             ]
         ),
@@ -476,10 +792,15 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_vanya_post_intimacy_recruit",
+                    id="c_vanya_post_intimacy_recruit_alias",
                     text="'You belong with me now, Vanya. Take up your chirurgeon kit and let us break through the perimeter.'",
                     next_node="vanya_recruited",
                     relationship_change=20
+                ),
+                DialogueChoice(
+                    id="c_vanya_companion_return_hub_alias",
+                    text="Resume traveling together.",
+                    next_node="vanya_companion_hub"
                 )
             ]
         ),
@@ -558,12 +879,19 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="vanya_companion_intimacy_start",
             speaker_name="Sister Vanya",
             text=(
-                "Stepping behind a shattered stone archway lined with ancient chantry carvings, you pull Vanya into the deep shadows away from the cold night wind. "
+                "Stepping behind a secluded curtain into a quiet, private space away from the cold night wind, you pull Vanya into the deep shadows. "
                 "Her breathing quickens immediately as your hands settle upon her hips. Her dark eyes carry an intoxicating mix of shyness and wanton surrender. "
                 "'Every moment with you feels like stolen grace,' she breathes, her fingers trembling as she unfastens the collar of her habit, "
                 "exposing the smooth, pale curve of her throat and the soft swell of her breasts damp with perspiration. 'Touch me, wanderer... make me forget the ash and the flames.'"
             ),
             choices=[
+                DialogueChoice(
+                    id="c_vanya_comp_to_location_scene",
+                    text="Draw her close and undress together in the secluded darkness.",
+                    next_node="vanya_chantry_step1_initiate",
+                    is_intimacy_action=True
+                ),
+                # Aliases for compatibility
                 DialogueChoice(
                     id="c_vanya_companion_oral",
                     text="Kneel before her, parting her habit and lifting her chemise to worship her wet core with your lips.",
@@ -572,7 +900,7 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 ),
                 DialogueChoice(
                     id="c_vanya_companion_coupling_direct",
-                    text="Lift her against the stone wall, parting her smooth thighs and thrusting deep into her velvet heat.",
+                    text="Lift her against the wall, parting her smooth thighs and thrusting deep into her velvet heat.",
                     next_node="vanya_companion_coupling",
                     is_intimacy_action=True
                 )
@@ -585,7 +913,7 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 "Kneeling on the cold flagstones, you slide your hands up the silk of her bare inner thighs, parting them wide in the sheltered gloom. "
                 "Her intimate cleft is glistening, swollen, and radiating sweet heat. When your mouth descends upon her delicate folds, lapping and suckling at her sensitive pearl, "
                 "Vanya gasps in helpless ecstasy. Her fingers bury deep into your hair, her hips arching instinctively upward against your mouth. "
-                "'Ah... wanderer! Merciful martyrs... yes, right there! It is too much... I cannot bear how good it feels!'"
+                "'Ah... wanderer! Merciful martyrs... yes, right there! It is too much... I cannot bear how sweet it feels!'"
             ),
             choices=[
                 DialogueChoice(
@@ -643,6 +971,259 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 DialogueChoice(
                     id="c_vanya_companion_return_hub",
                     text="Resume traveling together.",
+                    next_node="vanya_companion_hub"
+                )
+            ]
+        ),
+
+        # --- Sister Vanya 10-Step Erotic Sequence: The Gilded Rat (Location Unique Scene) ---
+        # Step 1: Initiating in the Pleasure Den
+        "vanya_gilded_step1_initiate": DialogueNode(
+            id="vanya_gilded_step1_initiate",
+            speaker_name="Sister Vanya",
+            text=(
+                "Leading Vanya into an opulent, curtained alcove of the Gilded Rat Parlour, you shut out the noise of the tavern. "
+                "Deep red silk drapes seal the room in an intoxicating haze of burned sandalwood, opium, and spilled wine. "
+                "The devout sister stands amidst the plush velvet divans and carved brass lanterns, her cheeks burning with an intense crimson blush. "
+                "'I never imagined I would set foot in such a place of indulgence,' she murmurs, her trembling fingers reaching for her wimple. "
+                "'Yet here with you, amidst all this forbidden warmth... I feel my pious vows dissolving like mist.' "
+                "She unpins the white cloth, letting her dark, raven tresses cascade luxuriously over her bare shoulders."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step2",
+                    text="Unbutton her habit and lay her back onto the opulent red velvet cushions.",
+                    next_node="vanya_gilded_step2_foreplay",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                )
+            ]
+        ),
+        # Step 2: Foreplay & Branching Choices (Gilded Rat)
+        "vanya_gilded_step2_foreplay": DialogueNode(
+            id="vanya_gilded_step2_foreplay",
+            speaker_name="Sister Vanya",
+            text=(
+                "Her austere habit falls to the carpet, leaving Vanya reclining in her damp linen chemise across the sea of down pillows. "
+                "The decadent surroundings seem to embolden her hidden passions; her eyes darken with longing as she looks up at you. "
+                "Her breasts heave against the translucent fabric, taut rose nipples straining eagerly for your touch."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_branch_wine",
+                    text="[Spiced Plum Wine] Share a mouthful of rich plum wine, letting sweet vintage trickle down her throat and breasts.",
+                    next_node="vanya_gilded_step3_wine",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_gilded_branch_oral",
+                    text="[Decadent Oral Worship] Part her silk-cushioned thighs and bury your face into her glistening, weeping core.",
+                    next_node="vanya_gilded_step3_oral",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_gilded_branch_dominant",
+                    text="[Commanding Seduction] Pin her wrists into the down bolsters, claiming her body with fierce, dominant possession.",
+                    next_node="vanya_gilded_step3_dominant",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 3: Deepening Foreplay (Branch Outcomes)
+        "vanya_gilded_step3_wine": DialogueNode(
+            id="vanya_gilded_step3_wine",
+            speaker_name="Sister Vanya",
+            text=(
+                "Taking a sip of spiced plum wine from a crystal goblet, you seal your mouth over Vanya's parting lips, passing the burning sweet vintage between you. "
+                "A wanton whimper vibrates in her throat. Drops of ruby wine spill down her chin and trickle into the valley of her cleavage. "
+                "Your mouth follows the warm trail, lapping the spiced wine from her skin and suckling her taut nipples. "
+                "Vanya arches off the cushions with an intoxicating moan, her fingers digging desperately into your hair."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_wine_to_step4",
+                    text="Slide your hand down between her bare thighs into the pool of humid heat.",
+                    next_node="vanya_gilded_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_gilded_step3_oral": DialogueNode(
+            id="vanya_gilded_step3_oral",
+            speaker_name="Sister Vanya",
+            text=(
+                "Kneeling on the lavish rug between her parted thighs, you lift her hips onto a silk bolster. Her feminine cleft is glistening, swollen, and radiating sweet perfume. "
+                "When your tongue parts her outer petals to lap and suckle at her hypersensitive pearl, Vanya gasps in sheer disbelief. "
+                "Her pious composure disintegrates completely into wanton, breathy cries as her hips buck upward against your mouth, soaking your lips in honeyed nectar."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_oral_to_step4",
+                    text="Caress her trembling thighs and prepare her body for full entry.",
+                    next_node="vanya_gilded_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_gilded_step3_dominant": DialogueNode(
+            id="vanya_gilded_step3_dominant",
+            speaker_name="Sister Vanya",
+            text=(
+                "Pinning her wrists above her head into the crimson down pillows, you press your heavy frame over her slender body. "
+                "Her dark eyes shine with wanton surrender as you bite lightly along the sensitive curve of her throat and nip her earlobe. "
+                "'Take me, wanderer,' she whispers raggedly, trembling with submission. 'Corrupt every sacred thought I ever had... make me only yours.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_dom_to_step4",
+                    text="Release her hands and slide your fingers deep into her soaking entrance.",
+                    next_node="vanya_gilded_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 4: Intimate Caresses & Lubrication
+        "vanya_gilded_step4_caress": DialogueNode(
+            id="vanya_gilded_step4_caress",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your fingers probe the depths of her soaked passage, discovering her burning with uninhibited, fevered arousal. "
+                "Vanya's hips roll sinuously against your palm, her inner walls fluttering around your fingers with hot, eager friction. "
+                "Her breath comes in rapid pants, her face flushed with decadent desire. 'Please, my love... no more teasing... sheath yourself inside me!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step5",
+                    text="Position your rigid length at her dripping entrance and slide smoothly inside.",
+                    next_node="vanya_gilded_step5_entry",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 5: Penetration on the Velvet Divan
+        "vanya_gilded_step5_entry": DialogueNode(
+            id="vanya_gilded_step5_entry",
+            speaker_name="Sister Vanya",
+            text=(
+                "Guiding your throbbing shaft between her slick folds, you push forward with a slow, deliberate motion. "
+                "Her tight, velvety core yields to your broad head, stretching snugly around your girth until your hips meet with a soft, wet impact. "
+                "Vanya cries out in breathless ecstasy, her fingernails scoring your bare shoulders as her inner muscles clamp eagerly around you to the hilt."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step6",
+                    text="Pause to savor her tight warmth before establishing a deep, rolling tempo.",
+                    next_node="vanya_gilded_step6_rhythm",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 6: Sinuous Cadence on Crimson Silks
+        "vanya_gilded_step6_rhythm": DialogueNode(
+            id="vanya_gilded_step6_rhythm",
+            speaker_name="Sister Vanya",
+            text=(
+                "The plush mattress gives way beneath your bodies as you begin a slow, rhythmic cadence. "
+                "Every deep, measured stroke draws a wanton gasp from Vanya's lips. Her hips roll in decadent synergy with yours, meeting each thrust with increasing eagerness. "
+                "The sweet smell of opium and her own aroused scent fills the curtained alcove, heightening every point of contact into pure delirium."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step7",
+                    text="Pull her hips to the edge of the cushions to drive even deeper.",
+                    next_node="vanya_gilded_step7_shift",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 7: Positional Shift & Intensifying Depth
+        "vanya_gilded_step7_shift": DialogueNode(
+            id="vanya_gilded_step7_shift",
+            speaker_name="Sister Vanya",
+            text=(
+                "Hooking her slender legs over your hips, you draw her lower body to the edge of the velvet bolsters, driving home at a steeper, devastating angle. "
+                "Wet, rhythmic slaps resound through the silk-draped chamber. Vanya arches her back, her full breasts trembling with each impact, "
+                "her cries turning melodic and unrestrained as you graze the most sensitive nerve clusters of her womb."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step8",
+                    text="Quicken the tempo into a fierce, breathless pounding.",
+                    next_node="vanya_gilded_step8_frenzy",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 8: Fierce Cadence & Sensual Frenzy
+        "vanya_gilded_step8_frenzy": DialogueNode(
+            id="vanya_gilded_step8_frenzy",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your hips crash against hers with unrelenting, commanding power. Sweat slicks both your chests, gleaming in the amber glow of the brass lantern. "
+                "Vanya abandons all reserve, clutching your neck and whispering wanton words of devotion into your ear. "
+                "Her cries rise above the muffled laughter of the distant parlour, celebrating the raw, uninhibited joy of the flesh."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step9",
+                    text="Drive into her with everything you have, feeling her walls begin to convulse.",
+                    next_node="vanya_gilded_step9_precipice",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 9: The Precipice / Pre-Climax
+        "vanya_gilded_step9_precipice": DialogueNode(
+            id="vanya_gilded_step9_precipice",
+            speaker_name="Sister Vanya",
+            text=(
+                "The peak rushes over both of you like a fevered tidal wave. Vanya's inner passage contracts with furious, rhythmic spasms, "
+                "milking your swollen length with desperate suction. Her nails bite into your back as her toes curl into the silk sheets. "
+                "'I cannot hold back! Ah... wanderer, take me... fill me now!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_step10",
+                    text="Thrust to the root one final time and surrender to the explosive release.",
+                    next_node="vanya_gilded_step10_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 10: Explosive Climax in the Boudoir
+        "vanya_gilded_step10_climax": DialogueNode(
+            id="vanya_gilded_step10_climax",
+            speaker_name="Sister Vanya",
+            text=(
+                "With a final, shattering plunge, you bury yourself to the very hilt within her drenched depths. "
+                "Vanya lets out a breathless, quivering scream into your shoulder as an earth-shattering orgasm rips through her body, "
+                "her inner walls fluttering in violent, unending spasms. With a guttural roar, you flood her deep within with hot, pulsing release, "
+                "pumping copious warmth into her trembling womb as you collapse together into the disheveled crimson silks."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_to_afterglow",
+                    text="Hold her closely as your ragged breathing settles amidst the silk cushions.",
+                    next_node="vanya_gilded_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        # Afterglow (Gilded Rat)
+        "vanya_gilded_afterglow": DialogueNode(
+            id="vanya_gilded_afterglow",
+            speaker_name="Sister Vanya",
+            text=(
+                "Wrapped in a warm silk mantle upon the crimson divan, Vanya rests her flushed face against your chest, tracing your jawline with a tender, lazy smile. "
+                "'I used to believe holiness was found only in deprivation and cold stone,' she whispers softly, her eyes shining with absolute devotion. "
+                "'Tonight you showed me that true transcendence is found in love and desire. I fear nothing while I am yours.' "
+                "(All dread eradicated. Devotion absolute)."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_gilded_return_hub",
+                    text="Adjust your clothing and return to the parlour together.",
                     next_node="vanya_companion_hub"
                 )
             ]
@@ -1270,7 +1851,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ]
         ),
 
-        # --- Eroge Spicy Multi-Stage Intimacy Sequence: Madame Silve ---
+        # --- Madame Silve 10-Step Erotic Sequence: The Gilded Rat (Default Scene) ---
+        # Step 1: Initiating (Private Boudoir & Disrobing)
         "silve_intimacy_scene": DialogueNode(
             id="silve_intimacy_scene",
             speaker_name="Madame Silve",
@@ -1283,11 +1865,89 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_silve_eroge_boudoir",
+                    id="c_silve_gilded_to_step2",
                     text="Embrace her against the cushions and taste the spiced wine on her lips.",
-                    next_node="silve_eroge_boudoir",
+                    next_node="silve_gilded_step2_foreplay",
                     is_intimacy_action=True,
                     relationship_change=15
+                ),
+                # Alias for existing test
+                DialogueChoice(
+                    id="c_silve_eroge_boudoir",
+                    text="Embrace her against the cushions and taste the spiced wine on her lips.",
+                    next_node="silve_gilded_step2_foreplay",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                )
+            ]
+        ),
+        "silve_gilded_step1_initiate": DialogueNode(
+            id="silve_gilded_step1_initiate",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve guides you past heavy midnight-velvet curtains into her private sanctuary. Scented candles illuminate opulent crimson divans "
+                "and piles of goose-down pillows. The sweet aroma of opium and spiced plum wine fills the air. "
+                "With practiced, intoxicating grace, Silve unties her bodice strings. The tight black velvet opens, exposing her voluptuous, creamy bosom "
+                "and narrow waist to your gaze. She laughs huskily, sliding her manicured fingers down your chest. "
+                "'You fought like a demon for my ledger, wanderer. Tonight, I will show you what a true courtesan does with an iron-hearted survivor.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_step1_choice",
+                    text="Embrace her against the cushions and taste the spiced wine on her lips.",
+                    next_node="silve_gilded_step2_foreplay",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                )
+            ]
+        ),
+        # Step 2: Foreplay & Branching Choices
+        "silve_gilded_step2_foreplay": DialogueNode(
+            id="silve_gilded_step2_foreplay",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve pulls you onto the velvet mattress, straddling your lap with a breathless purr. Her bare breasts, full, alabaster, and warm, "
+                "brush against your chest as she unfastens your trousers with hungry, practiced fingers. "
+                "'No politics tonight, wanderer,' she whispers against your ear, her teeth gently tugging your earlobe while her hips grind slowly into your hardening length. "
+                "'Only skin, sweat, and fire. Show me what life feels like before the inquisitors turn this city to glass.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_branch_sensual",
+                    text="[Courtesan Worship] Roll her onto her back, fondling her bare curves and kissing down her heaving cleavage.",
+                    next_node="silve_gilded_step3_sensual",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_gilded_branch_oral",
+                    text="[Devoted Oral Ecstasy] Burrow between her soft, perfumed thighs for lavish oral worship.",
+                    next_node="silve_gilded_step3_oral",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_gilded_branch_wine",
+                    text="[Spiced Wine Tease] Pour dark spiced plum wine across her cleavage and lick it clean from her skin.",
+                    next_node="silve_gilded_step3_wine",
+                    is_intimacy_action=True
+                ),
+                # Aliases for compatibility
+                DialogueChoice(
+                    id="c_silve_eroge_take_control",
+                    text="Roll her onto her back, spreading her soft legs and sliding inside her slick depths.",
+                    next_node="silve_gilded_step3_sensual",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_eroge_oral",
+                    text="Burrow between her soft, perfumed thighs and lavish her swollen core with devoted oral worship.",
+                    next_node="silve_gilded_step3_oral",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_eroge_wine",
+                    text="Pour dark spiced plum wine across her cleavage and lick it from her skin before claiming her.",
+                    next_node="silve_gilded_step3_wine",
+                    is_intimacy_action=True
                 )
             ]
         ),
@@ -1302,21 +1962,64 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_silve_eroge_take_control",
+                    id="c_silve_eroge_take_control_alias",
                     text="Roll her onto her back, spreading her soft legs and sliding inside her slick depths.",
-                    next_node="silve_eroge_climax",
+                    next_node="silve_gilded_step3_sensual",
                     is_intimacy_action=True
                 ),
                 DialogueChoice(
-                    id="c_silve_eroge_oral",
+                    id="c_silve_eroge_oral_alias",
                     text="Burrow between her soft, perfumed thighs and lavish her swollen core with devoted oral worship.",
-                    next_node="silve_eroge_foreplay_oral",
+                    next_node="silve_gilded_step3_oral",
                     is_intimacy_action=True
                 ),
                 DialogueChoice(
-                    id="c_silve_eroge_wine",
+                    id="c_silve_eroge_wine_alias",
                     text="Pour dark spiced plum wine across her cleavage and lick it from her skin before claiming her.",
-                    next_node="silve_eroge_foreplay_wine",
+                    next_node="silve_gilded_step3_wine",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 3: Deepening Foreplay (Branch Outcomes)
+        "silve_gilded_step3_sensual": DialogueNode(
+            id="silve_gilded_step3_sensual",
+            speaker_name="Madame Silve",
+            text=(
+                "Rolling her onto the disheveled silk sheets, your hands explore her ample curves, fondling the ripe weight of her breasts "
+                "while your thumbs gently roll her erect, dark-pink nipples. Silve gasps softly, arching her back off the bed with sultry pleasure. "
+                "Her hips roll instinctively upward against your thighs, her breath hot and spiced with cloves against your neck. "
+                "'You have wonderful hands, wanderer... strong, greedy, and unhurried.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_sensual_to_step4",
+                    text="Slide your palm down her silky stomach toward her soaked lace breeches.",
+                    next_node="silve_gilded_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "silve_gilded_step3_oral": DialogueNode(
+            id="silve_gilded_step3_oral",
+            speaker_name="Madame Silve",
+            text=(
+                "Burrowing between her soft, perfumed thighs, your hands grasp her curved buttocks, lifting her into the candlelight. "
+                "Her intimate folds are drenched with arousal, glistening and swollen with need. When your tongue laps up the length of her slit and suckles her clitoris, "
+                "Silve cries out in wanton abandon, her elegant composure completely disintegrating into desperate, ragged gasps. "
+                "Her manicured nails tangle tightly in your hair, her pelvis bucking greedily against your face. 'Mmm... ah! God, you wicked man... your tongue is pure sin!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_oral_to_step4",
+                    text="Caress her glistening cleft and prepare her body for deep penetration.",
+                    next_node="silve_gilded_step4_caress",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_eroge_enter_from_oral",
+                    text="Rise up, spread her velvet-soft thighs wide, and bury your length to the hilt within her.",
+                    next_node="silve_gilded_step4_caress",
                     is_intimacy_action=True
                 )
             ]
@@ -1332,9 +2035,33 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_silve_eroge_enter_from_oral",
+                    id="c_silve_eroge_enter_from_oral_fwd",
                     text="Rise up, spread her velvet-soft thighs wide, and bury your length to the hilt within her.",
-                    next_node="silve_eroge_climax",
+                    next_node="silve_gilded_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "silve_gilded_step3_wine": DialogueNode(
+            id="silve_gilded_step3_wine",
+            speaker_name="Madame Silve",
+            text=(
+                "You uncork a crystal flask of dark, spiced plum wine, pouring a warm ruby stream down her pale throat and into the valley between her heavy breasts. "
+                "Your mouth follows the intoxicating trail, licking the spiced vintage from her skin while suckling her taut, wine-stained nipples. "
+                "Silve writhes beneath you, moaning your name in sheer sensory delirium as her hands claw at your shoulders. "
+                "'You ravishing devil... take me now! Don't make me wait another second!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_wine_to_step4",
+                    text="Trace your wet lips down to her navel and slip your hand between her thighs.",
+                    next_node="silve_gilded_step4_caress",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_eroge_enter_from_wine",
+                    text="Push into her drenched center with commanding rhythm to share the explosive finish.",
+                    next_node="silve_gilded_step4_caress",
                     is_intimacy_action=True
                 )
             ]
@@ -1350,10 +2077,151 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             ),
             choices=[
                 DialogueChoice(
-                    id="c_silve_eroge_enter_from_wine",
+                    id="c_silve_eroge_enter_from_wine_fwd",
                     text="Push into her drenched center with commanding rhythm to share the explosive finish.",
-                    next_node="silve_eroge_climax",
+                    next_node="silve_gilded_step4_caress",
                     is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 4: Intimate Caresses & Lubrication
+        "silve_gilded_step4_caress": DialogueNode(
+            id="silve_gilded_step4_caress",
+            speaker_name="Madame Silve",
+            text=(
+                "Pushing aside her gossamer silk undergarments, your fingers delve into her dripping cleft. "
+                "Silve is scorching hot, drenched with honeyed lubrication that slicks your fingers with every caress. "
+                "Her hips buck up in rhythm with your stroking, a husky purr escaping her lips as she reaches down to stroke your rigid erection. "
+                "'Feel how badly I want you, darling... you've completely conquered the madam of Oakhaven. Take your prize.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_step5",
+                    text="Align your throbbing shaft with her soaking entrance and push inside.",
+                    next_node="silve_gilded_step5_entry",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 5: Penetration & Full Sheathing
+        "silve_gilded_step5_entry": DialogueNode(
+            id="silve_gilded_step5_entry",
+            speaker_name="Madame Silve",
+            text=(
+                "Parting her creamy thighs wide, you guide your swollen head into her dripping aperture. "
+                "With a deliberate, unyielding press of your hips, you breach her tight, velvety corridor. "
+                "Silve lets out a loud, shuddering cry of pure gratification, her arms winding around your neck as she takes your full length into her core. "
+                "Her snug walls hug you like a glove of living silk, the heat inside her almost unbearable in its intensity."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_step6",
+                    text="Let the initial wave of pleasure wash over both of you before moving.",
+                    next_node="silve_gilded_step6_rhythm",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 6: Sinuous Cadence & Decadent Friction
+        "silve_gilded_step6_rhythm": DialogueNode(
+            id="silve_gilded_step6_rhythm",
+            speaker_name="Madame Silve",
+            text=(
+                "Establishing a deep, sensual rhythm, you begin to stroke within her tight depths. "
+                "Silve's hips roll against yours in perfect, decadent harmony, matching each thrust with seductive expertise. "
+                "The friction between your bodies is intoxicating; sweat slicks both your chests as the rhythm turns wet, steady, and hypnotic. "
+                "Her breathless murmurs of praise and sultry laughter fill the candlelit boudoir."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_step7",
+                    text="Lock her shapely legs around your waist to drive into her deepest core.",
+                    next_node="silve_gilded_step7_shift",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 7: Positional Shift & Escalation
+        "silve_gilded_step7_shift": DialogueNode(
+            id="silve_gilded_step7_shift",
+            speaker_name="Madame Silve",
+            text=(
+                "Hoisting her hips higher upon the cushions, you lock her slender legs around your waist. "
+                "The new angle permits devastatingly deep penetration; every thrust buries you to the absolute hilt, bottoming out against her cervix. "
+                "Loud, wet slaps echo off the velvet canopy. Silve's worldly poise shatters into wanton gasps, her fingernails biting deep into your back."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_step8",
+                    text="Accelerate your thrusts into a commanding, relentless tempo.",
+                    next_node="silve_gilded_step8_frenzy",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 8: Fierce Cadence & Vocal Surrender
+        "silve_gilded_step8_frenzy": DialogueNode(
+            id="silve_gilded_step8_frenzy",
+            speaker_name="Madame Silve",
+            text=(
+                "The pace turns frantic, urgent, and wild. You hammer into her with primal ferocity, driving the breath from her lungs with every impact. "
+                "Silve throws her head back into the pillows, her voluptuous breasts bouncing with every violent stroke, "
+                "her moans rising into ragged, breathless cries of ecstasy. 'Ah... yes! Give it to me, wanderer... don't you dare stop!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_step9",
+                    text="Drive through the rising heat as her inner walls begin to seize.",
+                    next_node="silve_gilded_step9_precipice",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 9: The Precipice / Edging
+        "silve_gilded_step9_precipice": DialogueNode(
+            id="silve_gilded_step9_precipice",
+            speaker_name="Madame Silve",
+            text=(
+                "The peak rushes upon both of you like a fevered wildfire. Silve's internal passage begins to convulse violently, "
+                "suctioning and clutching your shaft with frantic, desperate contractions. "
+                "Her eyes roll back in sheer sensory delirium, her hips bucking up against yours to pull you as deep as humanly possible. "
+                "'I'm breaking... darling, I'm coming! Fill me... pour it all inside!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_step10",
+                    text="Deliver one final, all-consuming plunge and surrender to the climax.",
+                    next_node="silve_gilded_step10_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 10: Explosive Climax
+        "silve_gilded_step10_climax": DialogueNode(
+            id="silve_gilded_step10_climax",
+            speaker_name="Madame Silve",
+            text=(
+                "With a final, devastating thrust, you bury your length to the absolute root. "
+                "Silve's body arches rigidly off the mattress as an earth-shattering orgasm rips through her, her inner walls convulsing in wild, unending spasms around your shaft. "
+                "With a guttural roar, you spill copious waves of boiling release deep inside her trembling womb, flooding her core as you collapse together into the disheveled crimson silks in spent, breathless ecstasy."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_gilded_to_afterglow",
+                    text="Recline together on the cushions in decadent afterglow.",
+                    next_node="silve_gilded_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25,
+                    item_reward="Silve's Scented Silk Favor"
+                ),
+                # Alias for existing test
+                DialogueChoice(
+                    id="c_silve_eroge_afterglow",
+                    text="Recline together on the cushions in decadent afterglow.",
+                    next_node="silve_gilded_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25,
+                    item_reward="Silve's Scented Silk Favor"
                 )
             ]
         ),
@@ -1361,25 +2229,24 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="silve_eroge_climax",
             speaker_name="Madame Silve",
             text=(
-                "Entering her completely, you are enveloped in hot, velvet tightness. Silve lets out a loud, breathless cry that reverberates off the silken walls. "
-                "Her hips roll against yours in perfect, decadent harmony, matching each deep, powerful thrust. "
-                "The friction between your bodies is intoxicating; sweat slicks your chests as the rhythm turns frantic, urgent, and wild. "
-                "Her nails bite into your shoulders, her moans turning into ragged sobs of pleasure as her inner walls convulse in an explosive, shuddering climax. "
-                "You drive into her to the hilt, spilling your warmth deep inside her with a guttural roar, collapsing into each other amidst the disheveled crimson silks."
+                "With a final, devastating thrust, you bury your length to the absolute root. "
+                "Silve's body arches rigidly off the mattress as an earth-shattering orgasm rips through her, her inner walls convulsing in wild, unending spasms around your shaft. "
+                "With a guttural roar, you spill copious waves of boiling release deep inside her trembling womb, flooding her core as you collapse together into the disheveled crimson silks in spent, breathless ecstasy."
             ),
             choices=[
                 DialogueChoice(
-                    id="c_silve_eroge_afterglow",
+                    id="c_silve_eroge_afterglow_alias",
                     text="Recline together on the cushions in decadent afterglow.",
-                    next_node="silve_eroge_afterglow",
+                    next_node="silve_gilded_afterglow",
                     is_intimacy_action=True,
                     relationship_change=25,
                     item_reward="Silve's Scented Silk Favor"
                 )
             ]
         ),
-        "silve_eroge_afterglow": DialogueNode(
-            id="silve_eroge_afterglow",
+        # Afterglow & Bonding (Gilded Rat)
+        "silve_gilded_afterglow": DialogueNode(
+            id="silve_gilded_afterglow",
             speaker_name="Madame Silve",
             text=(
                 "Silve lounges across your chest, tracing your jawline with a satisfied, contented smile. The dread of the approaching purge has vanished, "
@@ -1395,7 +2262,40 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     relationship_change=20
                 ),
                 DialogueChoice(
+                    id="c_silve_companion_return_hub",
+                    text="Resume traveling together.",
+                    next_node="silve_companion_hub"
+                ),
+                DialogueChoice(
                     id="c_silve_afterglow_farewell",
+                    text="'I will return, Silve. Now I must reach the gate.'",
+                    next_node="silve_farewell"
+                )
+            ]
+        ),
+        "silve_eroge_afterglow": DialogueNode(
+            id="silve_eroge_afterglow",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve lounges across your chest, tracing your jawline with a satisfied, contented smile. The dread of the approaching purge has vanished, "
+                "replaced by pure intimacy and dark devotion. She presses a perfumed, embroidered black silk handkerchief into your hand, "
+                "along with a pouch of 35 Sovereigns. 'This silk bears my crest and secret scent, handsome. Any fence, guard, or merchant in the province "
+                "will give you a 25% discount and heed your word. Survive tonight, wanderer... and come back to my bed.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_recruit_afterglow_alias",
+                    text="'The city is doomed to burn at midnight, Silve. Take your poisoned stiletto and come with me. Join my party.'",
+                    next_node="silve_recruited",
+                    relationship_change=20
+                ),
+                DialogueChoice(
+                    id="c_silve_companion_return_hub_alias",
+                    text="Resume traveling together.",
+                    next_node="silve_companion_hub"
+                ),
+                DialogueChoice(
+                    id="c_silve_afterglow_farewell_alias",
                     text="'I will return, Silve. Now I must reach the gate.'",
                     next_node="silve_farewell"
                 )
@@ -1478,12 +2378,19 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="silve_companion_intimacy_start",
             speaker_name="Madame Silve",
             text=(
-                "Pulling Silve into a secluded, curtained recess of a ruined merchant manor, you seal off the toxic smog of Oakhaven. "
+                "Pulling Silve into a secluded, curtained recess away from prying eyes, you seal off the toxic smog of Oakhaven. "
                 "Her manicured hands immediately glide onto your chest, unbuttoning your tunic with hungry dexterity. "
                 "'Always so urgent, darling... and so beautifully relentless,' she purrs huskily, shrugging her heavy velvet mantle to the floor to reveal her laced corset and creamy, heaving bosom. "
                 "'Show me what an iron-willed wanderer does when he claims his courtesan.'"
             ),
             choices=[
+                DialogueChoice(
+                    id="c_silve_comp_to_location_scene",
+                    text="Pull her into your arms and surrender to carnal desire.",
+                    next_node="silve_gilded_step1_initiate",
+                    is_intimacy_action=True
+                ),
+                # Aliases for compatibility
                 DialogueChoice(
                     id="c_silve_companion_oral",
                     text="Drop to your knees, untying her silken breeches to worship her dripping heat.",
@@ -1561,6 +2468,260 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 DialogueChoice(
                     id="c_silve_companion_return_hub",
                     text="Resume traveling together.",
+                    next_node="silve_companion_hub"
+                )
+            ]
+        ),
+
+        # --- Madame Silve 10-Step Erotic Sequence: The Ruined Chantry (Location Unique Scene) ---
+        # Step 1: Initiating in the Desecrated Sanctuary
+        "silve_chantry_step1_initiate": DialogueNode(
+            id="silve_chantry_step1_initiate",
+            speaker_name="Madame Silve",
+            text=(
+                "Leading Silve through the shadowed nave of Saint Marrow into the desecrated sanctuary behind the altar screen, "
+                "moonlight filters through broken stained glass, illuminating kneeling statues of ancient martyrs. "
+                "Silve lets out a low, wicked chuckle as she lets her dark velvet mantle slip onto the consecrated stone steps. "
+                "'Making love on the altar of saints while the inquisitors prepare our pyre?' she purrs with an arch of her eyebrow, "
+                "her manicured hands unfastening the clasps of her leather corset. 'You have a delightfully corrupt soul, wanderer. "
+                "Let us see if the martyrs blush when you claim me here in their holy dark.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step2",
+                    text="Help her shed her bodice, exposing her alabaster curves against the cool stone.",
+                    next_node="silve_chantry_step2_foreplay",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                )
+            ]
+        ),
+        # Step 2: Foreplay & Branching Choices (Ruined Chantry)
+        "silve_chantry_step2_foreplay": DialogueNode(
+            id="silve_chantry_step2_foreplay",
+            speaker_name="Madame Silve",
+            text=(
+                "Her corset parts, freeing her heavy, alabaster breasts in the silver moonlight. "
+                "The chill of the chantry stones provides a delicious contrast against the burning heat radiating from her skin. "
+                "Silve leans back against the marble altar railing, her lips parted with a sensual, mocking smirk that dares you to conquer her."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_branch_kiss",
+                    text="[Altar Passion] Lift her onto the marble railing, kissing her mouth deeply while teasing her taut nipples.",
+                    next_node="silve_chantry_step3_kiss",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_chantry_branch_oral",
+                    text="[Sacrilegious Devotion] Kneel upon the velvet prayer cushion and worship her glistening cleft with your tongue.",
+                    next_node="silve_chantry_step3_oral",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_chantry_branch_dominant",
+                    text="[Commanding Dominion] Turn her facing the stone altar, lifting her silk skirts to claim her from behind.",
+                    next_node="silve_chantry_step3_dominant",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 3: Deepening Foreplay (Branch Outcomes)
+        "silve_chantry_step3_kiss": DialogueNode(
+            id="silve_chantry_step3_kiss",
+            speaker_name="Madame Silve",
+            text=(
+                "Lifting her bodily onto the polished marble communion rail, you capture her lips in a deep, ravenous kiss. "
+                "Your hands cup her full, creamy breasts, squeezing their lush weight while your thumbs circle her sensitive, wine-hued nipples. "
+                "Silve lets out a breathless, wanton moan that reverberates softly in the vaulted chantry ceiling, her manicured nails digging into your biceps."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_kiss_to_step4",
+                    text="Slide your hand beneath her skirts, tracing the humid heat of her inner thighs.",
+                    next_node="silve_chantry_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "silve_chantry_step3_oral": DialogueNode(
+            id="silve_chantry_step3_oral",
+            speaker_name="Madame Silve",
+            text=(
+                "Dropping to your knees onto the worn velvet prayer cushion, you spread her smooth, stockinged thighs wide in the moonlit gloom. "
+                "Her feminine folds are already drenched with slippery nectar, glowing faintly in the silver light. "
+                "When your mouth covers her swollen clitoris, suckling and lapping with fervent devotion, Silve gasps in breathless ecstasy. "
+                "Her hands clutch your hair, tilting her hips down against your face as her knees tremble violently. 'Ah... god! What a wicked, blasphemous tongue!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_oral_to_step4",
+                    text="Rise up and slide your wet fingers through her soaking core.",
+                    next_node="silve_chantry_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "silve_chantry_step3_dominant": DialogueNode(
+            id="silve_chantry_step3_dominant",
+            speaker_name="Madame Silve",
+            text=(
+                "Spinning her around, you press her chest flat against the cold marble slab of the altar. "
+                "Bunching her black silk skirts up around her hips, you grasp her rounded buttocks, kneading the soft flesh firmly. "
+                "Silve lets out an appreciative, wanton purr, glancing back over her shoulder with smoldering eyes. "
+                "'Treat me like a conqueror claims his spoils, wanderer. I want to feel the raw iron in you.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_dom_to_step4",
+                    text="Part her dripping folds with your fingers and prepare her for your entrance.",
+                    next_node="silve_chantry_step4_caress",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 4: Intimate Caresses & Sacred Lubrication
+        "silve_chantry_step4_caress": DialogueNode(
+            id="silve_chantry_step4_caress",
+            speaker_name="Madame Silve",
+            text=(
+                "Your fingers probe the weeping depths of her passage, testing her heat against the cold, echoing stillness of the cathedral. "
+                "Silve's inner walls grip your fingers with urgent, hot suction, completely soaked with sweet lubrication. "
+                "She shivers in your grasp, her breath hitching in ragged gasps. 'Enough foreplay... pierce me with that magnificent blade of yours!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step5",
+                    text="Align your throbbing shaft with her dripping slit and breach her warmth.",
+                    next_node="silve_chantry_step5_entry",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 5: Penetration in the Moonlit Sanctuary
+        "silve_chantry_step5_entry": DialogueNode(
+            id="silve_chantry_step5_entry",
+            speaker_name="Madame Silve",
+            text=(
+                "With a deliberate, unyielding forward drive of your hips, you sink your rigid head into her tight aperture. "
+                "Silve's breath catches in her throat with a sharp cry of pleasure as her snug walls part and stretch to receive your full girth. "
+                "You push smoothly until your hips meet hers with a wet, resonant thud against the altar steps. "
+                "She throws her head back, her throat pale and exposed in the moonlight, weeping soft tears of pure sensual fulfillment."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step6",
+                    text="Pause to let her internal walls hug your shaft before beginning to move.",
+                    next_node="silve_chantry_step6_rhythm",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 6: Resonant Cadence in the Nave
+        "silve_chantry_step6_rhythm": DialogueNode(
+            id="silve_chantry_step6_rhythm",
+            speaker_name="Madame Silve",
+            text=(
+                "Drawing back almost to the tip, you plunge deeply back into her feverish core. "
+                "Each slow, rhythmic thrust draws a melodic moan from Silve's lips that echoes off the cracked marble pillars. "
+                "Her hips roll with seasoned grace, meeting your thrusts with practiced precision, her inner muscles clutching your shaft in waves of tight suction."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step7",
+                    text="Hoist her higher onto the altar stone and deepen your strokes.",
+                    next_node="silve_chantry_step7_shift",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 7: Positional Shift & Escalation
+        "silve_chantry_step7_shift": DialogueNode(
+            id="silve_chantry_step7_shift",
+            speaker_name="Madame Silve",
+            text=(
+                "Lifting her legs onto your shoulders, you pin her beneath you upon the altar slab, driving into her at a steeper, devastating angle. "
+                "Loud, wet slaps resound through the hollow sanctuary as your pelvis crashes against hers. "
+                "Silve's worldly composure is wholly obliterated; she claws at the stone carvings, her breathless whimpers turning into wanton, uninhibited cries."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step8",
+                    text="Drive the cadence into a fierce, relentless pounding.",
+                    next_node="silve_chantry_step8_frenzy",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 8: Sacred Frenzy & Vocal Surrender
+        "silve_chantry_step8_frenzy": DialogueNode(
+            id="silve_chantry_step8_frenzy",
+            speaker_name="Madame Silve",
+            text=(
+                "Your thrusts become rapid, heavy, and punishing. Sweat slicks your skin, dripping onto her heaving chest in the moonlit gloom. "
+                "Silve wraps her arms around your neck, burying her face into your collarbone as she shamelessly babbles wanton endearments, "
+                "urging you harder and deeper with desperate, hungry whispers. 'Take it all, darling... make this holy ground remember us!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step9",
+                    text="Drive through the rising heat as her inner passage begins to convulse.",
+                    next_node="silve_chantry_step9_precipice",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 9: The Edge of Absolution
+        "silve_chantry_step9_precipice": DialogueNode(
+            id="silve_chantry_step9_precipice",
+            speaker_name="Madame Silve",
+            text=(
+                "The climax approaches like an unstoppable storm. Silve's internal passage begins to spasm in violent, rhythmic contractions, "
+                "clutching your shaft with desperate, overwhelming suction. Her legs lock around your waist, her body coiling tight as a drawn bow. "
+                "'I'm shattering... wanderer, oh gods, don't stop! Right there!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_step10",
+                    text="Bury your length to the root and surrender to the explosive release.",
+                    next_node="silve_chantry_step10_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        # Step 10: Climax at the Altar
+        "silve_chantry_step10_climax": DialogueNode(
+            id="silve_chantry_step10_climax",
+            speaker_name="Madame Silve",
+            text=(
+                "With one final, thunderous plunge, you drive home to the absolute root. "
+                "Silve screams softly into your neck as a transcendent, earth-shattering orgasm rips through her, her body convulsing in wild, unending ripples. "
+                "With a guttural roar, you flood her deep within with boiling, pulsing seed, filling her core completely as both of you collapse across the altar slab in breathless, spent ecstasy."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_to_afterglow",
+                    text="Hold each other in the peaceful, moonlit silence of the sanctuary.",
+                    next_node="silve_chantry_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        # Afterglow (Ruined Chantry)
+        "silve_chantry_afterglow": DialogueNode(
+            id="silve_chantry_afterglow",
+            speaker_name="Madame Silve",
+            text=(
+                "Resting together amidst her velvet cloak on the altar steps, Silve gently strokes your hair with a lazy, satisfied smile. "
+                "'If this is sacrilege, darling, then let the heavens strike us down now,' she whispers huskily against your lips. "
+                "'I have never felt so alive, nor so utterly claimed. When the gates open, we conquer the outer barrens together.' "
+                "(All dread eradicated. Devotion absolute)."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_chantry_return_hub",
+                    text="Collect your weapons and return to traveling together.",
                     next_node="silve_companion_hub"
                 )
             ]
