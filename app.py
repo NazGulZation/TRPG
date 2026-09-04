@@ -54,6 +54,9 @@ def api_action():
     elif action == "combat_action":
         act_type = data.get("combat_type")
         res = engine.combat_action(act_type)
+    elif action in ("start_erotic_scene", "start_intimacy"):
+        npc_id = data.get("npc_id")
+        res = engine.start_party_erotic_scene(npc_id)
     elif action == "intimacy_action":
         technique = data.get("technique")
         res = engine.intimacy_action(technique)

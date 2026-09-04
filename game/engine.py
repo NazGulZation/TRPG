@@ -263,7 +263,10 @@ class GameEngine:
                     "stats": npc.stats.to_dict(),
                     "hp": npc.current_hp,
                     "max_hp": npc.max_hp,
-                    "is_romanced": npc.is_romanced
+                    "is_romanced": npc.is_romanced,
+                    "gender": npc.gender,
+                    "can_romance": npc.can_romance,
+                    "relationship": npc.relationship
                 })
 
         active_quests = []
@@ -409,6 +412,13 @@ class GameEngine:
         if npc.relationship <= -50:
             self.start_combat(npc_id, ambush=True)
             return self.get_state()
+
+        # If in party, route directly to their companion dialogue hub
+        if npc.is_in_party:
+            node_id = self.get_companion_hub_id(npc)
+            if node_id in npc.dialogue_nodes:
+                self.load_dialogue_node(npc, node_id)
+                return self.get_state()
 
         # Build dynamic dialogue
         node_id = npc.dialogue_root
@@ -637,10 +647,27 @@ class GameEngine:
                 self.add_inventory_item("Silve's Scented Silk Favor")
                 self.player.sovereigns += 35
 
-            # If user explicitly chooses the minigame option
-            if chosen_choice.id in ("c_vanya_minigame_start", "c_silve_minigame_start"):
-                self.start_intimacy_minigame(npc.id)
-                return self.get_state()
+        # Handle Companion Special Interactions
+        if chosen_choice.id == "c_vanya_companion_tend":
+            heal = 15
+            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
+            self.adjust_dread(-10)
+            self.add_log("party", "Sister Vanya Tended Wounds", f"Vanya cleans and binds your wounds (+{heal} HP, -10 Dread).")
+
+        elif chosen_choice.id == "c_silve_companion_contraband":
+            if "Spiced Plum Wine" not in self.player.inventory:
+                self.add_inventory_item("Spiced Plum Wine")
+                self.add_log("item", "Received Contraband Wine", "Silve slips a flask of Spiced Plum Wine into your pouch.")
+            else:
+                self.player.sovereigns += 15
+                self.add_log("item", "Received Sovereigns", "Silve slips 15 Sovereigns into your hand with a wink.")
+
+        elif chosen_choice.id == "c_malakor_companion_drink":
+            self.adjust_dread(-5)
+            self.add_log("party", "Shared Drake Rye", "You and Malakor share a burning swig of rye gin (-5 Dread).")
+
+        elif chosen_choice.id in ("c_vanya_confirm_dismiss", "c_malakor_confirm_dismiss", "c_silve_confirm_dismiss"):
+            self.dismiss_party(npc.id)
 
         # Handle Male Commander Malakor Blood-Brotherhood (Non-romance)
         if npc.id == "commander_malakor" and chosen_choice.id == "c_malakor_embrace":
@@ -660,103 +687,68 @@ class GameEngine:
 
         self.advance_clock()
         next_node_id = chosen_choice.next_node
-        if next_node_id in ("vanya_recruited", "malakor_recruited"):
+        if next_node_id in ("vanya_recruited", "malakor_recruited", "silve_recruited"):
             self.recruit_party(npc.id)
 
         self.load_dialogue_node(npc, next_node_id)
         return self.get_state()
 
-    # --- Sensory Eroge Intimacy Minigame ---
-    def start_intimacy_minigame(self, npc_id: str) -> Dict[str, Any]:
+    def get_companion_hub_id(self, npc: NPC) -> str:
+        short_id = npc.id.replace("sister_", "").replace("commander_", "").replace("madame_", "")
+        candidates = [
+            f"{short_id}_companion_hub",
+            f"{npc.id}_companion_hub"
+        ]
+        for c in candidates:
+            if c in npc.dialogue_nodes:
+                return c
+        return npc.dialogue_root
+
+    def get_companion_erotic_node_id(self, npc: NPC) -> Optional[str]:
+        short_id = npc.id.replace("sister_", "").replace("commander_", "").replace("madame_", "")
+        candidates = [
+            f"{short_id}_companion_intimacy_start",
+            f"{npc.id}_companion_intimacy_start",
+            f"{short_id}_intimacy_scene",
+            f"{npc.id}_intimacy_scene"
+        ]
+        for c in candidates:
+            if c in npc.dialogue_nodes:
+                return c
+        return None
+
+    # --- Party Companion Intimacy & Erotic Scenes ---
+    def start_party_erotic_scene(self, npc_id: str) -> Dict[str, Any]:
+        """Initiate a lengthy, explicit narrative erotic scene with an adult female companion in the party."""
+        if self.combat_state:
+            return {"error": "You cannot seek carnal solace during life-or-death battle!"}
+
         if npc_id not in self.npcs:
-            return {"error": "NPC not found."}
+            return {"error": "Character not found."}
+
         npc = self.npcs[npc_id]
+        if npc_id not in self.player.party:
+            return {"error": f"{npc.name} is not in your party."}
+
         if npc.gender != "female" or not npc.can_romance:
-            return {"error": f"{npc.name} cannot be romanced."}
+            return {"error": f"{npc.name} cannot be courted intimately."}
 
-        self.current_dialogue = None
-        self.intimacy_state = {
-            "npc_id": npc.id,
-            "npc_name": npc.name,
-            "arousal": 30,
-            "stamina": 100,
-            "turn": 1,
-            "ecstasy_rating": 1.0,
-            "log": [f"You pull {npc.name} into an intimate embrace. Her skin is feverishly warm. Build her Arousal to 100% to achieve Transcendent Climax!"],
-            "completed": False
-        }
-        return self.get_state()
-
-    def intimacy_action(self, technique: str) -> Dict[str, Any]:
-        """Techniques: 'guile_caress', 'sinew_intensity', 'lucidity_whisper', 'oral_worship'"""
-        if not self.intimacy_state:
-            return {"error": "No active intimacy minigame."}
-
-        npc_id = self.intimacy_state["npc_id"]
-        npc = self.npcs.get(npc_id)
-        if not npc:
-            self.intimacy_state = None
+        scene_node = self.get_companion_erotic_node_id(npc)
+        if scene_node and scene_node in npc.dialogue_nodes:
+            self.load_dialogue_node(npc, scene_node)
             return self.get_state()
 
-        log_lines = []
-        arousal_gain = 0
+        return {"error": "Intimate scene not found."}
 
-        if technique == "guile_caress":
-            eff_guile = self.get_effective_stat("guile")
-            bonus = max(5, eff_guile * 2)
-            arousal_gain = random.randint(22, 30) + bonus // 3
-            log_lines.append(
-                f"[Guile] Your nimble fingertips tease along {npc.name}'s inner thighs and sensitive contours, drawing a sharp, wanton gasp! (+{arousal_gain}% Arousal)"
-            )
-        elif technique == "sinew_intensity":
-            eff_sinew = self.get_effective_stat("sinew")
-            bonus = max(5, eff_sinew * 2)
-            arousal_gain = random.randint(25, 35) + bonus // 3
-            log_lines.append(
-                f"[Sinew] Gripping her hips firmly, you pull her against your muscular frame in an intense, breathless rhythm! (+{arousal_gain}% Arousal)"
-            )
-        elif technique == "lucidity_whisper":
-            eff_luc = self.get_effective_stat("lucidity")
-            arousal_gain = random.randint(18, 25) + eff_luc
-            self.intimacy_state["ecstasy_rating"] += 0.5
-            self.adjust_dread(-10)
-            log_lines.append(
-                f"[Lucidity] Reading her ragged breathing, your whispered words of adoration shatter her lingering inhibitions (+{arousal_gain}% Arousal, Ecstasy Multiplier increased!)."
-            )
-        elif technique == "oral_worship":
-            arousal_gain = random.randint(30, 42)
-            log_lines.append(
-                f"[Oral Worship] Pressing your lips directly to her glistening center, your passionate rhythm elicits breathless, arching cries of ecstasy! (+{arousal_gain}% Arousal)"
-            )
+    def start_intimacy(self, npc_id: str) -> Dict[str, Any]:
+        """Alias for starting party companion erotic scene."""
+        return self.start_party_erotic_scene(npc_id)
 
-        self.intimacy_state["arousal"] = min(100, self.intimacy_state["arousal"] + arousal_gain)
-        self.intimacy_state["turn"] += 1
-        self.intimacy_state["log"] = log_lines
+    def start_intimacy_minigame(self, npc_id: str) -> Dict[str, Any]:
+        """Compatibility method routing directly into the narrative erotic scene."""
+        return self.start_party_erotic_scene(npc_id)
 
-        # Check for Climax
-        if self.intimacy_state["arousal"] >= 100:
-            self.intimacy_state["completed"] = True
-            npc.is_romanced = True
-            npc.relationship = 100
-            if npc.id not in self.player.romanced_npcs:
-                self.player.romanced_npcs.append(npc.id)
-            self.player.dread = 0
-
-            climax_text = (
-                f"TRANSCENDENT ECSTASY! With a shuddering, desperate cry, {npc.name} clamps her thighs tightly around you as an overwhelming climax "
-                f"spasms through her body. You drive home to the hilt, pouring your release deep within her drenched heat. "
-                f"The darkness of Oakhaven is banished in pure sensory communion. Dread cleansed to 0! Devotion sealed at 100!"
-            )
-            self.intimacy_state["log"].append(climax_text)
-            self.add_log("romance", f"Transcendent Ecstasy: {npc.name}", climax_text)
-
-            # Award relics
-            if npc.id == "sister_vanya" and "Sister Vanya's Embroidered Rosary" not in self.player.inventory:
-                self.add_inventory_item("Sister Vanya's Embroidered Rosary")
-            elif npc.id == "madame_silve" and "Silve's Scented Silk Favor" not in self.player.inventory:
-                self.add_inventory_item("Silve's Scented Silk Favor")
-                self.player.sovereigns += 35
-
+    def intimacy_action(self, technique: str) -> Dict[str, Any]:
         return self.get_state()
 
     def close_intimacy(self) -> Dict[str, Any]:

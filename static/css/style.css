@@ -303,6 +303,57 @@ body.dark-theme {
     margin-top: 4px;
 }
 
+.party-member-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.party-member-actions .btn-sm {
+    padding: 3px 8px;
+    font-size: 11px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.btn-party-talk {
+    background: #24202c;
+    border: 1px solid #4a3e59;
+    color: var(--text-highlight);
+}
+
+.btn-party-talk:hover {
+    background: #393247;
+    border-color: var(--text-gold);
+}
+
+.btn-party-erotic {
+    background: #2b121c;
+    border: 1px solid #7c223a;
+    color: #ff708f;
+    font-weight: 600;
+}
+
+.btn-party-erotic:hover {
+    background: #4a1827;
+    border-color: #ff3366;
+    color: #ffccd7;
+    box-shadow: 0 0 8px rgba(255, 51, 102, 0.4);
+}
+
+.btn-party-dismiss {
+    background: #1c1a20;
+    border: 1px solid #3d3945;
+    color: var(--text-dim);
+}
+
+.btn-party-dismiss:hover {
+    background: #2d1818;
+    border-color: #732a2a;
+    color: #ff9999;
+}
+
 /* Center Chronicle Panel */
 .chronicle-panel {
     background: #121015;

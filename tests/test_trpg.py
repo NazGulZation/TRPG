@@ -190,49 +190,167 @@ class TestTRPGEngine(unittest.TestCase):
         data = resp.get_json()
         self.assertEqual(data["player"]["name"], "Wanderer")
 
-    def test_vanya_multi_stage_eroge_and_minigame(self):
-        # Trigger intimacy minigame with Sister Vanya
-        res = self.engine.start_intimacy_minigame("sister_vanya")
-        self.assertIsNotNone(res["intimacy"])
-        self.assertEqual(res["intimacy"]["npc_id"], "sister_vanya")
-        self.assertEqual(res["intimacy"]["arousal"], 30)
-
-        # Test Guile Caress
-        res = self.engine.intimacy_action("guile_caress")
-        self.assertGreater(res["intimacy"]["arousal"], 30)
-
-        # Test Sinew Intensity
-        res = self.engine.intimacy_action("sinew_intensity")
-        self.assertGreater(res["intimacy"]["arousal"], 50)
-
-        # Test Oral Worship to reach 100%
-        res = self.engine.intimacy_action("oral_worship")
-        res = self.engine.intimacy_action("oral_worship")
-        self.assertEqual(res["intimacy"]["arousal"], 100)
-        self.assertTrue(res["intimacy"]["completed"])
-
-        # Check rewards: Dread eradicated to 0, Rosary awarded, romanced marked
+    def test_vanya_lengthy_multi_stage_erotic_scene(self):
+        # Progress Sister Vanya's narrative erotic scene
+        self.engine.travel("ruined_chantry")
+        self.engine.player.inventory.append("Wolfsbane Nectar")
+        self.engine.talk_npc("sister_vanya")
+        
+        # Turn-in and initiate intimate encounter
+        res = self.engine.choose_dialogue("c_vanya_embrace")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_intimacy_scene")
+        
+        # Stage 1: Unveil habit
+        res = self.engine.choose_dialogue("c_vanya_eroge_unveil")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_eroge_unveil")
+        
+        # Stage 2: Devoted oral worship
+        res = self.engine.choose_dialogue("c_vanya_eroge_oral")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_eroge_foreplay_oral")
+        
+        # Stage 3: Penetration into explosive climax
+        res = self.engine.choose_dialogue("c_vanya_eroge_oral_to_climax")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_eroge_climax")
+        
+        # Verify rewards: Dread purged to 0, romanced marked, Rosary acquired
         self.assertEqual(self.engine.player.dread, 0)
         self.assertTrue(self.engine.npcs["sister_vanya"].is_romanced)
         self.assertIn("Sister Vanya's Embroidered Rosary", self.engine.player.inventory)
+        
+        # Stage 4: Afterglow and recruitment into party
+        res = self.engine.choose_dialogue("c_vanya_eroge_afterglow")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_eroge_afterglow")
+        res = self.engine.choose_dialogue("c_vanya_post_intimacy_recruit")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_recruited")
+        self.assertIn("sister_vanya", self.engine.player.party)
+        self.assertTrue(self.engine.npcs["sister_vanya"].is_in_party)
 
-    def test_silve_multi_stage_eroge_and_minigame(self):
-        # Trigger intimacy minigame with Madame Silve
-        res = self.engine.start_intimacy_minigame("madame_silve")
-        self.assertIsNotNone(res["intimacy"])
-        self.assertEqual(res["intimacy"]["npc_id"], "madame_silve")
-
-        # Drive arousal to 100%
-        self.engine.intimacy_action("oral_worship")
-        self.engine.intimacy_action("oral_worship")
-        res = self.engine.intimacy_action("sinew_intensity")
-        self.assertEqual(res["intimacy"]["arousal"], 100)
-        self.assertTrue(res["intimacy"]["completed"])
-
-        # Check rewards: Silk Favor in inventory, Sovereigns added, Dread = 0
+    def test_silve_lengthy_multi_stage_erotic_scene(self):
+        # Progress Madame Silve's narrative erotic scene
+        self.engine.travel("gilded_rat")
+        self.engine.player.inventory.append("Turnkey's Stolen Ledger")
+        self.engine.talk_npc("madame_silve")
+        
+        # Turn-in and start boudoir encounter
+        res = self.engine.choose_dialogue("c_silve_intimacy_action")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_intimacy_scene")
+        
+        res = self.engine.choose_dialogue("c_silve_eroge_boudoir")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_eroge_boudoir")
+        
+        # Stage 2: Oral worship
+        res = self.engine.choose_dialogue("c_silve_eroge_oral")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_eroge_foreplay_oral")
+        
+        # Stage 3: Climax
+        res = self.engine.choose_dialogue("c_silve_eroge_enter_from_oral")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_eroge_climax")
+        
+        # Verify rewards: Dread = 0, Silk Favor in inventory, is_romanced = True
         self.assertEqual(self.engine.player.dread, 0)
         self.assertTrue(self.engine.npcs["madame_silve"].is_romanced)
         self.assertIn("Silve's Scented Silk Favor", self.engine.player.inventory)
+        
+        # Stage 4: Afterglow and recruitment into warband
+        res = self.engine.choose_dialogue("c_silve_eroge_afterglow")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_eroge_afterglow")
+        res = self.engine.choose_dialogue("c_silve_recruit_afterglow")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_recruited")
+        self.assertIn("madame_silve", self.engine.player.party)
+        self.assertTrue(self.engine.npcs["madame_silve"].is_in_party)
+
+    def test_party_companion_talk_and_interactions(self):
+        # Recruit Sister Vanya
+        vanya = self.engine.npcs["sister_vanya"]
+        vanya.relationship = 75
+        self.engine.recruit_party("sister_vanya")
+        self.assertTrue(vanya.is_in_party)
+        
+        # Talking to in-party Vanya routes to companion hub
+        res = self.engine.talk_npc("sister_vanya")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_hub")
+        
+        # Converse with companion
+        res = self.engine.choose_dialogue("c_vanya_companion_talk")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_talk")
+        
+        # Test companion triage healing
+        self.engine.player.current_hp = 20
+        self.engine.player.dread = 30
+        self.engine.talk_npc("sister_vanya")
+        res = self.engine.choose_dialogue("c_vanya_companion_tend")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_tend")
+        self.assertEqual(self.engine.player.current_hp, 35)
+        self.assertEqual(self.engine.player.dread, 20)
+
+    def test_party_companion_erotic_scene_direct_and_dialogue(self):
+        # Recruit Sister Vanya
+        vanya = self.engine.npcs["sister_vanya"]
+        vanya.relationship = 80
+        self.engine.recruit_party("sister_vanya")
+        
+        # Trigger companion erotic scene directly
+        res = self.engine.start_party_erotic_scene("sister_vanya")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_intimacy_start")
+        
+        # Progress through companion multi-stage erotic scene
+        res = self.engine.choose_dialogue("c_vanya_companion_oral")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_oral")
+        
+        res = self.engine.choose_dialogue("c_vanya_companion_to_coupling")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_coupling")
+        
+        res = self.engine.choose_dialogue("c_vanya_companion_to_climax")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_climax")
+        self.assertEqual(self.engine.player.dread, 0)
+        self.assertTrue(vanya.is_romanced)
+
+    def test_malakor_companion_talk_and_non_romance(self):
+        # Recruit Commander Malakor
+        malakor = self.engine.npcs["commander_malakor"]
+        malakor.relationship = 80
+        self.engine.recruit_party("commander_malakor")
+        
+        # Talking to Malakor in party opens companion hub
+        res = self.engine.talk_npc("commander_malakor")
+        self.assertEqual(res["dialogue"]["current_node"], "malakor_companion_hub")
+        
+        # Share drink
+        self.engine.player.dread = 25
+        res = self.engine.choose_dialogue("c_malakor_companion_drink")
+        self.assertEqual(res["dialogue"]["current_node"], "malakor_companion_drink")
+        self.assertEqual(self.engine.player.dread, 20)
+        
+        # Attempting erotic scene with male warrior comrade returns error
+        res = self.engine.start_party_erotic_scene("commander_malakor")
+        self.assertIn("error", res)
+        self.assertIn("cannot be courted intimately", res["error"])
+
+    def test_silve_recruitment_and_companion_erotic_scene(self):
+        # Recruit Madame Silve
+        silve = self.engine.npcs["madame_silve"]
+        silve.relationship = 80
+        self.engine.recruit_party("madame_silve")
+        
+        # Talk to Silve in party
+        res = self.engine.talk_npc("madame_silve")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_companion_hub")
+        
+        # Trigger companion erotic scene
+        res = self.engine.start_party_erotic_scene("madame_silve")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_companion_intimacy_start")
+        
+        # Progress through companion erotic scene
+        res = self.engine.choose_dialogue("c_silve_companion_oral")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_companion_oral")
+        
+        res = self.engine.choose_dialogue("c_silve_companion_to_coupling")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_companion_coupling")
+        
+        res = self.engine.choose_dialogue("c_silve_companion_to_climax")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_companion_climax")
+        self.assertEqual(self.engine.player.dread, 0)
+        self.assertTrue(silve.is_romanced)
 
     def test_malakor_warrior_brotherhood_blood_oath(self):
         # Malakor is male and strictly non-romanceable
@@ -318,6 +436,42 @@ class TestTRPGEngine(unittest.TestCase):
         # Triage soldier with Sinew 12
         res = self.engine.choose_dialogue("c_vanya_triage_soldier")
         self.assertEqual(res["dialogue"]["current_node"], "vanya_triage_soldier_success")
+
+    def test_flask_companion_api_endpoints(self):
+        client = app.test_client()
+        client.get("/api/state")
+        
+        # 1. Test recruiting an NPC via API
+        with client.session_transaction() as sess:
+            from app import GAMES
+            sess_id = sess["session_id"]
+            eng = GAMES[sess_id]
+            eng.npcs["sister_vanya"].relationship = 80
+
+        resp = client.post("/api/action", json={"action": "recruit", "npc_id": "sister_vanya"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        party_ids = [p["id"] for p in data["player"]["party"]]
+        self.assertIn("sister_vanya", party_ids)
+
+        # 2. Test talking to companion via API
+        resp = client.post("/api/action", json={"action": "talk", "npc_id": "sister_vanya"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertEqual(data["dialogue"]["current_node"], "vanya_companion_hub")
+
+        # 3. Test starting erotic scene with companion via API
+        resp = client.post("/api/action", json={"action": "start_erotic_scene", "npc_id": "sister_vanya"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertEqual(data["dialogue"]["current_node"], "vanya_companion_intimacy_start")
+
+        # 4. Test dismissing companion via API
+        resp = client.post("/api/action", json={"action": "dismiss", "npc_id": "sister_vanya"})
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        party_ids_after = [p["id"] for p in data["player"]["party"]]
+        self.assertNotIn("sister_vanya", party_ids_after)
 
 if __name__ == "__main__":
     unittest.main()

@@ -68,6 +68,10 @@ const GameApp = {
         this.sendAction({ action: 'dismiss', npc_id: npcId });
     },
 
+    startEroticScene(npcId) {
+        this.sendAction({ action: 'start_erotic_scene', npc_id: npcId });
+    },
+
     combatAction(type) {
         this.sendAction({ action: 'combat_action', combat_type: type });
     },
@@ -141,10 +145,17 @@ const GameApp = {
                 <div class="party-member-card ${c.is_romanced ? 'romanced' : ''}">
                     <div class="party-member-header">
                         <span>${c.is_romanced ? '&#9829; ' : ''}${c.name}</span>
-                        <button class="btn-sm btn-subtle" onclick="GameApp.dismiss('${c.id}')">Dismiss</button>
+                        <span class="companion-title">${c.title || ''}</span>
                     </div>
                     <div class="party-stats">
                         HP: ${c.hp}/${c.max_hp} | S:${c.stats.sinew} G:${c.stats.guile} L:${c.stats.lucidity}
+                    </div>
+                    <div class="party-member-actions">
+                        <button class="btn-sm btn-party-talk" onclick="GameApp.talkNpc('${c.id}')">Talk</button>
+                        ${c.can_romance && c.gender === 'female' ? `
+                            <button class="btn-sm btn-party-erotic" onclick="GameApp.startEroticScene('${c.id}')">&#9829; Erotic Scene</button>
+                        ` : ''}
+                        <button class="btn-sm btn-party-dismiss" onclick="GameApp.dismiss('${c.id}')">Dismiss</button>
                     </div>
                 </div>
             `).join('');
@@ -320,34 +331,6 @@ const GameApp = {
             combatArena.classList.add('hidden');
         }
 
-        // Intimacy Arena (Eroge Minigame)
-        const intimacyArena = document.getElementById('intimacy-arena');
-        const intimacy = this.state.intimacy;
-        if (intimacyArena) {
-            if (intimacy) {
-                intimacyArena.classList.remove('hidden');
-                document.getElementById('intimacy-partner-name').textContent = `${intimacy.npc_name} (Round ${intimacy.turn})`;
-                const arousalPct = Math.max(0, Math.min(100, intimacy.arousal));
-                document.getElementById('intimacy-arousal-fill').style.width = `${arousalPct}%`;
-                document.getElementById('intimacy-arousal-text').textContent = `${intimacy.arousal}/100% Arousal`;
-
-                const intimacyLogEl = document.getElementById('intimacy-log');
-                intimacyLogEl.innerHTML = (intimacy.log || []).map(line => `<div>${line}</div>`).join('');
-                intimacyLogEl.scrollTop = intimacyLogEl.scrollHeight;
-
-                const controlsEl = document.getElementById('intimacy-controls');
-                const footerEl = document.getElementById('intimacy-footer');
-                if (intimacy.completed) {
-                    controlsEl.classList.add('hidden');
-                    footerEl.classList.remove('hidden');
-                } else {
-                    controlsEl.classList.remove('hidden');
-                    footerEl.classList.add('hidden');
-                }
-            } else {
-                intimacyArena.classList.add('hidden');
-            }
-        }
 
         // End Game Modal
         const modal = document.getElementById('endgame-modal');
