@@ -61,6 +61,7 @@ body {
     border-radius: 50%;
     animation: pulse-glow 4s ease-in-out infinite;
     z-index: 1;
+    pointer-events: none;
 }
 
 @keyframes pulse-glow {
