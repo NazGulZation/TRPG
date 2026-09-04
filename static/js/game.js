@@ -269,7 +269,7 @@ const GameApp = {
     render() {
         if (!this.state) return;
 
-        const { player, location, factions, active_quests, dialogue, combat, logs, game_over, victory } = this.state;
+        const { player, location, factions, active_quests, dialogue, combat, logs, game_over, victory, usable_items } = this.state;
 
         // Bell Ticker
         const bellToll = this.state.bell_toll || 9;
@@ -427,7 +427,7 @@ const GameApp = {
         // Inventory
         const invListEl = document.getElementById('inventory-list');
         document.getElementById('inv-count').textContent = `${player.inventory.length} items`;
-        const usableItems = state.usable_items || [
+        const usableItems = usable_items || this.state.usable_items || [
             "Sister Vanya's Embroidered Rosary",
             "Malakor's Drake Whetstone",
             "Silve's Scented Silk Favor"
