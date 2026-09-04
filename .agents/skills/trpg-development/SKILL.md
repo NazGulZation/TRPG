@@ -1,12 +1,15 @@
 ---
 name: trpg-development
 description: >-
-  Develop, maintain, test, and expand adult eroge text RPG web applications.
-  Use when authoring story chapters, designing NPCs and attribute systems,
-  configuring JSON chapter content, heterosexual eroge romance, writing lengthy explicit narrative erotic scenes
-  (without redundant minigames, with unique steps 4-10 branch progression and step 1 decline/leave options),
-  implementing party companion interactions (dialogue hubs and intimacy initiation), party recruitment constraints,
-  max party capacity, save/load/continue persistence, functional items, hostility mechanics, factions, and testing modular Flask and engine components.
+  Develop, maintain, test, and expand adult eroge text RPG web applications. Use
+  when authoring story chapters, designing NPCs and attribute systems,
+  configuring JSON chapter content, heterosexual eroge romance, writing lengthy
+  explicit narrative erotic scenes (without redundant minigames, with unique
+  steps 4-10 branch progression and step 1 decline/leave options), implementing
+  party companion interactions (dialogue hubs and intimacy initiation), party
+  recruitment constraints, max party capacity, save/load/continue persistence,
+  functional items, hostility mechanics, factions, and testing modular Flask and
+  engine components.
 ---
 
 # Adult Eroge Text RPG Development Skill
