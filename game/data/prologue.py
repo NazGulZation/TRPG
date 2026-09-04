@@ -69,6 +69,6 @@ def get_prologue_npcs() -> Dict[str, NPC]:
 SUITABLE_INTIMACY_LOCATIONS: Dict[str, List[str]] = get_prologue_metadata().get(
     "suitable_intimacy_locations", {
         "sister_vanya": ["ruined_chantry", "gilded_rat"],
-        "madame_silve": ["gilded_rat", "ruined_chantry"]
+        "madame_silve": ["gilded_rat"]
     }
 )

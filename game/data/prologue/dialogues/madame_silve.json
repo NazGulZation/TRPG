@@ -304,7 +304,7 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       },
@@ -349,7 +349,7 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       },
@@ -368,7 +368,26 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_silve_quest_intimacy_leave",
+        "text": "Step back and button your collar. 'The midnight bell draws too near, Silve. We must stay focused.'",
+        "next_node": "silve_quest_complete",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       }
@@ -394,7 +413,26 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_silve_gilded_step1_leave",
+        "text": "Step back from the silk curtains. 'Not now, Silve. The inquisitors are on our heels.'",
+        "next_node": "silve_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       }
@@ -618,27 +656,8 @@
     "choices": [
       {
         "id": "c_silve_gilded_oral_to_step4",
-        "text": "Caress her glistening cleft and prepare her body for deep penetration.",
-        "next_node": "silve_gilded_step4_caress",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      },
-      {
-        "id": "c_silve_eroge_enter_from_oral",
-        "text": "Rise up, spread her velvet-soft thighs wide, and bury your length to the hilt within her.",
-        "next_node": "silve_gilded_step4_caress",
+        "text": "Lick your lips clean of her honeyed nectar, pulling her trembling thighs wide apart.",
+        "next_node": "silve_gilded_oral_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -663,8 +682,8 @@
     "choices": [
       {
         "id": "c_silve_eroge_enter_from_oral_fwd",
-        "text": "Rise up, spread her velvet-soft thighs wide, and bury your length to the hilt within her.",
-        "next_node": "silve_gilded_step4_caress",
+        "text": "Lick your lips clean of her honeyed nectar, pulling her trembling thighs wide apart.",
+        "next_node": "silve_gilded_oral_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -689,27 +708,8 @@
     "choices": [
       {
         "id": "c_silve_gilded_wine_to_step4",
-        "text": "Trace your wet lips down to her navel and slip your hand between her thighs.",
-        "next_node": "silve_gilded_step4_caress",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      },
-      {
-        "id": "c_silve_eroge_enter_from_wine",
-        "text": "Push into her drenched center with commanding rhythm to share the explosive finish.",
-        "next_node": "silve_gilded_step4_caress",
+        "text": "Follow the trickle of spiced plum wine down to her navel and between her parted thighs.",
+        "next_node": "silve_gilded_wine_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -734,8 +734,8 @@
     "choices": [
       {
         "id": "c_silve_eroge_enter_from_wine_fwd",
-        "text": "Push into her drenched center with commanding rhythm to share the explosive finish.",
-        "next_node": "silve_gilded_step4_caress",
+        "text": "Follow the trickle of spiced plum wine down to her navel and between her parted thighs.",
+        "next_node": "silve_gilded_wine_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -1392,382 +1392,6 @@
       }
     ]
   },
-  "silve_chantry_step1_initiate": {
-    "id": "silve_chantry_step1_initiate",
-    "speaker_name": "Madame Silve",
-    "text": "Leading Silve through the shadowed nave of Saint Marrow into the desecrated sanctuary behind the altar screen, moonlight filters through broken stained glass, illuminating kneeling statues of ancient martyrs. Silve lets out a low, wicked chuckle as she lets her dark velvet mantle slip onto the consecrated stone steps. 'Making love on the altar of saints while the inquisitors prepare our pyre?' she purrs with an arch of her eyebrow, her manicured hands unfastening the clasps of her leather corset. 'You have a delightfully corrupt soul, wanderer. Let us see if the martyrs blush when you claim me here in their holy dark.'",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step2",
-        "text": "Help her shed her bodice, exposing her alabaster curves against the cool stone.",
-        "next_node": "silve_chantry_step2_foreplay",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 15,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step2_foreplay": {
-    "id": "silve_chantry_step2_foreplay",
-    "speaker_name": "Madame Silve",
-    "text": "Her corset parts, freeing her heavy, alabaster breasts in the silver moonlight. The chill of the chantry stones provides a delicious contrast against the burning heat radiating from her skin. Silve leans back against the marble altar railing, her lips parted with a sensual, mocking smirk that dares you to conquer her.",
-    "choices": [
-      {
-        "id": "c_silve_chantry_branch_kiss",
-        "text": "[Altar Passion] Lift her onto the marble railing, kissing her mouth deeply while teasing her taut nipples.",
-        "next_node": "silve_chantry_step3_kiss",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      },
-      {
-        "id": "c_silve_chantry_branch_oral",
-        "text": "[Sacrilegious Devotion] Kneel upon the velvet prayer cushion and worship her glistening cleft with your tongue.",
-        "next_node": "silve_chantry_step3_oral",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      },
-      {
-        "id": "c_silve_chantry_branch_dominant",
-        "text": "[Commanding Dominion] Turn her facing the stone altar, lifting her silk skirts to claim her from behind.",
-        "next_node": "silve_chantry_step3_dominant",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step3_kiss": {
-    "id": "silve_chantry_step3_kiss",
-    "speaker_name": "Madame Silve",
-    "text": "Lifting her bodily onto the polished marble communion rail, you capture her lips in a deep, ravenous kiss. Your hands cup her full, creamy breasts, squeezing their lush weight while your thumbs circle her sensitive, wine-hued nipples. Silve lets out a breathless, wanton moan that reverberates softly in the vaulted chantry ceiling, her manicured nails digging into your biceps.",
-    "choices": [
-      {
-        "id": "c_silve_chantry_kiss_to_step4",
-        "text": "Slide your hand beneath her skirts, tracing the humid heat of her inner thighs.",
-        "next_node": "silve_chantry_step4_caress",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step3_oral": {
-    "id": "silve_chantry_step3_oral",
-    "speaker_name": "Madame Silve",
-    "text": "Dropping to your knees onto the worn velvet prayer cushion, you spread her smooth, stockinged thighs wide in the moonlit gloom. Her feminine folds are already drenched with slippery nectar, glowing faintly in the silver light. When your mouth covers her swollen clitoris, suckling and lapping with fervent devotion, Silve gasps in breathless ecstasy. Her hands clutch your hair, tilting her hips down against your face as her knees tremble violently. 'Ah... god! What a wicked, blasphemous tongue!'",
-    "choices": [
-      {
-        "id": "c_silve_chantry_oral_to_step4",
-        "text": "Rise up and slide your wet fingers through her soaking core.",
-        "next_node": "silve_chantry_step4_caress",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step3_dominant": {
-    "id": "silve_chantry_step3_dominant",
-    "speaker_name": "Madame Silve",
-    "text": "Spinning her around, you press her chest flat against the cold marble slab of the altar. Bunching her black silk skirts up around her hips, you grasp her rounded buttocks, kneading the soft flesh firmly. Silve lets out an appreciative, wanton purr, glancing back over her shoulder with smoldering eyes. 'Treat me like a conqueror claims his spoils, wanderer. I want to feel the raw iron in you.'",
-    "choices": [
-      {
-        "id": "c_silve_chantry_dom_to_step4",
-        "text": "Part her dripping folds with your fingers and prepare her for your entrance.",
-        "next_node": "silve_chantry_step4_caress",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step4_caress": {
-    "id": "silve_chantry_step4_caress",
-    "speaker_name": "Madame Silve",
-    "text": "Your fingers probe the weeping depths of her passage, testing her heat against the cold, echoing stillness of the cathedral. Silve's inner walls grip your fingers with urgent, hot suction, completely soaked with sweet lubrication. She shivers in your grasp, her breath hitching in ragged gasps. 'Enough foreplay... pierce me with that magnificent blade of yours!'",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step5",
-        "text": "Align your throbbing shaft with her dripping slit and breach her warmth.",
-        "next_node": "silve_chantry_step5_entry",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step5_entry": {
-    "id": "silve_chantry_step5_entry",
-    "speaker_name": "Madame Silve",
-    "text": "With a deliberate, unyielding forward drive of your hips, you sink your rigid head into her tight aperture. Silve's breath catches in her throat with a sharp cry of pleasure as her snug walls part and stretch to receive your full girth. You push smoothly until your hips meet hers with a wet, resonant thud against the altar steps. She throws her head back, her throat pale and exposed in the moonlight, weeping soft tears of pure sensual fulfillment.",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step6",
-        "text": "Pause to let her internal walls hug your shaft before beginning to move.",
-        "next_node": "silve_chantry_step6_rhythm",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step6_rhythm": {
-    "id": "silve_chantry_step6_rhythm",
-    "speaker_name": "Madame Silve",
-    "text": "Drawing back almost to the tip, you plunge deeply back into her feverish core. Each slow, rhythmic thrust draws a melodic moan from Silve's lips that echoes off the cracked marble pillars. Her hips roll with seasoned grace, meeting your thrusts with practiced precision, her inner muscles clutching your shaft in waves of tight suction.",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step7",
-        "text": "Hoist her higher onto the altar stone and deepen your strokes.",
-        "next_node": "silve_chantry_step7_shift",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step7_shift": {
-    "id": "silve_chantry_step7_shift",
-    "speaker_name": "Madame Silve",
-    "text": "Lifting her legs onto your shoulders, you pin her beneath you upon the altar slab, driving into her at a steeper, devastating angle. Loud, wet slaps resound through the hollow sanctuary as your pelvis crashes against hers. Silve's worldly composure is wholly obliterated; she claws at the stone carvings, her breathless whimpers turning into wanton, uninhibited cries.",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step8",
-        "text": "Drive the cadence into a fierce, relentless pounding.",
-        "next_node": "silve_chantry_step8_frenzy",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step8_frenzy": {
-    "id": "silve_chantry_step8_frenzy",
-    "speaker_name": "Madame Silve",
-    "text": "Your thrusts become rapid, heavy, and punishing. Sweat slicks your skin, dripping onto her heaving chest in the moonlit gloom. Silve wraps her arms around your neck, burying her face into your collarbone as she shamelessly babbles wanton endearments, urging you harder and deeper with desperate, hungry whispers. 'Take it all, darling... make this holy ground remember us!'",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step9",
-        "text": "Drive through the rising heat as her inner passage begins to convulse.",
-        "next_node": "silve_chantry_step9_precipice",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step9_precipice": {
-    "id": "silve_chantry_step9_precipice",
-    "speaker_name": "Madame Silve",
-    "text": "The climax approaches like an unstoppable storm. Silve's internal passage begins to spasm in violent, rhythmic contractions, clutching your shaft with desperate, overwhelming suction. Her legs lock around your waist, her body coiling tight as a drawn bow. 'I'm shattering... wanderer, oh gods, don't stop! Right there!'",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_step10",
-        "text": "Bury your length to the root and surrender to the explosive release.",
-        "next_node": "silve_chantry_step10_climax",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_step10_climax": {
-    "id": "silve_chantry_step10_climax",
-    "speaker_name": "Madame Silve",
-    "text": "With one final, thunderous plunge, you drive home to the absolute root. Silve screams softly into your neck as a transcendent, earth-shattering orgasm rips through her, her body convulsing in wild, unending ripples. With a guttural roar, you flood her deep within with boiling, pulsing seed, filling her core completely as both of you collapse across the altar slab in breathless, spent ecstasy.",
-    "choices": [
-      {
-        "id": "c_silve_chantry_to_afterglow",
-        "text": "Hold each other in the peaceful, moonlit silence of the sanctuary.",
-        "next_node": "silve_chantry_afterglow",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 25,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": true,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
-  "silve_chantry_afterglow": {
-    "id": "silve_chantry_afterglow",
-    "speaker_name": "Madame Silve",
-    "text": "Resting together amidst her velvet cloak on the altar steps, Silve gently strokes your hair with a lazy, satisfied smile. 'If this is sacrilege, darling, then let the heavens strike us down now,' she whispers huskily against your lips. 'I have never felt so alive, nor so utterly claimed. When the gates open, we conquer the outer barrens together.' (All dread eradicated. Devotion absolute).",
-    "choices": [
-      {
-        "id": "c_silve_chantry_return_hub",
-        "text": "Collect your weapons and return to traveling together.",
-        "next_node": "silve_companion_hub",
-        "required_stat": null,
-        "required_value": 0,
-        "relationship_change": 0,
-        "faction_changes": {},
-        "quest_trigger": null,
-        "quest_stage_set": null,
-        "item_required": null,
-        "item_reward": null,
-        "item_rewards": [],
-        "sovereign_cost": 0,
-        "is_romance_action": false,
-        "is_intimacy_action": false,
-        "is_hostile_action": false,
-        "failure_node": null
-      }
-    ]
-  },
   "silve_companion_contraband": {
     "id": "silve_companion_contraband",
     "speaker_name": "Madame Silve",
@@ -1850,5 +1474,369 @@
     "speaker_name": "Madame Silve",
     "text": "'Run fast, handsome wanderer. May the shadows wrap around you like silk.'",
     "choices": []
+  },
+  "silve_gilded_oral_step4_caress": {
+    "id": "silve_gilded_oral_step4_caress",
+    "speaker_name": "Madame Silve",
+    "text": "Rising from between her trembling thighs with your mouth wet with her taste, your fingers slide through her drenched, swollen petals. Silve is feverishly hot, her hips arching off the silk bolster with a wanton, needy whimper. She reaches down with trembling, manicured hands to wrap around your rigid steel shaft, stroking the sensitive head. 'You tasted every secret drop of me, wanderer...' she whispers, breathless and flushed. 'Now take what you worked so deliciously to soften.'",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_step5",
+        "text": "Align your rigid erection with her weeping core and slide in deep.",
+        "next_node": "silve_gilded_oral_step5_entry",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_oral_step5_entry": {
+    "id": "silve_gilded_oral_step5_entry",
+    "speaker_name": "Madame Silve",
+    "text": "With her feminine sheath thoroughly lubricated and aching from oral worship, you press your broad crown against her entrance and thrust forward. Your length sinks smoothly and effortlessly into her scorching depth, burying to the root with a wet, resonant suction. Silve throws her head back against the crimson bolsters with a loud, quivering gasp, her legs locking tightly behind your knees as she welcomes every inch of your hardness into her velvet warmth.",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_step6",
+        "text": "Pause to let her sensitized passage milk your shaft before beginning a rhythm.",
+        "next_node": "silve_gilded_oral_step6_rhythm",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_oral_step6_rhythm": {
+    "id": "silve_gilded_oral_step6_rhythm",
+    "speaker_name": "Madame Silve",
+    "text": "Drawing back until only the swollen head lingers within her grip, you plunge deeply back into her dripping passage. Because of the lingering sensitivity of your tongue, every stroke sends ripples of electric ecstasy through her pelvis. Silve rolls her hips to meet each thrust with decadent, seasoned finesse, her breathless whimpers echoing off the velvet hangings as her inner walls squeeze your shaft in involuntary contractions.",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_step7",
+        "text": "Lift her hips higher onto the down bolster to angle deep against her G-spot.",
+        "next_node": "silve_gilded_oral_step7_shift",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_oral_step7_shift": {
+    "id": "silve_gilded_oral_step7_shift",
+    "speaker_name": "Madame Silve",
+    "text": "Propping her rounded hips higher on the plush cushions, you pin her thighs against her ribs and drive downward at a steep, punishing angle. Each impact lands directly against the swollen pleasure center within her anterior wall. Wet, slapping sounds fill the boudoir as your pelvis crashes against hers. Silve's eyes glaze with helpless abandon, her nails clawing through your tunic as she gasps your name.",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_step8",
+        "text": "Unleash a ferocious, rapid tempo to drive her closer to the brink.",
+        "next_node": "silve_gilded_oral_step8_frenzy",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_oral_step8_frenzy": {
+    "id": "silve_gilded_oral_step8_frenzy",
+    "speaker_name": "Madame Silve",
+    "text": "The friction becomes a frenzy of sweat and carnal fury. You pound into her drenched depths with relentless stamina, each stroke burying to the absolute hilt. Silve's cries turn shrill and wanton, echoing past the heavy door into the hallway as she thrashes against the crimson silks. Her composure is completely obliterated, replaced by an insatiable hunger to be taken harder and deeper.",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_step9",
+        "text": "Feel her core clamp down in violent pre-orgasmic spasms.",
+        "next_node": "silve_gilded_oral_step9_precipice",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_oral_step9_precipice": {
+    "id": "silve_gilded_oral_step9_precipice",
+    "speaker_name": "Madame Silve",
+    "text": "The climax crashes down upon her like a breaking dam. Her vaginal canal tightens into fierce, rhythmic convulsions, suctioning your shaft with frantic power. Her toes curl into the silk sheets and her throat arches back in a soundless scream of overwhelming bliss. 'Wanderer! I am falling apart... oh gods, fill me! Don't hold back!'",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_step10",
+        "text": "Drive in to the root and unleash your seed deep within her womb.",
+        "next_node": "silve_gilded_oral_step10_climax",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_oral_step10_climax": {
+    "id": "silve_gilded_oral_step10_climax",
+    "speaker_name": "Madame Silve",
+    "text": "Thrusting with every ounce of your strength, you pin her to the divan and bottom out against her cervix. A transcendent, earth-shattering orgasm tears through Silve, her inner walls milking every drop from your erection in wild, unending waves. With a guttural roar, you flood her depths with thick, pulsing torrents of boiling release, cementing your dark bond amidst the scented candlelight.",
+    "choices": [
+      {
+        "id": "c_silve_oral_to_afterglow",
+        "text": "Collapse together on the cushions, holding her trembling body close.",
+        "next_node": "silve_gilded_afterglow",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Silve's Scented Silk Favor",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step4_caress": {
+    "id": "silve_gilded_wine_step4_caress",
+    "speaker_name": "Madame Silve",
+    "text": "Sticky, spiced plum wine glistens over her porcelain skin and pools in the dip of her navel. Your hand traces down her trembling belly, smearing the sweet wine into the curls of her intimate mound. Silve's thighs part wider with a wanton purr, the intoxicating fumes of alcohol and female musk filling the air. 'You decadent beast...' she whispers, sliding her fingers into your hair. 'You've got me soaked in wine and dripping with lust. Claim your prize.'",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_step5",
+        "text": "Position your hardening length against her wine-sweet cleft and plunge inside.",
+        "next_node": "silve_gilded_wine_step5_entry",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step5_entry": {
+    "id": "silve_gilded_wine_step5_entry",
+    "speaker_name": "Madame Silve",
+    "text": "Grasping her soft hips, you push your swollen shaft between her slick petals. The slight sting of the spiced wine mingles with her scalding body heat, creating an intense, tingling friction as you bury yourself to the root. Silve lets out a sharp, breathless moan, arching off the mattress as she takes your full thickness. Her tight passage clamps around you like a velvet vice, drenched and burning with desire.",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_step6",
+        "text": "Savor the tingling heat before initiating a slow, wine-drunken tempo.",
+        "next_node": "silve_gilded_wine_step6_rhythm",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step6_rhythm": {
+    "id": "silve_gilded_wine_step6_rhythm",
+    "speaker_name": "Madame Silve",
+    "text": "Slowly withdrawing, you begin a rolling, hypnotic cadence. With every forward drive, the sweet scent of spiced plum vintage and raw carnal arousal rises around you. Silve's fingernails trace your bare back, matching your thrusts with decadent, undulating hip rolls that squeeze your shaft at the deepest point of penetration. Her wine-stained lips part in sultry praise, breathless and entirely uninhibited.",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_step7",
+        "text": "Pull her over your lap, letting her ride you in a deep, commanding embrace.",
+        "next_node": "silve_gilded_wine_step7_shift",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step7_shift": {
+    "id": "silve_gilded_wine_step7_shift",
+    "speaker_name": "Madame Silve",
+    "text": "Lifting Silve into your lap, her full, wine-dappled breasts sway before your eyes as she sinks down to the hilt over your shaft. She rolls her hips with intoxicating, courtesan mastery, grinding her clitoris against your pubic bone while taking you as deep as humanly possible. Your hands cup her heavy breasts, rolling her taut nipples as her wanton moans echo through the private boudoir.",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_step8",
+        "text": "Grasp her hips and thrust upward into her with fierce, frantic momentum.",
+        "next_node": "silve_gilded_wine_step8_frenzy",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step8_frenzy": {
+    "id": "silve_gilded_wine_step8_frenzy",
+    "speaker_name": "Madame Silve",
+    "text": "Driving upward into her while she plunges downward, the impact between your bodies becomes frantic and punishing. Sweat slicks both your torsos, washing away the sticky wine into a gleaming sheen. Silve clings to your neck, her wanton gasps turning into breathless, desperate cries of pure ecstasy. The pleasure is overwhelming, completely eradicating every trace of fear regarding the burning city outside.",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_step9",
+        "text": "Drive her toward the summit as her inner passage spasms with fevered suction.",
+        "next_node": "silve_gilded_wine_step9_precipice",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step9_precipice": {
+    "id": "silve_gilded_wine_step9_precipice",
+    "speaker_name": "Madame Silve",
+    "text": "The precipice of release reaches fever pitch. Silve's internal muscles clamp down in violent, rhythmic contractions, milking your shaft with overwhelming suction. She buries her face into your neck, biting down lightly on your shoulder as her pelvis shivers and convulses in pre-orgasmic ecstasy. 'Ah... gods, wanderer! I can't hold it back... fill me now!'",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_step10",
+        "text": "Thrust to the root one final time and surrender to the explosive climax.",
+        "next_node": "silve_gilded_wine_step10_climax",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "silve_gilded_wine_step10_climax": {
+    "id": "silve_gilded_wine_step10_climax",
+    "speaker_name": "Madame Silve",
+    "text": "With a final, shattering surge, you bury your length to the hilt. Silve lets out a muffled, quivering shriek into your shoulder as an earth-shattering orgasm washes over her, her passage pulsing and milking you relentlessly. With a guttural roar, you flood her deep within with hot, copious release, filling her womb to overflowing as you both collapse into the disheveled velvet divan in breathless, spent bliss.",
+    "choices": [
+      {
+        "id": "c_silve_wine_to_afterglow",
+        "text": "Hold her closely amidst the scent of wine and opium in peaceful afterglow.",
+        "next_node": "silve_gilded_afterglow",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Silve's Scented Silk Favor",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
   }
 }

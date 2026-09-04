@@ -85,40 +85,40 @@ class TestCompanionsAndIntimacy(unittest.TestCase):
         res = self.engine.choose_dialogue("c_silve_gilded_branch_oral")
         self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step3_oral")
 
-        # Step 4: Caress & Lubrication
+        # Step 4: Caress & Lubrication (Oral branch)
         res = self.engine.choose_dialogue("c_silve_gilded_oral_to_step4")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step4_caress")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step4_caress")
 
         # Step 5: Penetration on velvet divan
-        res = self.engine.choose_dialogue("c_silve_gilded_to_step5")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step5_entry")
+        res = self.engine.choose_dialogue("c_silve_oral_to_step5")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step5_entry")
 
         # Step 6: Sinuous Cadence
-        res = self.engine.choose_dialogue("c_silve_gilded_to_step6")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step6_rhythm")
+        res = self.engine.choose_dialogue("c_silve_oral_to_step6")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step6_rhythm")
 
         # Step 7: Positional Shift
-        res = self.engine.choose_dialogue("c_silve_gilded_to_step7")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step7_shift")
+        res = self.engine.choose_dialogue("c_silve_oral_to_step7")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step7_shift")
 
         # Step 8: Fierce Cadence & Sensual Frenzy
-        res = self.engine.choose_dialogue("c_silve_gilded_to_step8")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step8_frenzy")
+        res = self.engine.choose_dialogue("c_silve_oral_to_step8")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step8_frenzy")
 
         # Step 9: The Precipice / Pre-Climax
-        res = self.engine.choose_dialogue("c_silve_gilded_to_step9")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step9_precipice")
+        res = self.engine.choose_dialogue("c_silve_oral_to_step9")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step9_precipice")
 
         # Step 10: Explosive Climax in the Boudoir
-        res = self.engine.choose_dialogue("c_silve_gilded_to_step10")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step10_climax")
+        res = self.engine.choose_dialogue("c_silve_oral_to_step10")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_oral_step10_climax")
 
         # Verify rewards: Dread = 0, is_romanced = True
         self.assertEqual(self.engine.player.dread, 0)
         self.assertTrue(self.engine.npcs["madame_silve"].is_romanced)
 
         # Afterglow and farewell (non-recruitable ally)
-        res = self.engine.choose_dialogue("c_silve_gilded_to_afterglow")
+        res = self.engine.choose_dialogue("c_silve_oral_to_afterglow")
         self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_afterglow")
         self.assertIn("Silve's Scented Silk Favor", self.engine.player.inventory)
 
@@ -179,26 +179,26 @@ class TestCompanionsAndIntimacy(unittest.TestCase):
         res = self.engine.choose_dialogue("c_vanya_chantry_branch_tender")
         self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step3_tender")
 
-        # Step 4 to Step 10
+        # Step 4 to Step 10 (Tender branch)
         res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step4")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step4_caress")
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_step5")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step5_entry")
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_step6")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step6_rhythm")
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_step7")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step7_shift")
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_step8")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step8_frenzy")
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_step9")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step9_precipice")
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_step10")
-        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step10_climax")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step4_caress")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step5")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step5_entry")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step6")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step6_rhythm")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step7")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step7_shift")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step8")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step8_frenzy")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step9")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step9_precipice")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_step10")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_tender_step10_climax")
         self.assertEqual(self.engine.player.dread, 0)
         self.assertTrue(vanya.is_romanced)
 
         # Afterglow returns to companion hub
-        res = self.engine.choose_dialogue("c_vanya_chantry_to_afterglow")
+        res = self.engine.choose_dialogue("c_vanya_chantry_tender_to_afterglow")
         self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_afterglow")
         res = self.engine.choose_dialogue("c_vanya_companion_return_hub")
         self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_hub")
@@ -355,62 +355,124 @@ class TestCompanionsAndIntimacy(unittest.TestCase):
         self.assertEqual(len(intimacy_choices), 1)
         self.assertEqual(intimacy_choices[0]["id"], "c_vanya_companion_intimacy")
 
-    def test_silve_unique_chantry_erotic_scene(self):
-        # Recruit Madame Silve and travel to Ruined Chantry (sacrilegious unique scene)
+    def test_silve_intimacy_restricted_to_gilded_rat(self):
+        # Madame Silve is non-recruitable and her intimacy is strictly restricted to Gilded Rat
         silve = self.engine.npcs["madame_silve"]
         silve.relationship = 80
-        silve.can_recruit = True
-        self.engine.recruit_party("madame_silve")
-        self.engine.travel("ruined_chantry")
+
+        # At Ruined Chantry, cannot initiate intimacy with Silve even if in party
+        self.engine.player.party = ["madame_silve"]
+        silve.is_in_party = True
+        self.engine.player.current_location_id = "ruined_chantry"
+        self.assertFalse(self.engine.can_initiate_companion_erotic("madame_silve"))
+        res_blocked = self.engine.start_party_erotic_scene("madame_silve")
+        self.assertIn("error", res_blocked)
+
+        # At Gilded Rat, intimacy is available
+        self.engine.player.current_location_id = "gilded_rat"
         self.assertTrue(self.engine.can_initiate_companion_erotic("madame_silve"))
 
-        # Step 1: Initiating in the Desecrated Sanctuary
+    def test_erotic_scenes_step1_leave_options(self):
+        # 1. Vanya Chantry Step 1 Leave Option (from quest turn-in / intimacy scene)
+        self.engine.travel("ruined_chantry")
+        self.engine.player.inventory.append("Wolfsbane Nectar")
+        self.engine.talk_npc("sister_vanya")
+        self.engine.choose_dialogue("c_vanya_embrace")
+        # Step 1: choose to decline/leave
+        res = self.engine.choose_dialogue("c_vanya_quest_intimacy_leave")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_quest_complete")
+        self.assertFalse(self.engine.npcs["sister_vanya"].is_romanced)
+
+        # 2. Vanya Chantry Step 1 Leave Option (from companion initiation)
+        self.engine.npcs["sister_vanya"].relationship = 80
+        self.engine.recruit_party("sister_vanya")
+        res = self.engine.start_party_erotic_scene("sister_vanya")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step1_initiate")
+        res = self.engine.choose_dialogue("c_vanya_chantry_step1_leave")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_hub")
+
+        # 3. Vanya Gilded Rat Step 1 Leave Option
+        self.engine.travel("iron_bastion")
+        self.engine.travel("gilded_rat")
+        res = self.engine.start_party_erotic_scene("sister_vanya")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_gilded_step1_initiate")
+        res = self.engine.choose_dialogue("c_vanya_gilded_step1_leave")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_hub")
+
+        # 4. Silve Gilded Rat Step 1 Leave Option (from quest turn-in)
+        self.engine.player.inventory.append("Turnkey's Stolen Ledger")
+        self.engine.talk_npc("madame_silve")
+        self.engine.choose_dialogue("c_silve_intimacy_action")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_companion_hub")
+        res = self.engine.choose_dialogue("c_silve_quest_intimacy_leave")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_quest_complete")
+        self.assertFalse(self.engine.npcs["madame_silve"].is_romanced)
+
+    def test_all_unique_erotic_branches(self):
+        # Test Vanya Chantry Dominant branch
+        self.engine.player.current_location_id = "ruined_chantry"
+        vanya = self.engine.npcs["sister_vanya"]
+        vanya.relationship = 80
+        self.engine.player.party = ["sister_vanya"]
+        vanya.is_in_party = True
+        vanya.is_romanced = False
+
+        res = self.engine.start_party_erotic_scene("sister_vanya")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step1_initiate")
+        res = self.engine.choose_dialogue("c_vanya_chantry_step1_choice")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step2_foreplay")
+        res = self.engine.choose_dialogue("c_vanya_chantry_branch_dominant")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_step3_dominant")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step4")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step4_caress")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step5")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step5_entry")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step6")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step6_rhythm")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step7")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step7_shift")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step8")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step8_frenzy")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step9")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step9_precipice")
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_step10")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_dominant_step10_climax")
+        self.assertTrue(vanya.is_romanced)
+        res = self.engine.choose_dialogue("c_vanya_chantry_dom_to_afterglow")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_chantry_afterglow")
+
+        # Test Silve Gilded Wine branch
+        self.engine.player.current_location_id = "gilded_rat"
+        silve = self.engine.npcs["madame_silve"]
+        silve.relationship = 80
+        silve.is_romanced = False
+        silve.can_recruit = True
+        self.engine.player.party = ["madame_silve"]
+        silve.is_in_party = True
+
         res = self.engine.start_party_erotic_scene("madame_silve")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step1_initiate")
-
-        # Step 2: Foreplay
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step2")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step2_foreplay")
-
-        # Step 3: Branch choice - Sacrilegious oral devotion
-        res = self.engine.choose_dialogue("c_silve_chantry_branch_oral")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step3_oral")
-
-        # Step 4: Intimate Caresses & Sacred Lubrication
-        res = self.engine.choose_dialogue("c_silve_chantry_oral_to_step4")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step4_caress")
-
-        # Step 5: Penetration in the Moonlit Sanctuary
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step5")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step5_entry")
-
-        # Step 6: Resonant Cadence in the Nave
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step6")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step6_rhythm")
-
-        # Step 7: Positional Shift on Altar Slab
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step7")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step7_shift")
-
-        # Step 8: Sacred Frenzy & Vocal Surrender
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step8")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step8_frenzy")
-
-        # Step 9: The Edge of Absolution
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step9")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step9_precipice")
-
-        # Step 10: Climax at the Altar
-        res = self.engine.choose_dialogue("c_silve_chantry_to_step10")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_step10_climax")
-        self.assertEqual(self.engine.player.dread, 0)
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step1_initiate")
+        res = self.engine.choose_dialogue("c_silve_gilded_step1_choice")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step2_foreplay")
+        res = self.engine.choose_dialogue("c_silve_gilded_branch_wine")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_step3_wine")
+        res = self.engine.choose_dialogue("c_silve_gilded_wine_to_step4")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step4_caress")
+        res = self.engine.choose_dialogue("c_silve_wine_to_step5")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step5_entry")
+        res = self.engine.choose_dialogue("c_silve_wine_to_step6")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step6_rhythm")
+        res = self.engine.choose_dialogue("c_silve_wine_to_step7")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step7_shift")
+        res = self.engine.choose_dialogue("c_silve_wine_to_step8")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step8_frenzy")
+        res = self.engine.choose_dialogue("c_silve_wine_to_step9")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step9_precipice")
+        res = self.engine.choose_dialogue("c_silve_wine_to_step10")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_wine_step10_climax")
         self.assertTrue(silve.is_romanced)
-
-        # Afterglow returns to companion hub
-        res = self.engine.choose_dialogue("c_silve_chantry_to_afterglow")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_chantry_afterglow")
-        res = self.engine.choose_dialogue("c_silve_chantry_return_hub")
-        self.assertEqual(res["dialogue"]["current_node"], "silve_companion_hub")
+        res = self.engine.choose_dialogue("c_silve_wine_to_afterglow")
+        self.assertEqual(res["dialogue"]["current_node"], "silve_gilded_afterglow")
 
     def test_vanya_unique_gilded_rat_erotic_scene(self):
         # Recruit Sister Vanya and travel to Gilded Rat (hedonistic unique scene)

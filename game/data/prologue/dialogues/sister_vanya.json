@@ -348,7 +348,7 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       },
@@ -445,7 +445,7 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       },
@@ -464,7 +464,26 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_vanya_quest_intimacy_leave",
+        "text": "Draw back and adjust your garments. 'The purge draws too near, Vanya. We must stay focused.'",
+        "next_node": "vanya_quest_complete",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       }
@@ -490,7 +509,26 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_vanya_chantry_step1_leave",
+        "text": "Draw back and gently take her hands. 'Not now, Vanya. We must keep moving.'",
+        "next_node": "vanya_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       }
@@ -688,8 +726,8 @@
     "choices": [
       {
         "id": "c_vanya_chantry_tender_to_step4",
-        "text": "Slide your fingers into her drenched warmth, stroking her with deliberate passion.",
-        "next_node": "vanya_chantry_step4_caress",
+        "text": "Slide your fingers into her drenched warmth, stroking her with gentle passion.",
+        "next_node": "vanya_chantry_tender_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -708,7 +746,7 @@
       {
         "id": "c_vanya_eroge_enter_tender",
         "text": "Align your hips with hers and push smoothly into her velvet warmth.",
-        "next_node": "vanya_chantry_step4_caress",
+        "next_node": "vanya_chantry_tender_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -734,7 +772,7 @@
       {
         "id": "c_vanya_eroge_enter_tender_fwd",
         "text": "Align your hips with hers and push smoothly into her velvet warmth.",
-        "next_node": "vanya_chantry_step4_caress",
+        "next_node": "vanya_chantry_tender_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -759,8 +797,8 @@
     "choices": [
       {
         "id": "c_vanya_chantry_dom_to_step4",
-        "text": "Trace your palms along her trembling thighs into her soaked feminine core.",
-        "next_node": "vanya_chantry_step4_caress",
+        "text": "Grasp her hips with iron certainty, pressing her parted thighs flat against the altar.",
+        "next_node": "vanya_chantry_dominant_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -779,7 +817,7 @@
       {
         "id": "c_vanya_eroge_enter_dom",
         "text": "Thrust deeply into her tight, glistening depths with fierce, possessive rhythm.",
-        "next_node": "vanya_chantry_step4_caress",
+        "next_node": "vanya_chantry_dominant_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -805,7 +843,7 @@
       {
         "id": "c_vanya_eroge_enter_dom_fwd",
         "text": "Thrust deeply into her tight, glistening depths with fierce, possessive rhythm.",
-        "next_node": "vanya_chantry_step4_caress",
+        "next_node": "vanya_chantry_dominant_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -1553,7 +1591,26 @@
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
-        "is_intimacy_action": true,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_vanya_gilded_step1_leave",
+        "text": "Draw back from the velvet drapes. 'We cannot afford distractions now, Vanya. Let us stay focused.'",
+        "next_node": "vanya_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
         "is_hostile_action": false,
         "failure_node": null
       }
@@ -1656,8 +1713,8 @@
     "choices": [
       {
         "id": "c_vanya_gilded_oral_to_step4",
-        "text": "Caress her trembling thighs and prepare her body for full entry.",
-        "next_node": "vanya_gilded_step4_caress",
+        "text": "Lick your lips clean of her honeyed nectar, pulling her silk-draped thighs wide apart.",
+        "next_node": "vanya_gilded_oral_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -1682,8 +1739,8 @@
     "choices": [
       {
         "id": "c_vanya_gilded_dom_to_step4",
-        "text": "Release her hands and slide your fingers deep into her soaking entrance.",
-        "next_node": "vanya_gilded_step4_caress",
+        "text": "Pin her wrists firmly into the crimson pillows and part her thighs before you.",
+        "next_node": "vanya_gilded_dominant_step4_caress",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 0,
@@ -1991,5 +2048,733 @@
     "speaker_name": "Sister Vanya",
     "text": "Her eyes harden like flint. She grips an alchemical fire flask from her belt. 'Then burn with the rest of the scum!' she snarls. Her hatred for you is now absolute.",
     "choices": []
+  },
+  "vanya_chantry_tender_step4_caress": {
+    "id": "vanya_chantry_tender_step4_caress",
+    "speaker_name": "Sister Vanya",
+    "text": "Cradling her head against your chest, your fingers delicately part her swollen, glistening petals. Vanya shivers in your embrace, her skin flushed with rosy warmth in the candle glow. Her hands rest gently over yours, guiding your fingers as you stroke the sensitive crest of her clitoris. 'Wanderer... with you, I feel no shame,' she whispers softly, her eyes brimming with devoted tears. 'I am ready. Be gentle with my heart... and take me.'",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_step5",
+        "text": "Align your shaft with her weeping entrance and press in with tender care.",
+        "next_node": "vanya_chantry_tender_step5_entry",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_tender_step5_entry": {
+    "id": "vanya_chantry_tender_step5_entry",
+    "speaker_name": "Sister Vanya",
+    "text": "Pressing your hardened crown to her dripping threshold, you slide slowly forward, centimeter by centimeter. Vanya's tight, velvety sheath yields with a trembling, melodic sigh. As you sink to the hilt, her arms wrap tightly around your shoulders, pulling you down until your chests press together. She buries her face into the curve of your neck, weeping soft tears of pure romantic fulfillment as your heartbeats merge into one rhythm.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_step6",
+        "text": "Kiss away her tears and begin a slow, affectionate cadence.",
+        "next_node": "vanya_chantry_tender_step6_rhythm",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_tender_step6_rhythm": {
+    "id": "vanya_chantry_tender_step6_rhythm",
+    "speaker_name": "Sister Vanya",
+    "text": "You draw back almost to the tip before gliding smoothly home, each deep stroke filled with reverence and warmth. Vanya gazes into your eyes with breathtaking vulnerability, her lips parting to softly whisper your name. Her hips roll in tender synchronization, her tight inner walls hugging your shaft like warm silk. The quiet crypt feels insulated from the doomed city above, sanctuary found in each other's embrace.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_step7",
+        "text": "Interlock your fingers with hers and deepen each loving stroke.",
+        "next_node": "vanya_chantry_tender_step7_shift",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_tender_step7_shift": {
+    "id": "vanya_chantry_tender_step7_shift",
+    "speaker_name": "Sister Vanya",
+    "text": "Interlacing your fingers with hers against the stone altar, you shift your angle to glide firmly against her sweet, deepest spots. Vanya arches her neck, gasping softly as shivers of intense pleasure race across her spine. Her legs wrap warmly around your waist, pulling you deeper still. 'I love you, wanderer...' she breathes against your lips, kissing you with unreserved adoration.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_step8",
+        "text": "Increase the momentum of your loving thrusts as passion intensifies.",
+        "next_node": "vanya_chantry_tender_step8_frenzy",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_tender_step8_frenzy": {
+    "id": "vanya_chantry_tender_step8_frenzy",
+    "speaker_name": "Sister Vanya",
+    "text": "Gentleness evolves into breathless, passionate fervor. Your bodies move together in unbroken harmony, slick with warm sweat, your mouths locked in deep, fervent kisses. Vanya's whimpers grow higher and sweeter, echoing softly off the ancient alabaster pillars as she abandons herself entirely to the sensations carrying her toward the peak.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_step9",
+        "text": "Hold her close as her velvet passage begins to convulse with impending release.",
+        "next_node": "vanya_chantry_tender_step9_precipice",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_tender_step9_precipice": {
+    "id": "vanya_chantry_tender_step9_precipice",
+    "speaker_name": "Sister Vanya",
+    "text": "The crest of ecstasy rises like a warm, golden sunrise. Vanya's inner core clamps around your shaft in sweet, violent ripples of pre-orgasmic release. She clutches your back, her breath hitching in broken sobs of sheer joy. 'Wanderer... I cannot hold back any longer! Stay inside me... let us come together!'",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_step10",
+        "text": "Bury your shaft to the root and surrender to an overwhelming, shared climax.",
+        "next_node": "vanya_chantry_tender_step10_climax",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_tender_step10_climax": {
+    "id": "vanya_chantry_tender_step10_climax",
+    "speaker_name": "Sister Vanya",
+    "text": "With one final, deep thrust to the very hilt, you pour everything into her receptive warmth. Vanya cries out your name in pure transcendent bliss as an overwhelming orgasm ripples through her, milking you with exquisite contractions. A guttural groan escapes your lips as you pump wave after wave of boiling release deep within her womb, holding each other tightly as the sacred crypt fades into blissful stillness.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_tender_to_afterglow",
+        "text": "Rest together wrapped in the sacred vestments, kissing her forehead gently.",
+        "next_node": "vanya_chantry_afterglow",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Sister Vanya's Embroidered Rosary",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step4_caress": {
+    "id": "vanya_chantry_dominant_step4_caress",
+    "speaker_name": "Sister Vanya",
+    "text": "Pinning her bare hips against the cold altar slab, you spread her smooth thighs wide and trail your thumbs across her dripping, feverish folds. Vanya arches into your forceful touch with a ragged gasp, her pious reserve shattering into wanton submission. 'Take me however you command, wanderer...' she whispers, trembling with arousal as her dark eyes plead for your full possession. 'Mark me as yours.'",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_step5",
+        "text": "Drive your throbbing shaft into her tight core with unyielding force.",
+        "next_node": "vanya_chantry_dominant_step5_entry",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step5_entry": {
+    "id": "vanya_chantry_dominant_step5_entry",
+    "speaker_name": "Sister Vanya",
+    "text": "Stepping between her spread thighs, you align your rigid length and drive forward in one deep, commanding thrust. Her snug, virgin-tight passage stretches snugly around your broad girth, forcing a sharp, breathless cry from her lips as your hips crash against hers with a resonant, wet thud. Vanya's hands clutch your forearms tightly, her chest heaving as she absorbs every inch of your intrusive iron.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_step6",
+        "text": "Pin her wrists to the altar and establish a heavy, dominant tempo.",
+        "next_node": "vanya_chantry_dominant_step6_rhythm",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step6_rhythm": {
+    "id": "vanya_chantry_dominant_step6_rhythm",
+    "speaker_name": "Sister Vanya",
+    "text": "Holding her down firmly, you begin a deep, relentless pounding. Each powerful plunge buries you to the root, lifting her slight frame slightly off the stone slab. Vanya's whimpers turn into needy, wanton moans that bounce off the vaulted stone ceiling. Her internal walls clamp greedily around your shaft, milking you with helpless suction as she submits entirely to your rhythm.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_step7",
+        "text": "Hoist her legs over your shoulders and drive down at a steep, punishing angle.",
+        "next_node": "vanya_chantry_dominant_step7_shift",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step7_shift": {
+    "id": "vanya_chantry_dominant_step7_shift",
+    "speaker_name": "Sister Vanya",
+    "text": "Hoisting her slender legs over your shoulders, you fold her body back and drive straight into her deepest depths. The wet slap of skin upon skin echoes sharply in the crypt. Vanya tosses her head wildly, dark hair splaying across the altar stone, crying out in raw ecstasy as your pelvis bottoms out against her cervix with bruising pleasure.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_step8",
+        "text": "Unleash a fierce, relentless pace to push her over the edge.",
+        "next_node": "vanya_chantry_dominant_step8_frenzy",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step8_frenzy": {
+    "id": "vanya_chantry_dominant_step8_frenzy",
+    "speaker_name": "Sister Vanya",
+    "text": "Your thrusts turn into an unbridled storm of possessive lust. Bathed in sweat, you hammer into her core without mercy. Vanya clings desperately to your wrists, screaming her surrender into the shadows, completely unhinged by the overwhelming carnal power claiming her body and soul.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_step9",
+        "text": "Feel her innermost muscles convulse in violent pre-climax spasms.",
+        "next_node": "vanya_chantry_dominant_step9_precipice",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step9_precipice": {
+    "id": "vanya_chantry_dominant_step9_precipice",
+    "speaker_name": "Sister Vanya",
+    "text": "The precipice arrives like an alchemical explosion. Vanya's internal passage begins to seize and flutter violently around your shaft, her fingernails digging through your skin as her hips buck frantically against yours. 'I am breaking... master, wanderer, please! Fill me completely!'",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_step10",
+        "text": "Drive home to the hilt and flood her trembling womb with your seed.",
+        "next_node": "vanya_chantry_dominant_step10_climax",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_chantry_dominant_step10_climax": {
+    "id": "vanya_chantry_dominant_step10_climax",
+    "speaker_name": "Sister Vanya",
+    "text": "With a final, devastating plunge, you bury your shaft to the root and pin her firmly to the altar. An earth-shattering orgasm tears through Vanya's body, her tight sheath convulsing in wild, unending spasms that milk every drop from your erection. With a guttural roar, you flood her deep within with boiling release, holding her trembling, spent form as the last echoes of your passion fade.",
+    "choices": [
+      {
+        "id": "c_vanya_chantry_dom_to_afterglow",
+        "text": "Gather her spent, trembling body into your arms in peaceful aftermath.",
+        "next_node": "vanya_chantry_afterglow",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Sister Vanya's Embroidered Rosary",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step4_caress": {
+    "id": "vanya_gilded_oral_step4_caress",
+    "speaker_name": "Sister Vanya",
+    "text": "Rising from between her trembling thighs, your mouth glistening with her sweet essence, your hands slide over her soft hips. Vanya is shivering uncontrollably upon the silk bolsters, overwhelmed by having her devout body thoroughly worshipped with your lips. She reaches out with trembling fingers, taking your throbbing shaft into her palm. 'Wanderer... I have never felt so decadent... please, put an end to this sweet torment.'",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_step5",
+        "text": "Position your rigid head against her dripping entrance and slide inside.",
+        "next_node": "vanya_gilded_oral_step5_entry",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step5_entry": {
+    "id": "vanya_gilded_oral_step5_entry",
+    "speaker_name": "Sister Vanya",
+    "text": "With her passage thoroughly drenched and hypersensitive from your tongue, you sink forward. Your shaft glides smoothly into her velvety depths with intoxicating ease, burying to the root with a soft, wet impact. Vanya arches her back off the crimson cushions, letting out a wanton, breathy moan as her inner muscles clamp eagerly around you in trembling waves.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_step6",
+        "text": "Pause to savor her tight warmth before establishing a deep, rolling tempo.",
+        "next_node": "vanya_gilded_oral_step6_rhythm",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step6_rhythm": {
+    "id": "vanya_gilded_oral_step6_rhythm",
+    "speaker_name": "Sister Vanya",
+    "text": "Drawing back and driving deep, you establish a hypnotic cadence. The heady scent of incense, opium, and her own aroused nectar fills the alcove. Vanya rolls her hips in time with yours, matching each stroke with breathless gasps and whispered words of devotion. Her inner walls pulse rhythmically along your length, sensitized to fever pitch.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_step7",
+        "text": "Prop her hips higher upon the silk bolster to angle directly into her depths.",
+        "next_node": "vanya_gilded_oral_step7_shift",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step7_shift": {
+    "id": "vanya_gilded_oral_step7_shift",
+    "speaker_name": "Sister Vanya",
+    "text": "Lifting her hips higher on the down cushions, you alter your angle to strike deep against her anterior wall. Wet, rhythmic slaps resound through the curtained room. Vanya's cries become melodious and unrestrained, her fingernails sinking into your shoulders as she abandons all thoughts of the ascetic life for pure hedonism.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_step8",
+        "text": "Quicken your pace into a fierce, breathless pounding.",
+        "next_node": "vanya_gilded_oral_step8_frenzy",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step8_frenzy": {
+    "id": "vanya_gilded_oral_step8_frenzy",
+    "speaker_name": "Sister Vanya",
+    "text": "The rhythm turns furious and wild. You hammer into her dripping depths, sweat gleaming across your bodies in the amber lantern glow. Vanya buries her face in your neck, crying out with wanton abandon, completely swept away by the intoxicating ecstasy flooding her veins.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_step9",
+        "text": "Drive toward the summit as her inner passage begins to convulse violently.",
+        "next_node": "vanya_gilded_oral_step9_precipice",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step9_precipice": {
+    "id": "vanya_gilded_oral_step9_precipice",
+    "speaker_name": "Sister Vanya",
+    "text": "The peak surges like a crashing tide. Vanya's internal walls seize around your shaft with fierce, rhythmic contractions, suctioning you with breathless power. Her toes curl into the silk sheets, her body trembling on the knife's edge of release. 'Wanderer! Ah... I am coming! Fill me now!'",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_step10",
+        "text": "Thrust to the root one final time and surrender to the explosive release.",
+        "next_node": "vanya_gilded_oral_step10_climax",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_oral_step10_climax": {
+    "id": "vanya_gilded_oral_step10_climax",
+    "speaker_name": "Sister Vanya",
+    "text": "Driving to the very hilt, you trigger a shattering orgasm that rocks both your souls. Vanya screams into your shoulder, her body spasming in pure carnal bliss as she milks your shaft relentlessly. With a guttural roar, you flood her deep within with hot, pulsing release, collapsing together into the crimson silks in breathless, spent peace.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_oral_to_afterglow",
+        "text": "Hold her closely amidst the silk cushions in quiet afterglow.",
+        "next_node": "vanya_gilded_afterglow",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step4_caress": {
+    "id": "vanya_gilded_dominant_step4_caress",
+    "speaker_name": "Sister Vanya",
+    "text": "Pinning both of her wrists above her head into the crimson down pillows, your other hand slides down her silken stomach into the drenched heat of her cleft. Vanya's chest heaves with wanton surrender beneath you, her nipples taut and flushed. 'Do whatever you desire with me, wanderer,' she whispers raggedly. 'In this den of sin, make me solely yours.'",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_step5",
+        "text": "Unbuckle your trousers and drive your rigid shaft deep into her waiting sheath.",
+        "next_node": "vanya_gilded_dominant_step5_entry",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step5_entry": {
+    "id": "vanya_gilded_dominant_step5_entry",
+    "speaker_name": "Sister Vanya",
+    "text": "Maintaining your firm grip on her wrists, you guide your swollen head to her glistening threshold and thrust forward with dominant force. Your length buries to the absolute hilt in one deep plunge. Vanya lets out a breathless, quivering gasp of pleasure, her thighs trembling as her tight walls hug you with fierce suction.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_step6",
+        "text": "Look into her eyes and establish a commanding, possessive cadence.",
+        "next_node": "vanya_gilded_dominant_step6_rhythm",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step6_rhythm": {
+    "id": "vanya_gilded_dominant_step6_rhythm",
+    "speaker_name": "Sister Vanya",
+    "text": "Each heavy, measured stroke drives deep into her feverish core. The opulent bed creaks softly beneath the rhythm of your bodies. Vanya's breath comes in ragged pants, her eyes swimming with adoration and submission as your hips meet hers with wet, heavy impacts.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_step7",
+        "text": "Pull her hips forward to the edge of the cushions and plunge even deeper.",
+        "next_node": "vanya_gilded_dominant_step7_shift",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step7_shift": {
+    "id": "vanya_gilded_dominant_step7_shift",
+    "speaker_name": "Sister Vanya",
+    "text": "Releasing her wrists, you haul her hips forward over your lap, changing the angle to drive deep into her most sensitive nerve clusters. Vanya throws her head back, her full breasts trembling with each impact, her cries turning into unrestrained, wanton moans that celebrate the joy of the flesh.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_step8",
+        "text": "Drive the cadence into a fierce, punishing tempo.",
+        "next_node": "vanya_gilded_dominant_step8_frenzy",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step8_frenzy": {
+    "id": "vanya_gilded_dominant_step8_frenzy",
+    "speaker_name": "Sister Vanya",
+    "text": "Your hips crash against hers with unrelenting, commanding power. Sweat slicks both your chests, gleaming in the warm lantern glow. Vanya clings to your neck, whispering breathless, wanton words of submission into your ear as you relentlessly claim her.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_step9",
+        "text": "Drive with everything you have as her inner passage begins to convulse.",
+        "next_node": "vanya_gilded_dominant_step9_precipice",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step9_precipice": {
+    "id": "vanya_gilded_dominant_step9_precipice",
+    "speaker_name": "Sister Vanya",
+    "text": "The summit arrives like an uncontrollable wildfire. Vanya's internal passage contracts in fierce, rhythmic spasms, clutching your shaft with desperate suction. Her nails bite into your back as her toes curl into the silk sheets. 'I cannot hold back! Ah... wanderer, take me... fill me now!'",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_step10",
+        "text": "Thrust to the root one final time and surrender to explosive release.",
+        "next_node": "vanya_gilded_dominant_step10_climax",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "vanya_gilded_dominant_step10_climax": {
+    "id": "vanya_gilded_dominant_step10_climax",
+    "speaker_name": "Sister Vanya",
+    "text": "With a final, shattering plunge, you bury yourself to the root within her drenched depths. Vanya lets out a breathless scream into your shoulder as an earth-shattering orgasm rips through her body, her inner walls fluttering in violent, unending spasms. With a guttural roar, you flood her deep within with boiling release, collapsing together into the disheveled crimson silks.",
+    "choices": [
+      {
+        "id": "c_vanya_gilded_dom_to_afterglow",
+        "text": "Hold her closely as your ragged breathing settles amidst the silk cushions.",
+        "next_node": "vanya_gilded_afterglow",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": true,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
   }
 }

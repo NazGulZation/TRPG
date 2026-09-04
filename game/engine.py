@@ -687,8 +687,7 @@ class GameEngine:
                 "gilded_rat": "vanya_gilded_step1_initiate"
             },
             "madame_silve": {
-                "gilded_rat": "silve_gilded_step1_initiate",
-                "ruined_chantry": "silve_chantry_step1_initiate"
+                "gilded_rat": "silve_gilded_step1_initiate"
             }
         }
         if npc.id in location_scenes and curr_loc in location_scenes[npc.id]:
