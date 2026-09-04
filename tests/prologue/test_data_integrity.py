@@ -88,7 +88,7 @@ class TestDataIntegrity(unittest.TestCase):
             "transit_pass",
         ]
         for itm_id in core_quest_items:
-            self.assertIn(itm_id, items, f"Missing core item {itm_id} in items.json")
+            self.assertIn(itm_id, items, f"Missing core item {itm_id} in items table")
             itm = items[itm_id]
             self.assertEqual(itm.id, itm_id)
             self.assertTrue(len(itm.name) > 0)
