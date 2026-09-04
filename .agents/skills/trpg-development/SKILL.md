@@ -3,7 +3,7 @@ name: trpg-development
 description: >-
   Develop, maintain, test, and expand adult eroge text RPG web applications. Use
   when authoring story chapters, designing NPCs and attribute systems,
-  configuring JSON chapter content, heterosexual eroge romance, writing lengthy
+  configuring SQLite chapter content, heterosexual eroge romance, writing lengthy
   explicit narrative erotic scenes (without redundant minigames, with unique
   steps 4-10 branch progression and step 1 decline/leave options), implementing
   party companion interactions (dialogue hubs and intimacy initiation), party
@@ -25,7 +25,7 @@ This skill provides comprehensive conventions, architectural patterns, narrative
 - **Engine Core**: Pure Python domain layer decoupled from HTTP concerns.
   - `models.py`: Dataclasses with `from_dict` and `to_dict` serialization for Player, Stats, NPC, Quest, Faction, Location, DialogueNode, DialogueChoice, Item.
   - `engine.py`: Central state machine handling location traversal, dynamic dialogue resolution, attribute checks with gear/companion buffs, multi-stage explicit erotic encounters, party recruitment, companion dialogue hubs, faction hostility, inventory management, tactical turn-based combat, and disk/dict game state save/load serialization.
-  - **Modular JSON Content Architecture** (`game/data/<chapter>/`): All chapter-specific content (locations, factions, quests, NPCs, dialogues, metadata) is strictly separated into clean, modular JSON files rather than monolithic Python scripts. Python loader modules (`game/data/<chapter>.py`) deserialize these JSON files into typed dataclass instances.
+  - **SQLite Game Data Architecture** (`game/data/game_data.db` & `game/data/db.py`): All chapter-specific configuration data (locations, factions, quests, NPCs, dialogues, metadata, items) is stored in relational SQLite tables rather than scattered JSON files or monolithic Python dictionaries. Python loader modules (`game/data/<chapter>.py`) query `game_data.db` using `get_db_connection()` to instantiate typed dataclass models.
 - **Frontend**: Lightweight, reactive single-page client (HTML5, CSS3, vanilla JavaScript).
   - Narrative chronicle displaying environmental prose and event history.
   - Interactive dialogue choice overlays.
@@ -38,136 +38,100 @@ This skill provides comprehensive conventions, architectural patterns, narrative
 
 ---
 
-## 2. Chapter Data Architecture (JSON Separation)
+## 2. Chapter Data Architecture (SQLite Database)
 
-Avoid storing thousands of lines of narrative, dialogue, and location configurations in Python scripts. Separate all chapter content into structured JSON files under `game/data/<chapter_id>/`:
+All configurable chapter content is unified into a relational SQLite database located at `game/data/game_data.db`, accessed through the helper module `game/data/db.py`:
 
 ```
-game/data/<chapter_id>/
-├── metadata.json           # Chapter ID, title, opening chronicle log, suitable intimacy locations
-├── factions.json           # Faction definitions (names, descriptions, UI theme colors)
-├── locations.json          # Zones, descriptions, connections, ground inspection loot
-├── quests.json             # Quest definitions, stages, and completion targets
-├── npcs.json               # NPC stats, faction alignments, combatant/romance/recruitment flags
-├── items.json              # Configurable quest items, progression keys, and romance relics
-└── dialogues/              # Fully decoupled dialogue trees
-    ├── <npc_1>.json
-    ├── <npc_2>.json
-    └── ...
+game/data/
+├── game_data.db            # SQLite database containing all relational tables
+├── db.py                   # DB connection helper (get_db_connection)
+└── <chapter_id>.py         # Typed chapter loader module (e.g. prologue.py)
 ```
 
-### 1. `metadata.json`
-```json
-{
-  "chapter_id": "prologue",
-  "title": "The Iron Bell",
-  "opening_log": "The great bell of the Bastion groans...",
-  "suitable_intimacy_locations": {
-    "sister_vanya": ["ruined_chantry", "gilded_rat"],
-    "madame_silve": ["gilded_rat"]
-  }
-}
-```
+### 1. Database Schema
+The database contains seven core relational tables:
+- `metadata`: `(chapter_id TEXT PRIMARY KEY, title TEXT, opening_category TEXT, opening_title TEXT, opening_text TEXT, suitable_intimacy_locations TEXT)`
+- `factions`: `(chapter_id TEXT, faction_id TEXT, name TEXT, desc TEXT, color TEXT, PRIMARY KEY (chapter_id, faction_id))`
+- `items`: `(chapter_id TEXT, item_id TEXT, name TEXT, description TEXT, item_type TEXT, is_usable INTEGER, effect_type TEXT, effect_value INTEGER, effect_description TEXT, PRIMARY KEY (chapter_id, item_id))`
+- `locations`: `(chapter_id TEXT, location_id TEXT, name TEXT, subtitle TEXT, description TEXT, faction_id TEXT, connected_locations TEXT, npc_ids TEXT, items_on_ground TEXT, danger_level INTEGER, PRIMARY KEY (chapter_id, location_id))`
+- `quests`: `(chapter_id TEXT, quest_id TEXT, title TEXT, description TEXT, giver_npc_id TEXT, faction_id TEXT, current_stage INTEGER, stages TEXT, reward_items TEXT, reward_sovereigns INTEGER, reward_relation INTEGER, reward_faction_points INTEGER, completion_text TEXT, PRIMARY KEY (chapter_id, quest_id))`
+- `npcs`: `(chapter_id TEXT, npc_id TEXT, name TEXT, title TEXT, gender TEXT, faction_id TEXT, description TEXT, stats TEXT, max_hp INTEGER, current_hp INTEGER, relationship INTEGER, is_combatant INTEGER, can_romance INTEGER, can_recruit INTEGER, is_in_party INTEGER, is_romanced INTEGER, is_dead INTEGER, dialogue_root TEXT, active_quest_id TEXT, loot TEXT, PRIMARY KEY (chapter_id, npc_id))`
+- `dialogues`: `(chapter_id TEXT, npc_id TEXT, node_id TEXT, speaker_name TEXT, text TEXT, choices TEXT, PRIMARY KEY (chapter_id, npc_id, node_id))`
 
-### 2. `npcs.json` and Recruitment Flags
-```json
-{
-  "sister_vanya": {
-    "id": "sister_vanya",
-    "name": "Sister Vanya",
-    "title": "Acolyte of the Pale Veil",
-    "gender": "female",
-    "faction_id": "dawnshroud",
-    "description": "Her habits are frayed, but her gaze is serene.",
-    "stats": {"sinew": 8, "guile": 11, "lucidity": 15},
-    "max_hp": 30,
-    "current_hp": 30,
-    "relationship": 0,
-    "is_combatant": true,
-    "can_romance": true,
-    "can_recruit": true,
-    "dialogue_root": "vanya_root",
-    "loot": ["Sister Vanya's Embroidered Rosary"]
-  },
-  "commander_malakor": {
-    "id": "commander_malakor",
-    "name": "Commander Malakor",
-    "title": "Captain of the Iron Drakes",
-    "gender": "male",
-    "faction_id": "iron_drakes",
-    "description": "Clad in battered iron plate.",
-    "stats": {"sinew": 16, "guile": 10, "lucidity": 9},
-    "max_hp": 55,
-    "current_hp": 55,
-    "relationship": 0,
-    "is_combatant": true,
-    "can_romance": false,
-    "can_recruit": false,
-    "dialogue_root": "malakor_root",
-    "loot": ["Malakor's Drake Whetstone"]
-  }
-}
-```
-
-### 3. `items.json` and Configurable Item Models
-```json
-{
-  "wolfsbane_nectar": {
-    "id": "wolfsbane_nectar",
-    "name": "Wolfsbane Nectar",
-    "description": "A sealed glass vial containing a potent narcotic extract distilled from purple mountain flowers.",
-    "item_type": "quest",
-    "is_usable": false,
-    "effect_type": null,
-    "effect_value": 0,
-    "effect_description": ""
-  },
-  "vanya_rosary": {
-    "id": "vanya_rosary",
-    "name": "Sister Vanya's Embroidered Rosary",
-    "description": "A silver rosary stitched with sacred prayer threads (+2 Lucidity, halves Dread gain; pray to purge 20 Dread).",
-    "item_type": "quest",
-    "is_usable": true,
-    "effect_type": "dread_relief",
-    "effect_value": 20,
-    "effect_description": "Holding the silver rosary in your palms, memories of her passionate warmth flood your mind, driving away the dread."
-  }
-}
-```
-
-### 4. Chapter Loader Pattern (`game/data/<chapter>.py`)
-Python chapter modules serve as typed loaders:
+### 2. Chapter Loader Pattern (`game/data/<chapter>.py`)
+Python chapter modules query `game_data.db` and instantiate typed dataclasses:
 ```python
 import json
-from pathlib import Path
 from game.models import Location, NPC, Quest, DialogueNode, DialogueChoice, Item
-
-DATA_DIR = Path(__file__).resolve().parent / "prologue"
+from game.data.db import get_db_connection
 
 def get_prologue_items() -> dict[str, Item]:
-    with open(DATA_DIR / "items.json", "r", encoding="utf-8-sig") as f:
-        data = json.load(f)
+    conn = get_db_connection()
+    rows = conn.execute("SELECT * FROM items WHERE chapter_id = 'prologue'").fetchall()
+    conn.close()
     items = {}
-    for item_id, item_data in data.items():
-        item = Item.from_dict(item_data)
-        items[item_id] = item
+    for row in rows:
+        item = Item(
+            id=row["item_id"],
+            name=row["name"],
+            description=row["description"] or "",
+            item_type=row["item_type"] or "quest",
+            is_usable=bool(row["is_usable"]),
+            effect_type=row["effect_type"],
+            effect_value=row["effect_value"] or 0,
+            effect_description=row["effect_description"] or "",
+        )
+        items[item.id] = item
         items[item.name] = item
     return items
 
-def get_prologue_npcs():
-    with open(DATA_DIR / "npcs.json", "r", encoding="utf-8-sig") as f:
-        npcs_data = json.load(f)
+def get_prologue_npcs() -> dict[str, NPC]:
+    conn = get_db_connection()
+    npc_rows = conn.execute("SELECT * FROM npcs WHERE chapter_id = 'prologue'").fetchall()
+    dialogue_rows = conn.execute("SELECT * FROM dialogues WHERE chapter_id = 'prologue'").fetchall()
+    conn.close()
+
+    dialogues_by_npc = {}
+    for d in dialogue_rows:
+        npc_id = d["npc_id"]
+        node_id = d["node_id"]
+        choices_raw = json.loads(d["choices"] or "[]")
+        node_obj = DialogueNode.from_dict({
+            "id": node_id,
+            "speaker_name": d["speaker_name"],
+            "text": d["text"],
+            "choices": choices_raw,
+        })
+        if npc_id not in dialogues_by_npc:
+            dialogues_by_npc[npc_id] = {}
+        dialogues_by_npc[npc_id][node_id] = node_obj
+
     npcs = {}
-    for npc_id, data in npcs_data.items():
-        dialogue_file = DATA_DIR / "dialogues" / f"{npc_id}.json"
-        dialogue_nodes = {}
-        if dialogue_file.exists():
-            with open(dialogue_file, "r", encoding="utf-8-sig") as df:
-                d_data = json.load(df)
-                for nid, n_dict in d_data.items():
-                    dialogue_nodes[nid] = DialogueNode.from_dict(n_dict)
-        data["dialogue_nodes"] = dialogue_nodes
-        npcs[npc_id] = NPC.from_dict(data)
+    for row in npc_rows:
+        npc_id = row["npc_id"]
+        npc_data = {
+            "id": npc_id,
+            "name": row["name"],
+            "title": row["title"] or "",
+            "gender": row["gender"] or "other",
+            "faction_id": row["faction_id"] or "",
+            "description": row["description"] or "",
+            "stats": json.loads(row["stats"] or "{}"),
+            "max_hp": row["max_hp"] or 30,
+            "current_hp": row["current_hp"] or 30,
+            "relationship": row["relationship"] or 0,
+            "is_combatant": bool(row["is_combatant"]),
+            "can_romance": bool(row["can_romance"]),
+            "can_recruit": bool(row["can_recruit"]),
+            "is_in_party": bool(row["is_in_party"]),
+            "is_romanced": bool(row["is_romanced"]),
+            "is_dead": bool(row["is_dead"]),
+            "dialogue_root": row["dialogue_root"] or "root",
+            "active_quest_id": row["active_quest_id"],
+            "loot": json.loads(row["loot"] or "[]"),
+        }
+        npcs[npc_id] = NPC.from_dict(npc_data, dialogue_nodes=dialogues_by_npc.get(npc_id, {}))
     return npcs
 ```
 
@@ -304,9 +268,10 @@ tests/
 ├── test_engine_core.py                  # System: state initialization, travel, dice checks, combat, item effects
 ├── test_save_load.py                    # System: serialization, disk file persistence, save/load/continue APIs
 ├── test_api.py                          # System: Flask HTTP API routes and session handling
+├── test_database.py                     # System: SQLite schema, table counts, dialogue referential integrity
 └── <chapter_id>/                        # Chapter-Scoped Tests (e.g. tests/prologue/)
     ├── __init__.py
-    ├── test_data_integrity.py           # Chapter: JSON schema validation & dialogue tree graph integrity
+    ├── test_data_integrity.py           # Chapter: SQLite schema validation & dialogue tree graph integrity
     ├── test_quests.py                   # Chapter: storyline quests and branching outcomes
     ├── test_companions_and_intimacy.py  # Chapter: companion hubs, intimacy scenes, and location suitability
     └── test_party_recruitment.py        # Chapter: recruitment rules, unrecruitable allies, party capacity
@@ -330,13 +295,13 @@ tests/
 
 ## 8. Development & Verification Checklist
 
-- [ ] **JSON Separation**: Story, dialogue trees, NPC profiles, locations, quests, and items reside in `game/data/<chapter>/` as JSON files, not hardcoded Python dicts.
-- [ ] **Items Configuration & Anti-Bloat**: Items are defined in `items.json` using `Item` dataclasses. Filler consumable bloat is eliminated in favor of quest items, escape keys, and romance/brotherhood relics.
-- [ ] **Dialogue Integrity**: Dialogue graphs validated: every `next_node` and `failure_node` targets an existing node with no broken links.
-- [ ] **Recruitment Constraints**: Non-recruitable characters have `can_recruit: false`, have no party invitation choices in dialogues, and cannot be recruited via API.
+- [ ] **SQLite Data Architecture**: Story, dialogue trees, NPC profiles, locations, quests, and items reside in `game/data/game_data.db`, queried via `game/data/db.py`, not hardcoded Python dicts or raw JSON files.
+- [ ] **Items Configuration & Anti-Bloat**: Items are defined in the `items` table using `Item` dataclasses. Filler consumable bloat is eliminated in favor of quest items, escape keys, and romance/brotherhood relics.
+- [ ] **Dialogue Integrity**: Dialogue graphs in the `dialogues` table validated: every `next_node` and `failure_node` targets an existing node with no broken links.
+- [ ] **Recruitment Constraints**: Non-recruitable characters have `can_recruit: 0/false`, have no party invitation choices in dialogues, and cannot be recruited via API.
 - [ ] **Party Cap**: Max party size of 4 is respected across engine, API, and UI.
 - [ ] **Save / Load Integrity**: All newly introduced player or NPC fields are serialized in `save_to_dict` / `load_from_dict`.
-- [ ] **Location Suitability**: Romanceable NPCs define suitable private sectors in `metadata.json`; public or hostile sectors block intimacy.
+- [ ] **Location Suitability**: Romanceable NPCs define suitable private sectors in `metadata` table; public or hostile sectors block intimacy.
 - [ ] **10-Step Narrative Arc & Unique Branching**: Major erotic encounters follow the full 10-step progression to climax and afterglow with appropriate mental purge rewards. Each foreplay branch has dedicated unique dialogue nodes from Step 4 through Step 10 Climax.
 - [ ] **Step 1 Leave / Voluntary Retreat**: Erotic scenes provide an explicit option at Step 1 to decline or retreat back to safe hubs without triggering romance flags or rewards.
 - [ ] **Deferred Intimacy Flags**: Step 1 choices set `is_intimacy_action: false`; `is_intimacy_action: true` is reserved exclusively for the Step 10 Climax transition.
