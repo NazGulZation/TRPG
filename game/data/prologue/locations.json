@@ -1,0 +1,92 @@
+{
+  "gallow_square": {
+    "id": "gallow_square",
+    "name": "The Gallow-Square of Weeping Wood",
+    "subtitle": "Ground Zero of the Quarantine",
+    "description": "Thick, greasy soot clings to the timber gibbets where corpses of suspected plague-bearers sway in iron cages. The air tastes of sulfur, wet rot, and dried blood. High above, the iron portcullis of Oakhaven remains firmly shut, streaked with scorched tallow. A brass bell tolls intermittently from the watchtower—a death knell warning that the cleansing pyre will ignite at midnight.",
+    "faction_id": "pariahs",
+    "connected_locations": [
+      "ruined_chantry",
+      "iron_bastion",
+      "sluice_trench"
+    ],
+    "npc_ids": [
+      "little_toby"
+    ],
+    "items_on_ground": [
+      "Tarnished Iron Nail"
+    ],
+    "danger_level": 1
+  },
+  "ruined_chantry": {
+    "id": "ruined_chantry",
+    "name": "The Desecrated Chantry of Saint Marrow",
+    "subtitle": "Makeshift Hospice and Dawnshroud Outpost",
+    "description": "Stained glass lies shattered amidst kneeling skeletons. Alchemical braziers burn dried sage and pungent hemlock to mask the stench of liquefying lungs. White shrouds cover rows of the dying. Here, the Order of the Dawnshroud separates the 'purifiable' from the doomed with cold, clinical mercy.",
+    "faction_id": "dawnshroud",
+    "connected_locations": [
+      "gallow_square",
+      "iron_bastion"
+    ],
+    "npc_ids": [
+      "sister_vanya"
+    ],
+    "items_on_ground": [
+      "Purified Bandage"
+    ],
+    "danger_level": 2
+  },
+  "iron_bastion": {
+    "id": "iron_bastion",
+    "name": "The Iron Drake Bastion & Pit",
+    "subtitle": "Mercenary Redoubt and Black Market",
+    "description": "A fortified brewery turned garrison. Piles of weapons, looted church silver, and kegs of harsh rye gin fill the courtyard. Mercenaries in dented mail wager on pit dogs while sharpening broadswords. The Drakes hold the barricades, charging desperate refugees exorbitant ransoms for false transit seals.",
+    "faction_id": "iron_drakes",
+    "connected_locations": [
+      "gallow_square",
+      "ruined_chantry",
+      "gilded_rat"
+    ],
+    "npc_ids": [
+      "commander_malakor"
+    ],
+    "items_on_ground": [
+      "Heavy Whetstone"
+    ],
+    "danger_level": 3
+  },
+  "gilded_rat": {
+    "id": "gilded_rat",
+    "name": "The Gilded Rat Parlour",
+    "subtitle": "A Den of Carnal Solace and Smuggled Secrets",
+    "description": "Heavy velvet drapes seal off the toxic smoke of the streets. Opium smoke curls in the candlelight, mingling with cheap perfume and sweat. Men and women seeking one final touch of warmth before the purge spend their last silver sovereigns here. In the curtained alcoves, forbidden information and forged transit passes trade hands.",
+    "faction_id": "pariahs",
+    "connected_locations": [
+      "iron_bastion",
+      "sluice_trench"
+    ],
+    "npc_ids": [
+      "madame_silve"
+    ],
+    "items_on_ground": [
+      "Spiced Plum Wine"
+    ],
+    "danger_level": 1
+  },
+  "sluice_trench": {
+    "id": "sluice_trench",
+    "name": "The Smuggler's Sluice & Trench",
+    "subtitle": "The Subterranean Drainage of the Condemned",
+    "description": "Knee-deep in black bile and drainage run-off, the Trench smells of stagnant canal water and decay. It is the only unmonitored artery leading beyond Oakhaven's outer wall, but the iron grate is secured by a triple-toothed lock. Without the master key or brute demolition, this channel is an inescapable tomb.",
+    "faction_id": "pariahs",
+    "connected_locations": [
+      "gallow_square",
+      "gilded_rat"
+    ],
+    "npc_ids": [],
+    "items_on_ground": [
+      "Corroded Crowbar"
+    ],
+    "danger_level": 4
+  }
+}

@@ -18,6 +18,9 @@
         <div class="purge-countdown">
             <span class="warning-icon">&#9760;</span>
             <span id="bell-ticker" class="ticker-text">BELL: 9:00 PM (3h to Midnight)</span>
+            <button id="btn-continue" class="btn-sm btn-continue" title="Continue from Latest Save" onclick="GameApp.continueGame()">&#9654; Continue</button>
+            <button id="btn-save-menu" class="btn-sm" title="Save Game" onclick="GameApp.openSaveModal('save')">&#128190; Save</button>
+            <button id="btn-load-menu" class="btn-sm" title="Load Game" onclick="GameApp.openSaveModal('load')">&#128194; Load</button>
             <button id="btn-reset" class="btn-sm" title="Restart Prologue">&#8635; Restart</button>
         </div>
     </header>
@@ -74,7 +77,7 @@
             <div class="panel-card party-card">
                 <div class="card-header">
                     <h3>WARBAND & ALLIES</h3>
-                    <span class="badge-count" id="party-count">0/2</span>
+                    <span class="badge-count" id="party-count">0/4</span>
                 </div>
                 <div id="party-list" class="compact-list">
                     <p class="empty-note">No companions sworn to your side. Form bonds or recruit capable warriors.</p>
@@ -204,6 +207,23 @@
             <div id="modal-body" class="modal-body"></div>
             <div class="modal-actions">
                 <button class="btn-action" onclick="GameApp.resetGame()">Begin Anew</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save / Load Records Modal -->
+    <div id="save-modal" class="modal-backdrop hidden">
+        <div class="modal-card save-modal-card">
+            <div class="modal-header">
+                <h2 id="save-modal-title">CHRONICLE RECORDS</h2>
+                <button class="btn-close-modal" onclick="GameApp.closeSaveModal()">&times;</button>
+            </div>
+            <p id="save-modal-subtitle" class="save-modal-subtitle">Manage parchment saves or resume your dark journey.</p>
+            <div id="save-slots-list" class="save-slots-container">
+                <!-- Dynamically rendered save slots -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-action btn-subtle" onclick="GameApp.closeSaveModal()">Close</button>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ const GameApp = {
 
     async init() {
         document.getElementById('btn-reset').addEventListener('click', () => this.resetGame());
+        await this.checkContinueStatus();
         await this.fetchState();
     },
 
@@ -98,6 +99,173 @@ const GameApp = {
         }
     },
 
+    async continueGame() {
+        try {
+            const resp = await fetch('/api/continue', { method: 'POST' });
+            const data = await resp.json();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            this.state = data.state || data;
+            this.render();
+            this.checkContinueStatus();
+        } catch (e) {
+            console.error("Continue error", e);
+        }
+    },
+
+    async openSaveModal(mode = 'save') {
+        this.saveModalMode = mode;
+        const modal = document.getElementById('save-modal');
+        const titleEl = document.getElementById('save-modal-title');
+        const subEl = document.getElementById('save-modal-subtitle');
+        if (titleEl) {
+            titleEl.textContent = mode === 'save' ? 'CHRONICLE RECORDS (SAVE)' : 'CHRONICLE RECORDS (LOAD)';
+        }
+        if (subEl) {
+            subEl.textContent = mode === 'save' 
+                ? 'Inscribe your journey into the annals. Select a slot to save:' 
+                : 'Select an inscribed parchment to resume your journey:';
+        }
+
+        if (modal) modal.classList.remove('hidden');
+        await this.renderSaveSlots();
+    },
+
+    closeSaveModal() {
+        const modal = document.getElementById('save-modal');
+        if (modal) modal.classList.add('hidden');
+    },
+
+    async renderSaveSlots() {
+        const listEl = document.getElementById('save-slots-list');
+        if (!listEl) return;
+        listEl.innerHTML = '<p class="empty-note">Inspecting records...</p>';
+
+        try {
+            const resp = await fetch('/api/saves');
+            const data = await resp.json();
+            const saves = data.saves || [];
+
+            const slotDefs = [
+                { id: 'autosave', name: 'Autosave Slot', isAuto: true },
+                { id: 'slot_1', name: 'Record Slot I' },
+                { id: 'slot_2', name: 'Record Slot II' },
+                { id: 'slot_3', name: 'Record Slot III' }
+            ];
+
+            const savesBySlot = {};
+            saves.forEach(s => { savesBySlot[s.slot] = s; });
+
+            const isSaveMode = this.saveModalMode === 'save';
+
+            listEl.innerHTML = slotDefs.map(def => {
+                const s = savesBySlot[def.id];
+                const hasData = !!s;
+                let metaText = 'Empty Parchment';
+                let detailsText = 'No record inscribed yet.';
+
+                if (hasData) {
+                    const dateStr = s.timestamp ? new Date(s.timestamp).toLocaleString() : '';
+                    metaText = `Inscribed: ${dateStr}`;
+                    const summ = s.summary || {};
+                    const loc = summ.location_name || 'Unknown';
+                    const hp = summ.hp !== undefined ? `${summ.hp}/${summ.max_hp} HP` : '';
+                    const party = summ.party && summ.party.length ? `Party: ${summ.party.join(', ')}` : 'No companions';
+                    detailsText = `${loc} | ${hp} | ${party}`;
+                }
+
+                return `
+                    <div class="save-slot-card ${def.isAuto ? 'autosave' : ''}">
+                        <div class="slot-info">
+                            <div class="slot-title">
+                                <span>${def.name}</span>
+                                ${def.isAuto ? '<span class="slot-badge">AUTO</span>' : ''}
+                            </div>
+                            <div class="slot-meta">${metaText}</div>
+                            <div class="slot-details">${detailsText}</div>
+                        </div>
+                        <div class="slot-actions">
+                            ${isSaveMode ? `
+                                <button class="btn-sm" style="border-color: #c4a052;" onclick="GameApp.executeSave('${def.id}')">
+                                    Inscribe
+                                </button>
+                            ` : ''}
+                            ${hasData ? `
+                                <button class="btn-sm btn-continue" onclick="GameApp.executeLoad('${def.id}')">
+                                    Load
+                                </button>
+                            ` : (isSaveMode ? '' : '<span class="slot-meta" style="color: #666;">Empty</span>')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch (e) {
+            console.error("Error loading saves list", e);
+            listEl.innerHTML = '<p class="empty-note">Could not retrieve saved records.</p>';
+        }
+    },
+
+    async executeSave(slot) {
+        try {
+            const resp = await fetch('/api/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slot })
+            });
+            const data = await resp.json();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            this.state = data.state;
+            this.render();
+            await this.renderSaveSlots();
+            this.checkContinueStatus();
+        } catch (e) {
+            console.error("Save error", e);
+        }
+    },
+
+    async executeLoad(slot) {
+        try {
+            const resp = await fetch('/api/load', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slot })
+            });
+            const data = await resp.json();
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            this.state = data.state;
+            this.closeSaveModal();
+            this.render();
+            this.checkContinueStatus();
+        } catch (e) {
+            console.error("Load error", e);
+        }
+    },
+
+    async checkContinueStatus() {
+        try {
+            const resp = await fetch('/api/saves');
+            const data = await resp.json();
+            const btnContinue = document.getElementById('btn-continue');
+            if (btnContinue) {
+                if (!data.saves || data.saves.length === 0) {
+                    btnContinue.style.opacity = '0.4';
+                    btnContinue.style.pointerEvents = 'none';
+                } else {
+                    btnContinue.style.opacity = '1';
+                    btnContinue.style.pointerEvents = 'auto';
+                }
+            }
+        } catch (e) {}
+    },
+
     render() {
         if (!this.state) return;
 
@@ -137,7 +305,8 @@ const GameApp = {
 
         // Party List
         const partyListEl = document.getElementById('party-list');
-        document.getElementById('party-count').textContent = `${player.party.length}/2`;
+        const maxParty = this.state.max_party_size || 4;
+        document.getElementById('party-count').textContent = `${player.party.length}/${maxParty}`;
         if (player.party.length === 0) {
             partyListEl.innerHTML = `<p class="empty-note">No companions sworn to your side. Form bonds or recruit capable warriors.</p>`;
         } else {
@@ -220,7 +389,7 @@ const GameApp = {
                 else if (npc.relationship < 0) { relClass = 'rel-hostile'; relDesc = 'Distrustful'; }
 
                 let romanceTag = npc.is_romanced ? '<span style="color: #ff4081;">&#9829; Lover</span>' : '';
-                let canRecruit = npc.is_combatant && npc.relationship >= 50 && player.party.length < 2;
+                let canRecruit = (npc.can_recruit !== false) && npc.is_combatant && npc.relationship >= 50 && player.party.length < maxParty;
 
                 return `
                     <div class="npc-card">

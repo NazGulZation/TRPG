@@ -1,0 +1,95 @@
+{
+  "q_mercy_hemlock": {
+    "id": "q_mercy_hemlock",
+    "title": "The Mercy of Hemlock",
+    "description": "Sister Vanya needs Wolfsbane Nectar to mercifully end the suffering of her dying patients before the Dawnbound burns them alive.",
+    "giver_npc_id": "sister_vanya",
+    "faction_id": "dawnshroud",
+    "current_stage": 0,
+    "stages": {
+      "1": {
+        "stage_id": 1,
+        "description": "Acquire Wolfsbane Nectar from Commander Malakor at the Iron Drake Bastion.",
+        "target_location": "iron_bastion",
+        "target_npc": "commander_malakor",
+        "required_item": null
+      },
+      "2": {
+        "stage_id": 2,
+        "description": "Deliver the Wolfsbane Nectar to Sister Vanya in the Ruined Chantry.",
+        "target_location": "ruined_chantry",
+        "target_npc": "sister_vanya",
+        "required_item": "Wolfsbane Nectar"
+      }
+    },
+    "reward_items": [
+      "Silver Dawnshroud Seal"
+    ],
+    "reward_sovereigns": 15,
+    "reward_relation": 30,
+    "reward_faction_points": 25,
+    "completion_text": "Sister Vanya administers the nectar with tears in her eyes. The patients pass peacefully in their sleep before the fire falls."
+  },
+  "q_blood_brass": {
+    "id": "q_blood_brass",
+    "title": "Blood and Brass",
+    "description": "Commander Malakor seeks his fallen brother Loras's Iron Signet ring from the corpse pyres in Gallow-Square.",
+    "giver_npc_id": "commander_malakor",
+    "faction_id": "iron_drakes",
+    "current_stage": 0,
+    "stages": {
+      "1": {
+        "stage_id": 1,
+        "description": "Search the charnel urns in the Gallow-Square for Loras's Iron Signet.",
+        "target_location": "gallow_square",
+        "target_npc": null,
+        "required_item": null
+      },
+      "2": {
+        "stage_id": 2,
+        "description": "Return the signet to Commander Malakor at the Iron Drake Bastion.",
+        "target_location": "iron_bastion",
+        "target_npc": "commander_malakor",
+        "required_item": "Loras's Iron Signet"
+      }
+    },
+    "reward_items": [
+      "Wolfsbane Nectar"
+    ],
+    "reward_sovereigns": 30,
+    "reward_relation": 35,
+    "reward_faction_points": 30,
+    "completion_text": "Malakor clasps his brother's signet against his forehead in solemn silence. His loyalty to you is sealed."
+  },
+  "q_silk_cyanide": {
+    "id": "q_silk_cyanide",
+    "title": "Silk and Cyanide",
+    "description": "Madame Silve requires the Turnkey's Stolen Ledger held by Little Toby in the Gallow-Square.",
+    "giver_npc_id": "madame_silve",
+    "faction_id": "pariahs",
+    "current_stage": 0,
+    "stages": {
+      "1": {
+        "stage_id": 1,
+        "description": "Obtain the Turnkey's Stolen Ledger from Little Toby in the Gallow-Square.",
+        "target_location": "gallow_square",
+        "target_npc": "little_toby",
+        "required_item": null
+      },
+      "2": {
+        "stage_id": 2,
+        "description": "Deliver the ledger to Madame Silve at the Gilded Rat Parlour.",
+        "target_location": "gilded_rat",
+        "target_npc": "madame_silve",
+        "required_item": "Turnkey's Stolen Ledger"
+      }
+    },
+    "reward_items": [
+      "Imperial Transit Pass"
+    ],
+    "reward_sovereigns": 45,
+    "reward_relation": 30,
+    "reward_faction_points": 30,
+    "completion_text": "Madame Silve locks the incriminating magistrate records in her iron chest, rewarding you with forged passage."
+  }
+}

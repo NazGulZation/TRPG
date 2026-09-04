@@ -1,0 +1,17 @@
+{
+  "dawnshroud": {
+    "name": "Order of the Dawnshroud",
+    "desc": "Zealot inquisitors who cleanse infection and sin with white phosphorus and brimstone.",
+    "color": "#c4a052"
+  },
+  "iron_drakes": {
+    "name": "The Iron Drakes",
+    "desc": "Mercenary syndicate ruling the trade of blood, weapons, and extortion.",
+    "color": "#8b0000"
+  },
+  "pariahs": {
+    "name": "Pariahs of the Trench",
+    "desc": "Outcasts, beggars, courtesans, and lepers surviving in the muck beneath the city.",
+    "color": "#4a6b5d"
+  }
+}

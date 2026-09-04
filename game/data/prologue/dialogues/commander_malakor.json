@@ -1,0 +1,653 @@
+{
+  "root": {
+    "id": "root",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor sits atop an upturned ale barrel, methodically wiping fresh gore from a notched greatsword. His broad chest is bound in battered cuirass and scarred with jagged blade wounds. Piercing amber eyes look you up and down, assessing your build and stance. 'Another stray dog sniffing around my bastion. State your business before I carve you into dog meat.'",
+    "choices": [
+      {
+        "id": "c_malakor_sinew",
+        "text": "[Sinew 14] Slam your fist against his iron barricade without flinching. 'I don't bark, Malakor. And I don't crawl.'",
+        "next_node": "malakor_sinew_success",
+        "required_stat": "sinew",
+        "required_value": 14,
+        "relationship_change": 15,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": "malakor_sinew_fail"
+      },
+      {
+        "id": "c_malakor_spar",
+        "text": "'They say the Iron Drakes fight for gold, but you fight for blood. Let's test our steel in the pit.'",
+        "next_node": "malakor_spar_challenge",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 10,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_vanya_quest",
+        "text": "'Sister Vanya needs the Wolfsbane Nectar you looted from the chantry. Name your price.'",
+        "next_node": "malakor_quest_trade",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 5,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_court",
+        "text": "Meet his gaze directly, a slow smirk touching your lips. 'A warrior of your caliber shouldn't waste his final hours brooding alone in the dirt.'",
+        "next_node": "malakor_romance_start",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 15,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_threat",
+        "text": "'Hand over the keys and the nectar, you mercenary filth, or I'll feed you your own sword.'",
+        "next_node": "malakor_hostile",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": -35,
+        "faction_changes": {
+          "iron_drakes": -20
+        },
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": true,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_spar_challenge": {
+    "id": "malakor_spar_challenge",
+    "speaker_name": "Commander Malakor",
+    "text": "A savage grin splits the veteran's scarred face. He tosses aside his whetstone and picks up a blunted iron broadsword. 'A challenger with guts! Step into the pit, wanderer. Let's see if your backbone is made of iron or rotten timber!'",
+    "choices": [
+      {
+        "id": "c_malakor_spar_sinew",
+        "text": "[Sinew 13] Meet his overhead crash head-on, locking blades and throwing him off balance.",
+        "next_node": "malakor_spar_win",
+        "required_stat": "sinew",
+        "required_value": 13,
+        "relationship_change": 20,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Heavy Whetstone",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_spar_guile",
+        "text": "[Guile 12] Duck beneath his sweeping swing and plant your boot in the crook of his knee.",
+        "next_node": "malakor_spar_win",
+        "required_stat": "guile",
+        "required_value": 12,
+        "relationship_change": 20,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Heavy Whetstone",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_spar_decline",
+        "text": "'Save your strength for the gate guards, Malakor. Let's talk business.'",
+        "next_node": "malakor_quest_trade",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_spar_win": {
+    "id": "malakor_spar_win",
+    "speaker_name": "Commander Malakor",
+    "text": "The clash echoes off the brewery stone! Malakor stumbles back, catching his footing with a hearty, booming roar of laughter. 'Hah! True iron! By the Drakes, it's been months since a man stood in front of my blade without wetting his trousers! Take this heavy whetstone from my forge—you've earned the Drakes' warrior respect, brother.'",
+    "choices": [
+      {
+        "id": "c_malakor_spar_to_quest",
+        "text": "'What keeps a warrior like you waiting in this slaughterhouse?'",
+        "next_node": "malakor_personal_quest",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_sinew_success": {
+    "id": "malakor_sinew_success",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor lets out a guttural, appreciative chuckle. The heavy greatsword rests at ease against his knee. 'Iron in your spine. Rare in this rotting sinkhole. Most men drop to their knees and beg for a transit badge. I respect steel that doesn't bend.'",
+    "choices": [
+      {
+        "id": "c_malakor_quest_hook",
+        "text": "'What keeps a commander like you in this doomed town instead of fleeing beyond the wall?'",
+        "next_node": "malakor_personal_quest",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 10,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_sinew_fail": {
+    "id": "malakor_sinew_fail",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor scoffs, knocking your hand aside with the flat of his pommel. 'Weak grip. You talk like an executioner but hit like a novice. Try that again and you won't leave this courtyard alive.'",
+    "choices": [
+      {
+        "id": "c_malakor_back_from_fail",
+        "text": "'Let's discuss business.'",
+        "next_node": "malakor_quest_trade",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_personal_quest": {
+    "id": "malakor_personal_quest",
+    "speaker_name": "Commander Malakor",
+    "text": "A shadow of raw, suppressed grief crosses the veteran's scarred face. 'My younger brother, Loras. He was trapped in the lower quarter when the Dawnshroud zealots barricaded the street and torched the houses. He carried our family's signet ring—the last scrap of honor we owned. The pyre in the Gallow-Square is where they dumped the ashes. Find Loras's Iron Signet, and I will give you anything you want: my wolfsbane, my steel, or an escape route.'",
+    "choices": [
+      {
+        "id": "c_malakor_accept_quest",
+        "text": "'I will recover your brother's signet from the ash.'",
+        "next_node": "malakor_quest_accepted",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 15,
+        "faction_changes": {},
+        "quest_trigger": "q_blood_brass",
+        "quest_stage_set": 1,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_quest_accepted": {
+    "id": "malakor_quest_accepted",
+    "speaker_name": "Commander Malakor",
+    "text": "'Search the corpse-urns near the gibbets in the Gallow-Square. Watch for the ghouls and zealot sentries. Don't die on me.'",
+    "choices": []
+  },
+  "malakor_quest_trade": {
+    "id": "malakor_quest_trade",
+    "speaker_name": "Commander Malakor",
+    "text": "'Vanya wants my poison? She's got bleeding heart disease. Still, I don't give away goods for free. Bring me my brother's signet from the Gallow-Square pyre, or pay me 25 Sovereigns upfront.'",
+    "choices": [
+      {
+        "id": "c_malakor_pay_25",
+        "text": "Pay 25 Sovereigns for the Wolfsbane Nectar.",
+        "next_node": "malakor_paid_nectar",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 10,
+        "faction_changes": {},
+        "quest_trigger": "q_mercy_hemlock",
+        "quest_stage_set": 2,
+        "item_required": null,
+        "item_reward": "Wolfsbane Nectar",
+        "item_rewards": [],
+        "sovereign_cost": 25,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_take_quest_alt",
+        "text": "'Tell me about your brother. I will find the signet.'",
+        "next_node": "malakor_personal_quest",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_paid_nectar": {
+    "id": "malakor_paid_nectar",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor pockets the coin with a grunt and slides a heavy, wax-sealed cobalt flask across the iron table. 'Take it. Enough hemlock and wolfsbane in there to put down an ox. Tell the little sister not to waste it.'",
+    "choices": []
+  },
+  "malakor_quest_complete": {
+    "id": "malakor_quest_complete",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor holds the scorched, blood-encrusted signet ring in his trembling, calloused fingers. A heavy sigh rattles in his chest, years of martial stoicism threatening to fracture. 'Loras... forgive me.' He looks at you with fierce, unwavering respect. 'You kept your word when nobody in this cursed world does. The Wolfsbane Nectar is yours, and so is my debt.'",
+    "choices": [
+      {
+        "id": "c_malakor_embrace",
+        "text": "Clasp his forearm in an iron warrior's grip. 'Your brother's honor lives on in you, Malakor. Stand with me.'",
+        "next_node": "malakor_intimacy_scene",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 25,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_romance_start": {
+    "id": "malakor_romance_start",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor's eyes widen slightly before a rugged, wolfish grin creeps onto his battle-hardened jaw. 'Bold words for a wanderer. Most men fear what my hands can do. But you... you look at me like an equal in the field. Prove you have the stomach to ride the storm with me, and maybe I'll show you what Iron Drake brotherhood truly means.'",
+    "choices": [
+      {
+        "id": "c_malakor_romance_hook",
+        "text": "'Give me a task to prove it, then.'",
+        "next_node": "malakor_personal_quest",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 10,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_intimacy_scene": {
+    "id": "malakor_intimacy_scene",
+    "speaker_name": "Commander Malakor",
+    "text": "In his private armory surrounded by iron, trophies, and kegs of harsh rye gin, Malakor sets two heavy brass goblets on an anvil. He unsheathes a ceremonial hunting knife, slicing his palm before handing the hilt to you. You slice yours without hesitation. Grasping hands in an unyielding blood-grip, red rivulets mingle over the iron anvil. 'Blood calls to blood,' Malakor growls with profound reverence. 'From this hour until the pyres turn cold, you are my war-brother.' He presents you with his Drake Whetstone—a prized relic that permanently sharpens your weapons for lethal combat damage.",
+    "choices": [
+      {
+        "id": "c_malakor_post_intimacy_recruit",
+        "text": "'Blood and iron, brother. Guard the bastion while I break through the perimeter.'",
+        "next_node": "root",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 20,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": "Malakor's Drake Whetstone",
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_recruited": {
+    "id": "malakor_recruited",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor hoists his greatsword, buckling his war belt with renewed purpose. 'I'm with you to the end of the line, brother. Anyone stands between us and the gates gets split from crown to groin.'",
+    "choices": [
+      {
+        "id": "c_malakor_recruited_to_hub",
+        "text": "'Let us move, Commander. Check your perimeter.'",
+        "next_node": "malakor_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_companion_hub": {
+    "id": "malakor_companion_hub",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor walks with heavy, purposeful strides at your flank, his massive Drake greatsword balanced easily upon his armored shoulder. His amber eyes constantly sweep the dark rooftops, anticipating Dawnbound ambushes. 'Keep your guard up, brother,' he grunts, spitting blood into the ash. 'The purge bell is ticking, but anyone who crosses our path tonight will taste iron.'",
+    "choices": [
+      {
+        "id": "c_malakor_companion_talk",
+        "text": "Converse with Malakor about his mercenary brotherhood and past battles.",
+        "next_node": "malakor_companion_talk",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_companion_tactics",
+        "text": "Review combat tactics and coordinating strikes (Combat Advice).",
+        "next_node": "malakor_companion_tactics",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_companion_drink",
+        "text": "Pass a flask of harsh rye gin and share a grim toast to survival.",
+        "next_node": "malakor_companion_drink",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_companion_dismiss",
+        "text": "'Commander, hold your ground here while I scout ahead alone.'",
+        "next_node": "malakor_companion_dismiss",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_companion_talk": {
+    "id": "malakor_companion_talk",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor gives a low, rumbling chuckle that rattles his steel cuirass. 'I fought for the Iron Drakes across seven provinces, wanderer. Seen kings turn to worms and fortresses crumble to ash. Most men fight for coin, titles, or women. But when the sky catches fire, all that matters is having someone at your back who won't break. You brought Loras's signet home. That makes you blood to me. We die on our feet tonight, or we walk out those gates as brothers.'",
+    "choices": [
+      {
+        "id": "c_malakor_talk_return",
+        "text": "'Well said, Malakor. Back to the front.'",
+        "next_node": "malakor_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_companion_tactics": {
+    "id": "malakor_companion_tactics",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor points out an unarmored seam below the shoulder pauldron of standard Dawnbound plate. 'If an inquisitor locks blades with you, don't try to bash their shield. Hook their knee, turn your shoulder, and drive your blade upward. Keep your Sinew behind your follow-through and let your momentum carry the strike.' (+2 combat readiness).",
+    "choices": [
+      {
+        "id": "c_malakor_tactics_return",
+        "text": "'Understood. Let us move.'",
+        "next_node": "malakor_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_companion_drink": {
+    "id": "malakor_companion_drink",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor unslings a battered tin flask and takes a deep draught before tossing it to you. The harsh rye spirit burns like liquid embers down your throat, clearing the sulfur taste of Oakhaven. 'To blood, iron, and surviving the damned night,' he grunts, wiping his jaw. (-5 Dread).",
+    "choices": [
+      {
+        "id": "c_malakor_drink_return",
+        "text": "'To survival.'",
+        "next_node": "malakor_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_companion_dismiss": {
+    "id": "malakor_companion_dismiss",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor plants his greatsword into the ground with a thud, nodding gravely. 'Understood, wanderer. I'll hold the line at the Iron Bastion. If the Dawnbound try to overrun this sector before you get back, they'll find Drake steel waiting for them.'",
+    "choices": [
+      {
+        "id": "c_malakor_confirm_dismiss",
+        "text": "Watch him turn back toward the Iron Bastion.",
+        "next_node": "malakor_companion_dismiss_final",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      },
+      {
+        "id": "c_malakor_cancel_dismiss",
+        "text": "'Change of plans. Stay with me, Commander.'",
+        "next_node": "malakor_companion_hub",
+        "required_stat": null,
+        "required_value": 0,
+        "relationship_change": 0,
+        "faction_changes": {},
+        "quest_trigger": null,
+        "quest_stage_set": null,
+        "item_required": null,
+        "item_reward": null,
+        "item_rewards": [],
+        "sovereign_cost": 0,
+        "is_romance_action": false,
+        "is_intimacy_action": false,
+        "is_hostile_action": false,
+        "failure_node": null
+      }
+    ]
+  },
+  "malakor_companion_dismiss_final": {
+    "id": "malakor_companion_dismiss_final",
+    "speaker_name": "Commander Malakor",
+    "text": "Commander Malakor returns to the Iron Drake Bastion.",
+    "choices": []
+  },
+  "malakor_hostile": {
+    "id": "malakor_hostile",
+    "speaker_name": "Commander Malakor",
+    "text": "Malakor draws his greatsword with a sickening hiss of sharpened steel. 'Dead man talking. I'll mount your skull above the gate!'",
+    "choices": []
+  }
+}

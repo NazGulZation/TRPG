@@ -928,6 +928,126 @@ body.dark-theme {
     margin-bottom: 24px;
 }
 
+/* Save & Load UI */
+.btn-continue {
+    border-color: #55bb77 !important;
+    color: #88eeaa !important;
+    background: rgba(85, 187, 119, 0.15) !important;
+    font-weight: 700;
+}
+.btn-continue:hover {
+    background: rgba(85, 187, 119, 0.3) !important;
+    box-shadow: 0 0 10px rgba(85, 187, 119, 0.4);
+}
+
+.save-modal-card {
+    max-width: 680px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.modal-header h2 {
+    margin-bottom: 0 !important;
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+.btn-close-modal:hover {
+    color: var(--text-blood);
+}
+
+.save-modal-subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+    font-size: 14px;
+}
+
+.save-slots-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 420px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 4px;
+}
+
+.save-slot-card {
+    background: #110e14;
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.save-slot-card:hover {
+    border-color: var(--text-gold);
+    background: #15111b;
+}
+
+.save-slot-card.autosave {
+    border-color: rgba(196, 160, 82, 0.4);
+}
+
+.slot-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.slot-title {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    color: var(--text-gold);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slot-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(196, 160, 82, 0.2);
+    color: var(--text-gold);
+    border: 1px solid rgba(196, 160, 82, 0.4);
+}
+
+.slot-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+}
+
+.slot-details {
+    font-size: 13px;
+    color: #ccc;
+}
+
+.slot-actions {
+    display: flex;
+    gap: 8px;
+}
+
 .hidden {
     display: none !important;
 }

@@ -1,6 +1,9 @@
 """Game Engine managing state, dialogues, eroge romance, attack-on-sight, party mechanics, and quests."""
 
 import random
+import json
+import datetime
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 from game.models import Player, NPC, Location, Quest, Stats
 from game.data.prologue import (
@@ -8,6 +11,7 @@ from game.data.prologue import (
     get_prologue_npcs,
     get_prologue_quests,
     get_prologue_factions,
+    get_prologue_metadata,
     SUITABLE_INTIMACY_LOCATIONS,
 )
 
@@ -27,12 +31,14 @@ class GameEngine:
         self.action_count: int = 0
         self.game_over: bool = False
         self.victory: bool = False
+        self.max_party_size: int = 4
 
-        # Initialize prologue opening narrative
-        self.add_log(
-            "prologue",
-            "PROLOGUE: ASHEN SOLSTICE - THE SINKING OF OAKHAVEN",
-            (
+        # Initialize prologue opening narrative from configuration
+        metadata = get_prologue_metadata()
+        opening = metadata.get("opening_log", {
+            "category": "prologue",
+            "title": "PROLOGUE: ASHEN SOLSTICE - THE SINKING OF OAKHAVEN",
+            "text": (
                 "You awaken with your face pressed into damp cobbles covered in greasy ash. "
                 "The iron brand of the condemned throbs raw and blistering against your neck. "
                 "Around you, the quarantine walls of Oakhaven loom like teeth of a blackened maw. "
@@ -40,6 +46,11 @@ class GameEngine:
                 "You have only hours to navigate the squabbling factions, forge desperate alliances, seek solace in the dark, "
                 "and find a way beyond the walls before the sky catches fire."
             )
+        })
+        self.add_log(
+            opening.get("category", "prologue"),
+            opening.get("title", "PROLOGUE: ASHEN SOLSTICE - THE SINKING OF OAKHAVEN"),
+            opening.get("text", "")
         )
 
     def add_log(self, category: str, title: str, text: str, meta: Optional[Dict[str, Any]] = None):
@@ -258,6 +269,7 @@ class GameEngine:
                         "relationship": npc.relationship,
                         "is_combatant": npc.is_combatant,
                         "can_romance": npc.can_romance,
+                        "can_recruit": getattr(npc, "can_recruit", True),
                         "is_romanced": npc.is_romanced,
                         "stats": npc.stats.to_dict(),
                         "description": npc.description
@@ -336,7 +348,8 @@ class GameEngine:
             "bell_toll": self.bell_toll,
             "logs": self.logs[-25:],
             "game_over": self.game_over,
-            "victory": self.victory
+            "victory": self.victory,
+            "max_party_size": self.max_party_size
         }
 
     def travel(self, destination_id: str) -> Dict[str, Any]:
@@ -809,6 +822,9 @@ class GameEngine:
             return {"error": "Character not found."}
         npc = self.npcs[npc_id]
 
+        if not getattr(npc, "can_recruit", True):
+            return {"error": f"{npc.name} cannot be recruited into your traveling party."}
+
         if not npc.is_combatant:
             return {"error": f"{npc.name} is too frail or unfit for battle and cannot join the frontlines."}
 
@@ -818,8 +834,8 @@ class GameEngine:
         if npc.is_in_party:
             return {"error": f"{npc.name} is already in your party."}
 
-        if len(self.player.party) >= 2:
-            return {"error": "Party is full (maximum 2 companions)."}
+        if len(self.player.party) >= self.max_party_size:
+            return {"error": f"Party is full (maximum {self.max_party_size} companions)."}
 
         npc.is_in_party = True
         self.player.party.append(npc.id)
@@ -1034,3 +1050,152 @@ class GameEngine:
             return self.get_state()
 
         return {"error": "Unknown escape method."}
+
+    def get_save_summary(self) -> Dict[str, Any]:
+        curr_loc = self.locations.get(self.player.current_location_id)
+        loc_name = curr_loc.name if curr_loc else "Unknown Area"
+        party_names = [self.npcs[p].name for p in self.player.party if p in self.npcs]
+        return {
+            "player_name": self.player.name,
+            "location_id": self.player.current_location_id,
+            "location_name": loc_name,
+            "bell_toll": self.bell_toll,
+            "party": party_names,
+            "hp": self.player.current_hp,
+            "max_hp": self.player.max_hp,
+            "dread": self.player.dread,
+            "sovereigns": self.player.sovereigns,
+        }
+
+    def save_to_dict(self) -> Dict[str, Any]:
+        return {
+            "version": 1,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "summary": self.get_save_summary(),
+            "player": {
+                "name": self.player.name,
+                "gender": self.player.gender,
+                "title": self.player.title,
+                "stats": self.player.stats.to_dict(),
+                "max_hp": self.player.max_hp,
+                "current_hp": self.player.current_hp,
+                "dread": self.player.dread,
+                "sovereigns": self.player.sovereigns,
+                "inventory": list(self.player.inventory),
+                "current_location_id": self.player.current_location_id,
+                "party": list(self.player.party),
+                "romanced_npcs": list(self.player.romanced_npcs),
+                "quests": dict(self.player.quests),
+                "faction_reputation": dict(self.player.faction_reputation),
+            },
+            "locations": {
+                loc_id: {
+                    "items_on_ground": list(loc.items_on_ground),
+                    "npc_ids": list(loc.npc_ids),
+                }
+                for loc_id, loc in self.locations.items()
+            },
+            "npcs": {
+                npc_id: {
+                    "current_hp": npc.current_hp,
+                    "relationship": npc.relationship,
+                    "is_in_party": npc.is_in_party,
+                    "is_romanced": npc.is_romanced,
+                    "is_dead": npc.is_dead,
+                    "can_recruit": getattr(npc, "can_recruit", True),
+                }
+                for npc_id, npc in self.npcs.items()
+            },
+            "quests": {
+                q_id: q.current_stage for q_id, q in self.quests.items()
+            },
+            "bell_toll": self.bell_toll,
+            "action_count": self.action_count,
+            "game_over": self.game_over,
+            "victory": self.victory,
+            "current_dialogue": self.current_dialogue,
+            "combat_state": self.combat_state,
+            "intimacy_state": self.intimacy_state,
+            "logs": list(self.logs),
+        }
+
+    def load_from_dict(self, data: Dict[str, Any]) -> bool:
+        if not data or "player" not in data:
+            return False
+
+        p_data = data["player"]
+        self.player.name = p_data.get("name", self.player.name)
+        self.player.gender = p_data.get("gender", self.player.gender)
+        self.player.title = p_data.get("title", self.player.title)
+        if "stats" in p_data:
+            self.player.stats = Stats.from_dict(p_data["stats"])
+        self.player.max_hp = p_data.get("max_hp", self.player.max_hp)
+        self.player.current_hp = p_data.get("current_hp", self.player.current_hp)
+        self.player.dread = p_data.get("dread", self.player.dread)
+        self.player.sovereigns = p_data.get("sovereigns", self.player.sovereigns)
+        self.player.inventory = list(p_data.get("inventory", []))
+        self.player.current_location_id = p_data.get("current_location_id", self.player.current_location_id)
+        self.player.party = list(p_data.get("party", []))
+        self.player.romanced_npcs = list(p_data.get("romanced_npcs", []))
+        self.player.quests = dict(p_data.get("quests", {}))
+        self.player.faction_reputation = dict(p_data.get("faction_reputation", self.player.faction_reputation))
+
+        locs_data = data.get("locations", {})
+        for loc_id, l_data in locs_data.items():
+            if loc_id in self.locations:
+                if "items_on_ground" in l_data:
+                    self.locations[loc_id].items_on_ground = list(l_data["items_on_ground"])
+                if "npc_ids" in l_data:
+                    self.locations[loc_id].npc_ids = list(l_data["npc_ids"])
+
+        npcs_data = data.get("npcs", {})
+        for npc_id, n_data in npcs_data.items():
+            if npc_id in self.npcs:
+                npc = self.npcs[npc_id]
+                npc.current_hp = n_data.get("current_hp", npc.current_hp)
+                npc.relationship = n_data.get("relationship", npc.relationship)
+                npc.is_in_party = n_data.get("is_in_party", npc.is_in_party)
+                npc.is_romanced = n_data.get("is_romanced", npc.is_romanced)
+                npc.is_dead = n_data.get("is_dead", npc.is_dead)
+                if "can_recruit" in n_data:
+                    npc.can_recruit = n_data["can_recruit"]
+
+        quests_data = data.get("quests", {})
+        for q_id, q_stage in quests_data.items():
+            if q_id in self.quests:
+                self.quests[q_id].current_stage = q_stage
+
+        self.bell_toll = data.get("bell_toll", self.bell_toll)
+        self.action_count = data.get("action_count", self.action_count)
+        self.game_over = data.get("game_over", self.game_over)
+        self.victory = data.get("victory", self.victory)
+        self.current_dialogue = data.get("current_dialogue")
+        self.combat_state = data.get("combat_state")
+        self.intimacy_state = data.get("intimacy_state")
+        self.logs = list(data.get("logs", self.logs))
+        return True
+
+    def save_to_file(self, slot_or_path: str = "autosave") -> str:
+        slot_name = slot_or_path.strip().replace(".json", "")
+        saves_dir = Path("saves")
+        saves_dir.mkdir(parents=True, exist_ok=True)
+        file_path = saves_dir / f"{slot_name}.json"
+
+        data = self.save_to_dict()
+        data["slot"] = slot_name
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return str(file_path)
+
+    def load_from_file(self, slot_or_path: str = "autosave") -> bool:
+        slot_name = slot_or_path.strip().replace(".json", "")
+        file_path = Path("saves") / f"{slot_name}.json"
+        if not file_path.exists():
+            file_path = Path(slot_or_path)
+            if not file_path.exists():
+                return False
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return self.load_from_dict(data)
+
