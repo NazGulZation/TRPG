@@ -90,7 +90,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             speaker_name="Sister Vanya",
             text=(
                 "The sister looks up from a blood-soaked linen cot, pushing strands of sweat-matted dark hair from her fevered eyes. "
-                "Her white habit is smeared with charcoal and arterial red. 'Another wanderer,' she whispers, voice husky with exhaustion. "
+                "Her white habit is smeared with charcoal and arterial red, the coarse cloth clinging to her trembling frame. "
+                "'Another wanderer,' she whispers, her voice husky and ragged with exhaustion. "
                 "'Are you here seeking absolution, or are your veins already burning with the black-rot?'"
             ),
             choices=[
@@ -102,6 +103,14 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     required_value=11,
                     relationship_change=10,
                     failure_node="vanya_lucidity_fail"
+                ),
+                DialogueChoice(
+                    id="c_vanya_triage",
+                    text="[Lucidity 10] 'Let me help you examine the patients in this ward before the bell strikes.'",
+                    next_node="vanya_triage_ward",
+                    required_stat="lucidity",
+                    required_value=10,
+                    relationship_change=10
                 ),
                 DialogueChoice(
                     id="c_vanya_help",
@@ -123,6 +132,71 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     relationship_change=-25,
                     faction_changes={"dawnshroud": -15},
                     is_hostile_action=True
+                )
+            ]
+        ),
+        "vanya_triage_ward": DialogueNode(
+            id="vanya_triage_ward",
+            speaker_name="Sister Vanya",
+            text=(
+                "Vanya's eyes widen with cautious gratitude as you step into the lantern glow. Three cots demand urgent triage: "
+                "a convulsing Dawnbound soldier choking on blackened sputum, an infected youth with swollen lymphatic carbuncles, "
+                "and an elderly woman weeping incoherently from delirium."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_triage_soldier",
+                    text="[Sinew 12] Hold the seizing soldier down firmly while Vanya safely inserts a silver airway pipe.",
+                    next_node="vanya_triage_soldier_success",
+                    required_stat="sinew",
+                    required_value=12,
+                    relationship_change=15
+                ),
+                DialogueChoice(
+                    id="c_vanya_triage_youth",
+                    text="[Guile 11] Use your scalpel or dirk with surgical precision to drain the carbuncle cleanly.",
+                    next_node="vanya_triage_youth_success",
+                    required_stat="guile",
+                    required_value=11,
+                    relationship_change=15,
+                    item_reward="Purified Bandage"
+                ),
+                DialogueChoice(
+                    id="c_vanya_triage_return",
+                    text="'We must focus on getting the medicine from Malakor.'",
+                    next_node="vanya_quest_hook"
+                )
+            ]
+        ),
+        "vanya_triage_soldier_success": DialogueNode(
+            id="vanya_triage_soldier_success",
+            speaker_name="Sister Vanya",
+            text=(
+                "With muscular resilience, you pin the thrashing templar's shoulders to the cot. Vanya swiftly clears his throat of black bile. "
+                "The soldier's breathing stabilizes into calm sleep. Vanya wipes a drop of sweat from her lip, looking up at you with flushed cheeks. "
+                "'You have powerful hands, wanderer... and a gentle heart. Thank you.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_after_triage",
+                    text="'Tell me what else we need to save these people.'",
+                    next_node="vanya_quest_hook"
+                )
+            ]
+        ),
+        "vanya_triage_youth_success": DialogueNode(
+            id="vanya_triage_youth_success",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your steady hands lance the lethal pocket with microscopic care. The feverish boy sighs in relief as the poisonous pressure abates. "
+                "Vanya wraps him in clean dressings, pressing a spare Purified Bandage into your palm. "
+                "'Extraordinary dexterity. You would have made a brilliant surgeon in the capital.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_after_triage2",
+                    text="'Now tell me where the hemlock is.'",
+                    next_node="vanya_quest_hook"
                 )
             ]
         ),
@@ -209,7 +283,7 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             text=(
                 "Tears carve pale trails through the ash on Vanya's cheeks as she takes the dark vial from your hands. "
                 "'You... you truly brought it. They will slip away into darkness without feeling the flames.' She presses a silver Dawnshroud Seal "
-                "into your palm, her fingers lingering against your skin, warm and trembling."
+                "into your palm, her fingers lingering against your skin, warm and trembling. Her eyes carry a deep, burning hunger for solace."
             ),
             choices=[
                 DialogueChoice(
@@ -231,9 +305,9 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="vanya_romance_start",
             speaker_name="Sister Vanya",
             text=(
-                "Vanya shivers at your touch. Her skin is feverishly warm. For a moment, her religious composure fractures completely, "
-                "revealing a lonely, terrified woman starved of tenderness. 'You are reckless to speak like that in a city awaiting the torch,' "
-                "she whispers, though she leans into your hand for a lingering second before looking away."
+                "Vanya shivers at your touch. Her skin is feverishly warm beneath the soot. For a moment, her religious composure fractures completely, "
+                "revealing a lonely, terrified woman starved of tenderness and carnal warmth. 'You are reckless to speak like that in a city awaiting the torch,' "
+                "she whispers, though she leans into your palm, her lips parting as she exhales a soft, ragged breath."
             ),
             choices=[
                 DialogueChoice(
@@ -262,19 +336,234 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 )
             ]
         ),
+
+        # --- Eroge Spicy Multi-Stage Intimacy Sequence: Sister Vanya ---
         "vanya_intimacy_scene": DialogueNode(
             id="vanya_intimacy_scene",
             speaker_name="Sister Vanya",
             text=(
-                "Behind the tattered altar curtain, cloaked in incense and twilight, Vanya unfastens the high collar of her habit with trembling urgency. "
-                "Her breath comes quick and ragged against your throat. In the shadow of inevitable slaughter, all piety and restraint dissolve into raw, "
-                "feverish hunger. Her hands grasp your shoulders as your bodies collide, seeking fierce, desperate validation of life in a world "
-                "drowning in ash. The encounter leaves you both breathless, skin slick with perspiration, your mind cleared of dread and anchored by profound intimacy."
+                "Leading you behind the heavy tattered velvet altar curtain into the consecrated crypt, Vanya shuts out the toxic smog of Oakhaven. "
+                "A solitary wax taper flickers upon an alabaster pedestal, casting golden warmth across her flushed skin. "
+                "Her dark hair spills loose over her shoulders as she unpins her wimple. "
+                "'All my life I was taught that the flesh is a vessel of sin,' she whispers, her breath trembling against your collarbone. "
+                "'Yet tonight, with the fire hours away... all I want is to feel your heat, wanderer. Show me what life feels like before we burn.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_eroge_unveil",
+                    text="Reach for the lacings of her habit, gently stripping away her sacred vows.",
+                    next_node="vanya_eroge_unveil",
+                    is_intimacy_action=True,
+                    relationship_change=15
+                ),
+                DialogueChoice(
+                    id="c_vanya_minigame_start",
+                    text="Engage in the 'Sanctum of the Flesh' Intimacy Minigame.",
+                    next_node="vanya_eroge_minigame_start",
+                    is_intimacy_action=True,
+                    relationship_change=20
+                )
+            ]
+        ),
+        "vanya_eroge_minigame_start": DialogueNode(
+            id="vanya_eroge_minigame_start",
+            speaker_name="Sister Vanya",
+            text=(
+                "You lay Vanya onto the soft silk altar vestments. Her habit falls open, revealing high, flushed breasts crowned with rosy, sensitive nipples "
+                "that harden in the cool crypt air. Her thighs tremble slightly with anticipation as she gazes up at you with parted lips. "
+                "(The Intimacy Minigame has begun! Build her Arousal to 100% using tactile caresses, passionate rhythm, and whispered adoration)."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_mg_guile",
+                    text="[Guile] Erogenous Caress: Trace your fingertips across her ribs, inner thighs, and sensitive cleft.",
+                    next_node="vanya_mg_guile_node",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_mg_sinew",
+                    text="[Sinew] Passionate Intensity: Pull her hips firmly against yours, kissing her throat with deep hunger.",
+                    next_node="vanya_mg_sinew_node",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_mg_lucidity",
+                    text="[Lucidity] Whispered Worship: Read her ragged breathing and whisper absolution while stroking her wet heat.",
+                    next_node="vanya_mg_lucidity_node",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_mg_oral",
+                    text="Devoted Oral Worship: Part her trembling thighs and press your lips directly to her glistening core.",
+                    next_node="vanya_mg_oral_node",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_mg_guile_node": DialogueNode(
+            id="vanya_mg_guile_node",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your skilled fingertips tease the soft, damp crease of her inner thighs before sliding upward to caress her glistening bud. "
+                "Vanya arches her back with an involuntary, wanton gasp, her fingers clutching your arms. 'Ah... wanderer! It burns... so good...'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_mg_to_climax",
+                    text="Drive the ecstasy to its peak: enter her deeply and bring her to overwhelming release!",
+                    next_node="vanya_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "vanya_mg_sinew_node": DialogueNode(
+            id="vanya_mg_sinew_node",
+            speaker_name="Sister Vanya",
+            text=(
+                "You grip her slender waist with uncompromising strength, pressing your hardening length between her wet thighs. "
+                "Her breath turns into a ragged moan against your neck as you claim her lips in a bruising, heated kiss that leaves her dizzy with desire."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_mg_to_climax2",
+                    text="Lift her legs over your shoulders and drive in to claim her climax!",
+                    next_node="vanya_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "vanya_mg_lucidity_node": DialogueNode(
+            id="vanya_mg_lucidity_node",
+            speaker_name="Sister Vanya",
+            text=(
+                "'You are not sinning, Vanya,' you murmur into her ear. 'This is the only holy thing left in this dying world.' "
+                "Tears of cathartic ecstasy spill from her eyes as your hands rhythmically soothe and stimulate her wet, trembling center, "
+                "shattering every lingering vestige of religious guilt."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_mg_to_climax3",
+                    text="Slide inside her welcoming warmth for the final, breathless ascension!",
+                    next_node="vanya_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "vanya_mg_oral_node": DialogueNode(
+            id="vanya_mg_oral_node",
+            speaker_name="Sister Vanya",
+            text=(
+                "Kneeling between her parted thighs, you part her glistening folds with your fingers and taste her intimate sweetness. "
+                "Vanya cries out in sheer disbelief, her fingers tangling frantically in your hair as her hips buck upward against your mouth. "
+                "'Merciful martyrs... please! I can't... I'm losing my mind!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_mg_to_climax4",
+                    text="Rise up and sheath yourself inside her drenched core to finish together!",
+                    next_node="vanya_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "vanya_eroge_unveil": DialogueNode(
+            id="vanya_eroge_unveil",
+            speaker_name="Sister Vanya",
+            text=(
+                "With patient, deliberate care, your fingers untie the stained cord of her habit. The heavy white cloth slips to the stone, "
+                "leaving her dressed only in a sheer linen chemise damp with perspiration. Beneath the translucent fabric, her full, rose-tipped breasts "
+                "heave with every breath, her taut nipples pressing visibly against the cloth. "
+                "She shivers not from cold, but from sheer sensory overload as your hands cup her waist."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_eroge_tender",
+                    text="Gently push the chemise off her shoulders and kiss down her throat to her breasts.",
+                    next_node="vanya_eroge_foreplay_tender",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_vanya_eroge_dominant",
+                    text="Lift her bodily onto the stone altar, parting her bare thighs before you.",
+                    next_node="vanya_eroge_foreplay_dominant",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_eroge_foreplay_tender": DialogueNode(
+            id="vanya_eroge_foreplay_tender",
+            speaker_name="Sister Vanya",
+            text=(
+                "Your mouth traces the delicate curve of her collarbone down to the soft swell of her breast. When your lips capture her erect nipple, "
+                "suckling with gentle heat, Vanya lets out an arched, quivering cry, her nails digging into your back. "
+                "Your hand slides down her silken belly into the humid heat between her thighs, finding her already slick and drenched with longing. "
+                "She whimpers, grinding her hips into your palm with uninhibited hunger."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_eroge_enter_tender",
+                    text="Align your hips with hers and push smoothly into her velvet warmth.",
+                    next_node="vanya_eroge_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_eroge_foreplay_dominant": DialogueNode(
+            id="vanya_eroge_foreplay_dominant",
+            speaker_name="Sister Vanya",
+            text=(
+                "You lift her onto the altar slab, her smooth bare thighs spreading wide in the candlelight. Stepping between them, you grasp her hips, "
+                "your thumbs stroking the damp heat of her inner thighs. Her eyes darken with submission and desire. "
+                "'Do with me as you will, wanderer,' she whispers raggedly. 'Cleanse me of this dreadful silence.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_eroge_enter_dom",
+                    text="Thrust deeply into her tight, glistening depths with fierce, possessive rhythm.",
+                    next_node="vanya_eroge_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "vanya_eroge_climax": DialogueNode(
+            id="vanya_eroge_climax",
+            speaker_name="Sister Vanya",
+            text=(
+                "Sheathing yourself completely within her snug, shuddering core, a guttural groan escapes your chest as her tight walls clench around you. "
+                "Vanya throws her head back, her ivory throat exposed, gasping in breathless ecstasy as you begin a relentless, driving cadence. "
+                "Each deep stroke draws wanton cries from the chirurgeon's lips, echoing softly off the ancient chantry stones. "
+                "Her legs wrap tightly around your waist, pulling you deeper, her slick center milking you with urgent spasms. "
+                "With a final, desperate cry into your neck, she shatters into a violent, toe-curling climax, her inner muscles clamping fiercely "
+                "as you pour your hot release deep inside her, collapsing together into breathless, sweat-slicked communion."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_vanya_eroge_afterglow",
+                    text="Hold her gently as your breathing slows in the warm candlelight.",
+                    next_node="vanya_eroge_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25,
+                    item_reward="Sister Vanya's Embroidered Rosary"
+                )
+            ]
+        ),
+        "vanya_eroge_afterglow": DialogueNode(
+            id="vanya_eroge_afterglow",
+            speaker_name="Sister Vanya",
+            text=(
+                "Wrapped together in the heavy chantry vestments on the crypt floor, Vanya's head rests against your bare chest, her fingers lazily tracing "
+                "the executioner's brand on your neck. A peaceful, radiant smile touches her lips—all terror of the purge banished into complete calm. "
+                "'I never knew such devotion existed,' she murmurs softly. She places a velvet cord holding her sanctified silver rosary around your neck. "
+                "'Keep this. It is embroidered with the blessings of the Quiet Dawn. It will shield your mind from dread. Now, let me fight at your side.'"
             ),
             choices=[
                 DialogueChoice(
                     id="c_vanya_post_intimacy_recruit",
-                    text="'You belong with me now, Vanya. Take up your chirurgeon kit and let us fight our way out.'",
+                    text="'You belong with me now, Vanya. Take up your chirurgeon kit and let us break through the perimeter.'",
                     next_node="vanya_recruited",
                     relationship_change=20
                 )
@@ -284,8 +573,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="vanya_recruited",
             speaker_name="Sister Vanya",
             text=(
-                "Vanya straps an apothecary satchel across her chest and conceals a surgical scalpel in her sleeve. "
-                "'My place is at your side, wanderer. I will mend your flesh when you bleed, and I will strike when darkness closes in.'"
+                "Vanya straps an apothecary satchel across her chest and conceals a surgical scalpel in her sleeve. Her eyes shine with total devotion. "
+                "'My place is at your side, my love. I will mend your flesh when you bleed, and strike when darkness closes in.'"
             ),
             choices=[]
         ),
@@ -320,6 +609,12 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     failure_node="malakor_sinew_fail"
                 ),
                 DialogueChoice(
+                    id="c_malakor_spar",
+                    text="'They say the Iron Drakes fight for gold, but you fight for blood. Let's test our steel in the pit.'",
+                    next_node="malakor_spar_challenge",
+                    relationship_change=10
+                ),
+                DialogueChoice(
                     id="c_malakor_vanya_quest",
                     text="'Sister Vanya needs the Wolfsbane Nectar you looted from the chantry. Name your price.'",
                     next_node="malakor_quest_trade",
@@ -327,9 +622,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 ),
                 DialogueChoice(
                     id="c_malakor_court",
-                    text="Meet his gaze directly, a slow smirk touching your lips. 'A warrior of your caliber shouldn't waste his final hours drinking alone.'",
+                    text="Meet his gaze directly, a slow smirk touching your lips. 'A warrior of your caliber shouldn't waste his final hours brooding alone in the dirt.'",
                     next_node="malakor_romance_start",
-                    is_romance_action=True,
                     relationship_change=15
                 ),
                 DialogueChoice(
@@ -339,6 +633,55 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     relationship_change=-35,
                     faction_changes={"iron_drakes": -20},
                     is_hostile_action=True
+                )
+            ]
+        ),
+        "malakor_spar_challenge": DialogueNode(
+            id="malakor_spar_challenge",
+            speaker_name="Commander Malakor",
+            text=(
+                "A savage grin splits the veteran's scarred face. He tosses aside his whetstone and picks up a blunted iron broadsword. "
+                "'A challenger with guts! Step into the pit, wanderer. Let's see if your backbone is made of iron or rotten timber!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_malakor_spar_sinew",
+                    text="[Sinew 13] Meet his overhead crash head-on, locking blades and throwing him off balance.",
+                    next_node="malakor_spar_win",
+                    required_stat="sinew",
+                    required_value=13,
+                    relationship_change=20,
+                    item_reward="Heavy Whetstone"
+                ),
+                DialogueChoice(
+                    id="c_malakor_spar_guile",
+                    text="[Guile 12] Duck beneath his sweeping swing and plant your boot in the crook of his knee.",
+                    next_node="malakor_spar_win",
+                    required_stat="guile",
+                    required_value=12,
+                    relationship_change=20,
+                    item_reward="Heavy Whetstone"
+                ),
+                DialogueChoice(
+                    id="c_malakor_spar_decline",
+                    text="'Save your strength for the gate guards, Malakor. Let's talk business.'",
+                    next_node="malakor_quest_trade"
+                )
+            ]
+        ),
+        "malakor_spar_win": DialogueNode(
+            id="malakor_spar_win",
+            speaker_name="Commander Malakor",
+            text=(
+                "The clash echoes off the brewery stone! Malakor stumbles back, catching his footing with a hearty, booming roar of laughter. "
+                "'Hah! True iron! By the Drakes, it's been months since a man stood in front of my blade without wetting his trousers! "
+                "Take this heavy whetstone from my forge—you've earned the Drakes' warrior respect, brother.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_malakor_spar_to_quest",
+                    text="'What keeps a warrior like you waiting in this slaughterhouse?'",
+                    next_node="malakor_personal_quest"
                 )
             ]
         ),
@@ -447,9 +790,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             choices=[
                 DialogueChoice(
                     id="c_malakor_embrace",
-                    text="Step into his space, placing a firm hand on his armored chest. 'You don't have to carry this grief alone, Malakor.'",
+                    text="Clasp his forearm in an iron warrior's grip. 'Your brother's honor lives on in you, Malakor. Stand with me.'",
                     next_node="malakor_intimacy_scene",
-                    is_intimacy_action=True,
                     relationship_change=25
                 ),
                 DialogueChoice(
@@ -465,9 +807,8 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             speaker_name="Commander Malakor",
             text=(
                 "Malakor's eyes widen slightly before a rugged, wolfish grin creeps onto his battle-hardened jaw. "
-                "He leans forward, close enough that you can smell the sharp tang of rye gin and leather on him. "
-                "'Bold words for a wanderer. Most men fear what my hands can do. But you... you're sizing me up like a prize. "
-                "Prove you have the stomach to ride the storm with me, and maybe I'll show you what this blade can do in private.'"
+                "'Bold words for a wanderer. Most men fear what my hands can do. But you... you look at me like an equal in the field. "
+                "Prove you have the stomach to ride the storm with me, and maybe I'll show you what Iron Drake brotherhood truly means.'"
             ),
             choices=[
                 DialogueChoice(
@@ -482,18 +823,19 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             id="malakor_intimacy_scene",
             speaker_name="Commander Malakor",
             text=(
-                "Inside his private armory quarters, away from the roaring fires and drunk mercenaries, Malakor pulls you in with crushing, "
-                "ferocious strength. The discarded armor clatters to the flagstones. His muscular, heavily scarred body is burning with heat, "
-                "demanding an unfiltered, primal release after months of bloodshed. Your mouths lock in a bruised, heated clash of teeth and tongue. "
-                "Every touch is intense, possessive, and raw—two condemned men defying the cold shadow of the executioner's pyre with unbridled passion. "
-                "When the frenzy subsides in the dim lantern light, his arm remains wrapped securely around your chest, breathing in sync with yours."
+                "In his private armory surrounded by iron, trophies, and kegs of harsh rye gin, Malakor sets two heavy brass goblets on an anvil. "
+                "He unsheathes a ceremonial hunting knife, slicing his palm before handing the hilt to you. "
+                "You slice yours without hesitation. Grasping hands in an unyielding blood-grip, red rivulets mingle over the iron anvil. "
+                "'Blood calls to blood,' Malakor growls with profound reverence. 'From this hour until the pyres turn cold, you are my war-brother.' "
+                "He presents you with his Drake Whetstone—a prized relic that permanently sharpens your weapons for lethal combat damage."
             ),
             choices=[
                 DialogueChoice(
                     id="c_malakor_post_intimacy_recruit",
                     text="'Get your greatsword, Malakor. Tonight, we fight as one.'",
                     next_node="malakor_recruited",
-                    relationship_change=20
+                    relationship_change=20,
+                    item_reward="Malakor's Drake Whetstone"
                 )
             ]
         ),
@@ -522,7 +864,7 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             speaker_name="Madame Silve",
             text=(
                 "Lounging on plush crimson cushions behind sheer silk veils, Madame Silve sips dark wine from a leaded crystal goblet. "
-                "Her cleavage is accentuated by a corset of black lace and velvet; dark kohl lines her predatory, intelligent eyes. "
+                "Her generous cleavage is accentuated by a corset of black lace and velvet; dark kohl lines her predatory, intelligent eyes. "
                 "'Look at you,' she murmurs with a low, seductive purr. 'Muscles taut with panic, eyes searching for salvation. "
                 "Everyone wants to leave Oakhaven tonight. What do your handsome lips desire, wanderer?'"
             ),
@@ -537,6 +879,12 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     failure_node="silve_guile_fail"
                 ),
                 DialogueChoice(
+                    id="c_silve_contraband",
+                    text="'Show me what contraband your parlour peddles before the gates burn.'",
+                    next_node="silve_contraband_shop",
+                    relationship_change=5
+                ),
+                DialogueChoice(
                     id="c_silve_talk",
                     text="'I need transit through the Sluice Trench. They say you have the ear of the smugglers.'",
                     next_node="silve_info",
@@ -548,6 +896,51 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     next_node="silve_romance_start",
                     is_romance_action=True,
                     relationship_change=15
+                )
+            ]
+        ),
+        "silve_contraband_shop": DialogueNode(
+            id="silve_contraband_shop",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve smiles seductively, gesturing to an inlaid cedar chest behind the bar. "
+                "'Opium, vintage spiced plum wine, or medical bandages looted from dead merchants. Coin talks, darling.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_buy_wine",
+                    text="Buy Spiced Plum Wine (10 Sovereigns) [Restores 12 HP, -15 Dread].",
+                    next_node="silve_bought_item",
+                    item_reward="Spiced Plum Wine",
+                    sovereign_cost=10,
+                    relationship_change=5
+                ),
+                DialogueChoice(
+                    id="c_silve_buy_bandage",
+                    text="Buy Purified Bandage (15 Sovereigns) [Restores 25 HP in combat].",
+                    next_node="silve_bought_item",
+                    item_reward="Purified Bandage",
+                    sovereign_cost=15,
+                    relationship_change=5
+                ),
+                DialogueChoice(
+                    id="c_silve_shop_back",
+                    text="'Let's speak of transit and the ledger.'",
+                    next_node="silve_info"
+                )
+            ]
+        ),
+        "silve_bought_item": DialogueNode(
+            id="silve_bought_item",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve passes the package with a teasing brush of her manicured fingers. 'A pleasure doing business with a man of taste.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_after_shop",
+                    text="'Now, about the way beyond the walls.'",
+                    next_node="silve_info"
                 )
             ]
         ),
@@ -635,7 +1028,7 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             text=(
                 "Silve turns the pages of the bloodstained Turnkey Ledger, her lips curling into a wicked smile. "
                 "'Blackmail on every magistrate in the province. Exquisite.' She slides a forged Imperial Transit Pass into your coat pocket, "
-                "her hand lingering against your thigh."
+                "her hand lingering provocatively against your inner thigh, her perfume overpowering the sulfur outside."
             ),
             choices=[
                 DialogueChoice(
@@ -653,17 +1046,194 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                 )
             ]
         ),
+
+        # --- Eroge Spicy Multi-Stage Intimacy Sequence: Madame Silve ---
         "silve_intimacy_scene": DialogueNode(
             id="silve_intimacy_scene",
             speaker_name="Madame Silve",
             text=(
-                "Behind heavy drawn curtains of midnight velvet, Silve sheds her silks with practiced, intoxicating grace. "
-                "The air is thick with sweet opium and musk. She pushes you onto the feather cushions, straddling you with a breathless gasp. "
-                "Her touch is exquisite, decadent, and relentless, guiding you into a sensory trance where the doomed world outside ceases to exist. "
-                "As the midnight bells reverberate through the floorboards, you lose yourself completely in her intoxicating warmth, "
-                "sealing an alliance born of dark pleasure and mutual survival."
+                "Silve guides you past heavy midnight-velvet curtains into her private sanctuary. Scented candles illuminate opulent crimson divans "
+                "and piles of goose-down pillows. The sweet aroma of opium and spiced plum wine fills the air. "
+                "With practiced, intoxicating grace, Silve unties her bodice strings. The tight black velvet opens, exposing her voluptuous, creamy bosom "
+                "and narrow waist to your gaze. She laughs huskily, sliding her manicured fingers down your chest. "
+                "'You fought like a demon for my ledger, wanderer. Tonight, I will show you what a true courtesan does with an iron-hearted survivor.'"
             ),
-            choices=[]
+            choices=[
+                DialogueChoice(
+                    id="c_silve_eroge_boudoir",
+                    text="Embrace her against the cushions and taste the spiced wine on her lips.",
+                    next_node="silve_eroge_boudoir",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_minigame_start",
+                    text="Engage in the 'Velvet & Vice' Intimacy Minigame.",
+                    next_node="silve_eroge_minigame_start",
+                    is_intimacy_action=True,
+                    relationship_change=20
+                )
+            ]
+        ),
+        "silve_eroge_minigame_start": DialogueNode(
+            id="silve_eroge_minigame_start",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve kicks off her satin slippers and pulls you down atop the velvet cushions, her lace chemise riding up her voluptuous, silky hips. "
+                "Her dark eyes sparkle with erotic anticipation as her warm thighs cradle your waist. "
+                "(The Intimacy Minigame has begun! Build her Arousal to 100% using tactile caresses, commanding rhythm, and decadent kisses)."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_mg_guile",
+                    text="[Guile] Erogenous Caress: Tease the silken curve of her hips and stroke her wet core through sheer lace.",
+                    next_node="silve_mg_guile_node",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_mg_sinew",
+                    text="[Sinew] Commanding Rhythm: Seize her wrists above her head and press into her with unyielding intensity.",
+                    next_node="silve_mg_sinew_node",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_mg_wine",
+                    text="Spiced Wine Kiss: Sip wine from her goblet and pour it down her cleavage, licking every drop.",
+                    next_node="silve_mg_wine_node",
+                    is_intimacy_action=True
+                ),
+                DialogueChoice(
+                    id="c_silve_mg_oral",
+                    text="Devoted Oral Seduction: Kneel amidst the crimson silks and worship her wet, parted lips.",
+                    next_node="silve_mg_oral_node",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "silve_mg_guile_node": DialogueNode(
+            id="silve_mg_guile_node",
+            speaker_name="Madame Silve",
+            text=(
+                "Your nimble fingers peel aside her gossamer lace underwear. Finding her drenched and burning with desire, you trace her sensitive folds "
+                "with exquisite technique. Silve bites her lip, her hips lifting greedily into your hand. 'Mmm... you touch a woman like a master thief, darling...'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_mg_to_climax",
+                    text="Take her on the velvet cushions and drive her into ecstasy!",
+                    next_node="silve_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "silve_mg_sinew_node": DialogueNode(
+            id="silve_mg_sinew_node",
+            speaker_name="Madame Silve",
+            text=(
+                "You pin the proud secret broker to the pillows, your muscular weight pressing against her soft curves. "
+                "Her breath catches in her throat; for all her calculating cunning, she melts completely beneath your masculine dominance, "
+                "wrapping her silken legs eagerly around your waist."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_mg_to_climax2",
+                    text="Thrust deeply into her tight, wet depths and conquer her pleasure!",
+                    next_node="silve_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "silve_mg_wine_node": DialogueNode(
+            id="silve_mg_wine_node",
+            speaker_name="Madame Silve",
+            text=(
+                "You pour a stream of dark, spiced plum wine across her throat and between her full breasts. Your hot tongue trails down her skin, "
+                "drinking the fragrant liquor from her skin. Silve writhes beneath you, moaning your name in sheer sensory delirium."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_mg_to_climax3",
+                    text="Push into her drenched center to share the intoxicating finish!",
+                    next_node="silve_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "silve_mg_oral_node": DialogueNode(
+            id="silve_mg_oral_node",
+            speaker_name="Madame Silve",
+            text=(
+                "Burrowing between her soft, perfumed thighs, your tongue lavishes her swollen clitoris with decadent suction and rhythm. "
+                "Silve cries out in wanton abandon, her composure shattering into desperate gasps as she tangles her fingers in your hair, "
+                "begging for your steel."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_mg_to_climax4",
+                    text="Rise up and bury your length to the hilt within her!",
+                    next_node="silve_eroge_climax",
+                    is_intimacy_action=True,
+                    relationship_change=25
+                )
+            ]
+        ),
+        "silve_eroge_boudoir": DialogueNode(
+            id="silve_eroge_boudoir",
+            speaker_name="Madame Silve",
+            text=(
+                "She pulls you onto the velvet mattress, straddling your lap with a breathless purr. Her bare breasts, full and warm, "
+                "brush against your chest as she unfastens your trousers with hungry, practiced fingers. "
+                "'No politics tonight, wanderer,' she whispers against your ear, her teeth gently tugging your earlobe. "
+                "'Only skin, sweat, and fire.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_eroge_take_control",
+                    text="Roll her onto her back, spreading her soft legs and sliding inside her slick depths.",
+                    next_node="silve_eroge_climax",
+                    is_intimacy_action=True
+                )
+            ]
+        ),
+        "silve_eroge_climax": DialogueNode(
+            id="silve_eroge_climax",
+            speaker_name="Madame Silve",
+            text=(
+                "Entering her completely, you are enveloped in hot, velvet tightness. Silve lets out a loud, breathless cry that reverberates off the silken walls. "
+                "Her hips roll against yours in perfect, decadent harmony, matching each deep, powerful thrust. "
+                "The friction between your bodies is intoxicating; sweat slicks your chests as the rhythm turns frantic, urgent, and wild. "
+                "Her nails bite into your shoulders, her moans turning into ragged sobs of pleasure as her inner walls convulse in an explosive, shuddering climax. "
+                "You drive into her to the hilt, spilling your warmth deep inside her with a guttural roar, collapsing into each other amidst the disheveled crimson silks."
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_eroge_afterglow",
+                    text="Recline together on the cushions in decadent afterglow.",
+                    next_node="silve_eroge_afterglow",
+                    is_intimacy_action=True,
+                    relationship_change=25,
+                    item_reward="Silve's Scented Silk Favor"
+                )
+            ]
+        ),
+        "silve_eroge_afterglow": DialogueNode(
+            id="silve_eroge_afterglow",
+            speaker_name="Madame Silve",
+            text=(
+                "Silve lounges across your chest, tracing your jawline with a satisfied, contented smile. The dread of the approaching purge has vanished, "
+                "replaced by pure intimacy and dark devotion. She presses a perfumed, embroidered black silk handkerchief into your hand, "
+                "along with a pouch of 35 Sovereigns. 'This silk bears my crest and secret scent, handsome. Any fence, guard, or merchant in the province "
+                "will give you a 25% discount and heed your word. Survive tonight, wanderer... and come back to my bed.'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_silve_afterglow_farewell",
+                    text="'I will return, Silve. Now I must reach the gate.'",
+                    next_node="silve_farewell"
+                )
+            ]
         ),
         "silve_farewell": DialogueNode(
             id="silve_farewell",
@@ -694,6 +1264,14 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     faction_changes={"pariahs": 20}
                 ),
                 DialogueChoice(
+                    id="c_toby_teach",
+                    text="[Guile 11] 'Keep low in the ditch, Toby. If a guard turns his torch, stay still like a stone. Watch my footing.'",
+                    next_node="toby_taught",
+                    required_stat="guile",
+                    required_value=11,
+                    relationship_change=25
+                ),
+                DialogueChoice(
                     id="c_toby_intimidate",
                     text="[Sinew 12] 'Hand over that key and book right now, or I'll throw you to the Dawnbound.'",
                     next_node="toby_robbed",
@@ -702,6 +1280,22 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     relationship_change=-40,
                     faction_changes={"pariahs": -25},
                     item_rewards=["Master Sluice Key", "Turnkey's Stolen Ledger"]
+                )
+            ]
+        ),
+        "toby_taught": DialogueNode(
+            id="toby_taught",
+            speaker_name="Little Toby",
+            text=(
+                "Toby's wide eyes soak in your movements. He mimics your crouching stride beneath the shadows of the scaffold. "
+                "'You move like a ghost, mister! Here... take this Tarnished Iron Nail I found. You can bend it into a lockpick "
+                "to open the high gibbet cages if you need to recover anything up there!'"
+            ),
+            choices=[
+                DialogueChoice(
+                    id="c_toby_back_after_taught",
+                    text="'Good lad. Now let's see about food.'",
+                    next_node="root"
                 )
             ]
         ),
@@ -720,8 +1314,24 @@ def get_prologue_npcs() -> Dict[str, NPC]:
                     next_node="toby_saved",
                     item_rewards=["Master Sluice Key", "Turnkey's Stolen Ledger"],
                     relationship_change=20
+                ),
+                DialogueChoice(
+                    id="c_toby_send_safehouse",
+                    text="'Go to the Gilded Rat parlour. Tell Madame Silve I sent you to hide in her dry cellar.'",
+                    next_node="toby_safehouse",
+                    item_rewards=["Master Sluice Key", "Turnkey's Stolen Ledger"],
+                    relationship_change=35
                 )
             ]
+        ),
+        "toby_safehouse": DialogueNode(
+            id="toby_safehouse",
+            speaker_name="Little Toby",
+            text=(
+                "'The fancy lady's place? With real blankets?!' Toby hugs your leg with tears streaming down his grimy face. "
+                "'Thank you, mister! Toby won't ever forget you!' He scurries like a mouse into the alley toward the Gilded Rat."
+            ),
+            choices=[]
         ),
         "toby_saved": DialogueNode(
             id="toby_saved",
@@ -773,7 +1383,7 @@ def get_prologue_npcs() -> Dict[str, NPC]:
             current_hp=45,
             relationship=10,
             is_combatant=True,
-            can_romance=True,
+            can_romance=False, # Male companion: strictly warrior brotherhood, non-romanceable
             dialogue_root="root",
             dialogue_nodes=malakor_dialogues,
             active_quest_id="q_blood_brass",

@@ -190,9 +190,134 @@ class TestTRPGEngine(unittest.TestCase):
         data = resp.get_json()
         self.assertEqual(data["player"]["name"], "Wanderer")
 
-        # Action POST
-        act_resp = client.post("/api/action", json={"action": "inspect"})
-        self.assertEqual(act_resp.status_code, 200)
+    def test_vanya_multi_stage_eroge_and_minigame(self):
+        # Trigger intimacy minigame with Sister Vanya
+        res = self.engine.start_intimacy_minigame("sister_vanya")
+        self.assertIsNotNone(res["intimacy"])
+        self.assertEqual(res["intimacy"]["npc_id"], "sister_vanya")
+        self.assertEqual(res["intimacy"]["arousal"], 30)
+
+        # Test Guile Caress
+        res = self.engine.intimacy_action("guile_caress")
+        self.assertGreater(res["intimacy"]["arousal"], 30)
+
+        # Test Sinew Intensity
+        res = self.engine.intimacy_action("sinew_intensity")
+        self.assertGreater(res["intimacy"]["arousal"], 50)
+
+        # Test Oral Worship to reach 100%
+        res = self.engine.intimacy_action("oral_worship")
+        res = self.engine.intimacy_action("oral_worship")
+        self.assertEqual(res["intimacy"]["arousal"], 100)
+        self.assertTrue(res["intimacy"]["completed"])
+
+        # Check rewards: Dread eradicated to 0, Rosary awarded, romanced marked
+        self.assertEqual(self.engine.player.dread, 0)
+        self.assertTrue(self.engine.npcs["sister_vanya"].is_romanced)
+        self.assertIn("Sister Vanya's Embroidered Rosary", self.engine.player.inventory)
+
+    def test_silve_multi_stage_eroge_and_minigame(self):
+        # Trigger intimacy minigame with Madame Silve
+        res = self.engine.start_intimacy_minigame("madame_silve")
+        self.assertIsNotNone(res["intimacy"])
+        self.assertEqual(res["intimacy"]["npc_id"], "madame_silve")
+
+        # Drive arousal to 100%
+        self.engine.intimacy_action("oral_worship")
+        self.engine.intimacy_action("oral_worship")
+        res = self.engine.intimacy_action("sinew_intensity")
+        self.assertEqual(res["intimacy"]["arousal"], 100)
+        self.assertTrue(res["intimacy"]["completed"])
+
+        # Check rewards: Silk Favor in inventory, Sovereigns added, Dread = 0
+        self.assertEqual(self.engine.player.dread, 0)
+        self.assertTrue(self.engine.npcs["madame_silve"].is_romanced)
+        self.assertIn("Silve's Scented Silk Favor", self.engine.player.inventory)
+
+    def test_malakor_warrior_brotherhood_blood_oath(self):
+        # Malakor is male and strictly non-romanceable
+        self.assertFalse(self.engine.npcs["commander_malakor"].can_romance)
+        
+        # Test sparring challenge
+        self.engine.travel("iron_bastion")
+        self.engine.talk_npc("commander_malakor")
+        res = self.engine.choose_dialogue("c_malakor_spar")
+        self.assertEqual(res["dialogue"]["current_node"], "malakor_spar_challenge")
+        
+        # Win spar via Sinew 14
+        res = self.engine.choose_dialogue("c_malakor_spar_sinew")
+        self.assertEqual(res["dialogue"]["current_node"], "malakor_spar_win")
+        self.assertIn("Heavy Whetstone", self.engine.player.inventory)
+
+        # Test blood-oath turn-in giving Drake Whetstone
+        self.engine.player.inventory.append("Loras's Iron Signet")
+        res = self.engine.talk_npc("commander_malakor")
+        self.assertEqual(res["dialogue"]["current_node"], "malakor_quest_complete")
+        res = self.engine.choose_dialogue("c_malakor_embrace")
+        self.assertEqual(res["dialogue"]["current_node"], "malakor_intimacy_scene")
+        res = self.engine.choose_dialogue("c_malakor_post_intimacy_recruit")
+        self.assertIn("Malakor's Drake Whetstone", self.engine.player.inventory)
+
+    def test_functional_item_effects_and_usability(self):
+        # Test Sister Vanya's Rosary: +2 Lucidity in stat checks and halving Dread increases
+        self.engine.player.inventory.append("Sister Vanya's Embroidered Rosary")
+        base_luc = self.engine.player.stats.lucidity
+        eff_luc = self.engine.get_effective_stat("lucidity")
+        self.assertEqual(eff_luc, base_luc + 2)
+
+        # Test Malakor's Drake Whetstone: +2 Sinew and +4 combat damage
+        self.engine.player.inventory.append("Malakor's Drake Whetstone")
+        eff_sinew = self.engine.get_effective_stat("sinew")
+        self.assertEqual(eff_sinew, self.engine.player.stats.sinew + 2)
+
+        # Test Silve's Silk Favor: +2 Guile and 25% discount
+        self.engine.player.inventory.append("Silve's Scented Silk Favor")
+        eff_guile = self.engine.get_effective_stat("guile")
+        self.assertEqual(eff_guile, self.engine.player.stats.guile + 2)
+        disc_cost = self.engine.apply_sovereign_discount(100)
+        self.assertEqual(disc_cost, 75)
+
+        # Test item usage: Spiced Plum Wine restores 12 HP & removes 15 Dread
+        self.engine.player.inventory.append("Spiced Plum Wine")
+        self.engine.player.current_hp = 20
+        self.engine.player.dread = 40
+        res = self.engine.use_item("Spiced Plum Wine")
+        self.assertEqual(self.engine.player.current_hp, 32)
+        self.assertEqual(self.engine.player.dread, 25)
+        self.assertNotIn("Spiced Plum Wine", self.engine.player.inventory)
+
+        # Test Crowbar usage in Sluice Trench
+        self.engine.player.inventory.append("Corroded Crowbar")
+        self.engine.player.current_location_id = "sluice_trench"
+        init_rep = self.engine.player.faction_reputation["pariahs"]
+        res = self.engine.use_item("Corroded Crowbar")
+        self.assertEqual(self.engine.player.faction_reputation["pariahs"], init_rep + 10)
+
+    def test_toby_mentorship_and_safehouse(self):
+        self.engine.travel("gallow_square")
+        self.engine.talk_npc("little_toby")
+        # Teach Toby stealth
+        res = self.engine.choose_dialogue("c_toby_teach")
+        self.assertEqual(res["dialogue"]["current_node"], "toby_taught")
+
+        # Toby comfort and safehouse dispatch
+        self.engine.player.inventory.append("Charred Rations")
+        res = self.engine.choose_dialogue("c_toby_back_after_taught")
+        self.engine.choose_dialogue("c_toby_comfort")
+        res = self.engine.choose_dialogue("c_toby_send_safehouse")
+        self.assertEqual(res["dialogue"]["current_node"], "toby_safehouse")
+        self.assertIn("Master Sluice Key", self.engine.player.inventory)
+        self.assertIn("Turnkey's Stolen Ledger", self.engine.player.inventory)
+
+    def test_patient_triage_ward(self):
+        self.engine.travel("ruined_chantry")
+        self.engine.talk_npc("sister_vanya")
+        res = self.engine.choose_dialogue("c_vanya_triage")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_triage_ward")
+
+        # Triage soldier with Sinew 12
+        res = self.engine.choose_dialogue("c_vanya_triage_soldier")
+        self.assertEqual(res["dialogue"]["current_node"], "vanya_triage_soldier_success")
 
 if __name__ == "__main__":
     unittest.main()

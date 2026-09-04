@@ -72,6 +72,18 @@ const GameApp = {
         this.sendAction({ action: 'combat_action', combat_type: type });
     },
 
+    intimacyAction(type) {
+        this.sendAction({ action: 'intimacy_action', technique: type });
+    },
+
+    closeIntimacy() {
+        this.sendAction({ action: 'close_intimacy' });
+    },
+
+    useItem(itemName) {
+        this.sendAction({ action: 'use_item', item_name: itemName });
+    },
+
     attemptEscape(method) {
         this.sendAction({ action: 'escape', method: method });
     },
@@ -86,6 +98,20 @@ const GameApp = {
         if (!this.state) return;
 
         const { player, location, factions, active_quests, dialogue, combat, logs, game_over, victory } = this.state;
+
+        // Bell Ticker
+        const bellToll = this.state.bell_toll || 9;
+        const hoursLeft = 12 - bellToll;
+        const bellTickerEl = document.getElementById('bell-ticker');
+        if (bellTickerEl) {
+            if (bellToll >= 12) {
+                bellTickerEl.textContent = 'BELL: 12:00 MIDNIGHT (PURGE COMMENCED)';
+                bellTickerEl.style.color = '#ff3333';
+            } else {
+                bellTickerEl.textContent = `BELL: ${bellToll}:00 PM (${hoursLeft}h to Midnight)`;
+                bellTickerEl.style.color = '';
+            }
+        }
 
         // Player Vitals & Stats
         document.getElementById('p-name').textContent = player.name;
@@ -221,9 +247,20 @@ const GameApp = {
         // Inventory
         const invListEl = document.getElementById('inventory-list');
         document.getElementById('inv-count').textContent = `${player.inventory.length} items`;
-        invListEl.innerHTML = player.inventory.map(item => `
-            <li class="inv-item">&#9671; ${item}</li>
-        `).join('');
+        const usableItems = [
+            "Spiced Plum Wine", "Purified Bandage", "Torn Bandage", "Charred Rations",
+            "Corroded Crowbar", "Tarnished Iron Nail", "Sister Vanya's Embroidered Rosary",
+            "Malakor's Drake Whetstone", "Silve's Scented Silk Favor"
+        ];
+        invListEl.innerHTML = player.inventory.map(item => {
+            const isUsable = usableItems.includes(item);
+            return `
+                <li class="inv-item ${isUsable ? 'inv-item-usable' : ''}">
+                    <span>&#9671; ${item}</span>
+                    ${isUsable ? `<button class="inv-btn-use" onclick="GameApp.useItem('${item}')">Use</button>` : ''}
+                </li>
+            `;
+        }).join('');
 
         // Narrative Scroll
         const logEl = document.getElementById('narrative-log');
@@ -281,6 +318,35 @@ const GameApp = {
             combatLogEl.scrollTop = combatLogEl.scrollHeight;
         } else {
             combatArena.classList.add('hidden');
+        }
+
+        // Intimacy Arena (Eroge Minigame)
+        const intimacyArena = document.getElementById('intimacy-arena');
+        const intimacy = this.state.intimacy;
+        if (intimacyArena) {
+            if (intimacy) {
+                intimacyArena.classList.remove('hidden');
+                document.getElementById('intimacy-partner-name').textContent = `${intimacy.npc_name} (Round ${intimacy.turn})`;
+                const arousalPct = Math.max(0, Math.min(100, intimacy.arousal));
+                document.getElementById('intimacy-arousal-fill').style.width = `${arousalPct}%`;
+                document.getElementById('intimacy-arousal-text').textContent = `${intimacy.arousal}/100% Arousal`;
+
+                const intimacyLogEl = document.getElementById('intimacy-log');
+                intimacyLogEl.innerHTML = (intimacy.log || []).map(line => `<div>${line}</div>`).join('');
+                intimacyLogEl.scrollTop = intimacyLogEl.scrollHeight;
+
+                const controlsEl = document.getElementById('intimacy-controls');
+                const footerEl = document.getElementById('intimacy-footer');
+                if (intimacy.completed) {
+                    controlsEl.classList.add('hidden');
+                    footerEl.classList.remove('hidden');
+                } else {
+                    controlsEl.classList.remove('hidden');
+                    footerEl.classList.add('hidden');
+                }
+            } else {
+                intimacyArena.classList.add('hidden');
+            }
         }
 
         // End Game Modal

@@ -1,4 +1,4 @@
-"""Game Engine managing state, dialogues, romance, attack-on-sight, party mechanics, and quests."""
+"""Game Engine managing state, dialogues, eroge romance, attack-on-sight, party mechanics, and quests."""
 
 import random
 from typing import Dict, Any, List, Optional
@@ -21,6 +21,9 @@ class GameEngine:
         self.logs: List[Dict[str, Any]] = []
         self.current_dialogue: Optional[Dict[str, Any]] = None
         self.combat_state: Optional[Dict[str, Any]] = None
+        self.intimacy_state: Optional[Dict[str, Any]] = None
+        self.bell_toll: int = 9  # Starts at 9:00 PM, purges at 12:00 Midnight
+        self.action_count: int = 0
         self.game_over: bool = False
         self.victory: bool = False
 
@@ -45,6 +48,50 @@ class GameEngine:
             "text": text,
             "meta": meta or {}
         })
+
+    def advance_clock(self):
+        self.action_count += 1
+        if self.action_count % 3 == 0 and self.bell_toll < 12:
+            self.bell_toll += 1
+            hours_left = 12 - self.bell_toll
+            if self.bell_toll == 12:
+                self.add_log(
+                    "bell",
+                    "MIDNIGHT BELL TOLLS: THE PURGE COMMENCES",
+                    "The watchtower bell tolls twelve deafening strokes! Across the ramparts, Dawnbound catapults launch incandescent phosphorus canisters. You must escape immediately!"
+                )
+            else:
+                self.add_log(
+                    "bell",
+                    f"Watchtower Bell: {self.bell_toll}:00 PM",
+                    f"Distant iron bells reverberate through the toxic fog. Only {hours_left} hour{'s' if hours_left > 1 else ''} remain until midnight!"
+                )
+
+    def get_effective_stat(self, stat_name: str) -> int:
+        val = getattr(self.player.stats, stat_name, 0)
+        # Item passives
+        if stat_name == "lucidity" and "Sister Vanya's Embroidered Rosary" in self.player.inventory:
+            val += 2
+        elif stat_name == "guile" and "Silve's Scented Silk Favor" in self.player.inventory:
+            val += 2
+        elif stat_name == "sinew" and "Malakor's Drake Whetstone" in self.player.inventory:
+            val += 2
+
+        # Party member bonus (1/4 of companion stat added)
+        for party_id in self.player.party:
+            if party_id in self.npcs:
+                val += getattr(self.npcs[party_id].stats, stat_name, 0) // 4
+        return val
+
+    def apply_sovereign_discount(self, cost: int) -> int:
+        if "Silve's Scented Silk Favor" in self.player.inventory and cost > 0:
+            return max(1, int(cost * 0.75))
+        return cost
+
+    def adjust_dread(self, amount: int):
+        if amount > 0 and "Sister Vanya's Embroidered Rosary" in self.player.inventory:
+            amount = max(1, amount // 2)
+        self.player.dread = max(0, min(100, self.player.dread + amount))
 
     def add_inventory_item(self, item_name: str):
         self.player.inventory.append(item_name)
@@ -75,6 +122,115 @@ class GameEngine:
                     f"Quest Updated: {q.title}",
                     "You secured the Turnkey's Stolen Ledger. Deliver it to Madame Silve at the Gilded Rat Parlour."
                 )
+
+    def use_item(self, item_name: str) -> Dict[str, Any]:
+        """Activate consumable and tool items directly from player inventory."""
+        if item_name not in self.player.inventory:
+            return {"error": f"You do not possess {item_name}."}
+
+        curr_loc_id = self.player.current_location_id
+
+        if item_name == "Spiced Plum Wine":
+            self.player.inventory.remove("Spiced Plum Wine")
+            heal = 12
+            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
+            self.adjust_dread(-15)
+            self.add_log(
+                "item",
+                "Consumed Spiced Plum Wine",
+                f"You drink the rich plum vintage. The burning alcohol warms your shivering bones (+{heal} HP, Dread reduced by 15)."
+            )
+            return self.get_state()
+
+        elif item_name == "Purified Bandage":
+            self.player.inventory.remove("Purified Bandage")
+            heal = 25
+            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
+            self.add_log("item", "Applied Purified Bandage", f"You bind your wounds with sanctified linen, restoring {heal} HP.")
+            return self.get_state()
+
+        elif item_name == "Torn Bandage":
+            self.player.inventory.remove("Torn Bandage")
+            heal = 18
+            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
+            self.add_log("item", "Applied Torn Bandage", f"You tie off your cuts with rough cloth, restoring {heal} HP.")
+            return self.get_state()
+
+        elif item_name == "Charred Rations":
+            self.player.inventory.remove("Charred Rations")
+            heal = 8
+            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
+            self.add_log("item", "Ate Charred Rations", f"You chew the smoked tallow rations, restoring {heal} HP.")
+            return self.get_state()
+
+        elif item_name == "Corroded Crowbar":
+            if curr_loc_id == "sluice_trench":
+                self.add_log(
+                    "item",
+                    "Crowbar Applied to Sluice Gears",
+                    "Using the crowbar as leverage, you unjam the secondary drainage valve, draining toxic sludge from the canal."
+                )
+                self.player.faction_reputation["pariahs"] += 10
+            elif curr_loc_id == "iron_bastion":
+                self.add_log(
+                    "item",
+                    "Pried Open Drake Armory Crate",
+                    "You force open a neglected mercenary strongbox, liberating 20 Sovereigns and a Purified Bandage!"
+                )
+                self.player.sovereigns += 20
+                self.add_inventory_item("Purified Bandage")
+            else:
+                self.add_log("item", "Corroded Crowbar", "A sturdy tool for prying rusted iron grates, barricades, or supply crates.")
+            return self.get_state()
+
+        elif item_name == "Tarnished Iron Nail":
+            if curr_loc_id == "gallow_square":
+                q = self.quests.get("q_blood_brass")
+                if q and q.current_stage == 1 and "Loras's Iron Signet" not in self.player.inventory:
+                    self.add_inventory_item("Loras's Iron Signet")
+                    self.add_log(
+                        "item",
+                        "Picked Hanging Gibbet Lock",
+                        "Using the bent nail as an improvised pick, you pop open a high charred iron cage and retrieve Loras's Iron Signet!"
+                    )
+                else:
+                    self.add_log(
+                        "item",
+                        "Picked Scaffold Lockbox",
+                        "You pick open an executioner's lockbox beneath the gibbet, finding 15 discarded silver Sovereigns!"
+                    )
+                    self.player.sovereigns += 15
+            else:
+                self.add_log("item", "Tarnished Iron Nail", "Can be bent into an improvised lockpick to open locked cages in Gallow-Square.")
+            return self.get_state()
+
+        elif item_name == "Sister Vanya's Embroidered Rosary":
+            self.adjust_dread(-20)
+            self.add_log(
+                "item",
+                "Prayed with Vanya's Rosary",
+                "Holding the silver rosary in your palms, memories of her passionate warmth flood your mind, driving away the dread (-20 Dread)."
+            )
+            return self.get_state()
+
+        elif item_name == "Malakor's Drake Whetstone":
+            self.add_log(
+                "item",
+                "Sharpened Blade with Drake Whetstone",
+                "You hone your weapon's edge along the oiled stone. Your strikes deal +4 flat damage in all combat."
+            )
+            return self.get_state()
+
+        elif item_name == "Silve's Scented Silk Favor":
+            self.adjust_dread(-10)
+            self.add_log(
+                "item",
+                "Inhaled Silve's Silk Perfume",
+                "The intoxicating scent of jasmine, opium, and silk clears your thoughts (-10 Dread, 25% discount on all merchant costs active)."
+            )
+            return self.get_state()
+
+        return {"error": f"{item_name} has no immediate active use here."}
 
     def get_state(self) -> Dict[str, Any]:
         curr_loc = self.locations.get(self.player.current_location_id)
@@ -122,12 +278,19 @@ class GameEngine:
                     "stage_description": stage_info.description if stage_info else ""
                 })
 
+        effective_stats = {
+            "sinew": self.get_effective_stat("sinew"),
+            "guile": self.get_effective_stat("guile"),
+            "lucidity": self.get_effective_stat("lucidity")
+        }
+
         return {
             "player": {
                 "name": self.player.name,
                 "gender": self.player.gender,
                 "title": self.player.title,
-                "stats": self.player.stats.to_dict(),
+                "stats": effective_stats,
+                "base_stats": self.player.stats.to_dict(),
                 "hp": self.player.current_hp,
                 "max_hp": self.player.max_hp,
                 "dread": self.player.dread,
@@ -154,6 +317,8 @@ class GameEngine:
             "active_quests": active_quests,
             "dialogue": self.current_dialogue,
             "combat": self.combat_state,
+            "intimacy": self.intimacy_state,
+            "bell_toll": self.bell_toll,
             "logs": self.logs[-25:],
             "game_over": self.game_over,
             "victory": self.victory
@@ -167,14 +332,11 @@ class GameEngine:
         if not curr_loc or destination_id not in curr_loc.connected_locations:
             return {"error": "Path is obstructed or unreachable."}
 
-        # Check special access conditions
-        if destination_id == "sluice_trench" and "Master Sluice Key" not in self.player.inventory and "Imperial Transit Pass" not in self.player.inventory:
-            # Allow entering sluice trench, but leaving via gate needs the key
-            pass
-
         self.player.current_location_id = destination_id
         dest = self.locations[destination_id]
         self.current_dialogue = None
+        self.intimacy_state = None
+        self.advance_clock()
 
         self.add_log(
             "travel",
@@ -197,7 +359,7 @@ class GameEngine:
         if not curr_loc:
             return {"error": "Unknown location."}
 
-        # Secret discovery if Lucidity is high
+        self.advance_clock()
         found = []
         if curr_loc.items_on_ground:
             for itm in list(curr_loc.items_on_ground):
@@ -250,7 +412,6 @@ class GameEngine:
 
         # Build dynamic dialogue
         node_id = npc.dialogue_root
-        # Check if quest has progressed to completion stage
         if npc.id == "sister_vanya":
             q = self.quests.get("q_mercy_hemlock")
             if q:
@@ -293,37 +454,32 @@ class GameEngine:
     def load_dialogue_node(self, npc: NPC, node_id: str):
         node = npc.dialogue_nodes.get(node_id)
         if not node:
-            # Fallback to root or dismiss
             self.current_dialogue = None
             return
 
         formatted_choices = []
         for ch in node.choices:
-            # Check stat requirement visibility
             stat_met = True
-            stat_text = ""
             if ch.required_stat:
-                p_stat = getattr(self.player.stats, ch.required_stat, 0)
-                # Party bonus
-                for party_npc_id in self.player.party:
-                    if party_npc_id in self.npcs:
-                        p_stat += getattr(self.npcs[party_npc_id].stats, ch.required_stat, 0) // 4
+                p_stat = self.get_effective_stat(ch.required_stat)
                 stat_met = p_stat >= ch.required_value
-                stat_text = f" [{ch.required_stat.capitalize()} {ch.required_value}]"
 
-            # Check item required
             item_met = True
             if ch.item_required and ch.item_required not in self.player.inventory:
                 item_met = False
 
-            # Check sovereigns required
             sovereigns_met = True
-            if ch.sovereign_cost > 0 and self.player.sovereigns < ch.sovereign_cost:
+            effective_cost = self.apply_sovereign_discount(ch.sovereign_cost)
+            if effective_cost > 0 and self.player.sovereigns < effective_cost:
                 sovereigns_met = False
+
+            display_text = ch.text
+            if ch.sovereign_cost > 0 and effective_cost < ch.sovereign_cost:
+                display_text += f" [Discounted: {effective_cost} Sov]"
 
             formatted_choices.append({
                 "id": ch.id,
-                "text": ch.text,
+                "text": display_text,
                 "stat_met": stat_met,
                 "item_met": item_met,
                 "sovereigns_met": sovereigns_met,
@@ -365,14 +521,9 @@ class GameEngine:
         if not chosen_choice:
             return {"error": "Invalid choice."}
 
-        # Check stat requirements
-        p_stat_val = 0
+        # Check stat requirements using effective stats
         if chosen_choice.required_stat:
-            p_stat_val = getattr(self.player.stats, chosen_choice.required_stat, 0)
-            for party_id in self.player.party:
-                if party_id in self.npcs:
-                    p_stat_val += getattr(self.npcs[party_id].stats, chosen_choice.required_stat, 0) // 4
-
+            p_stat_val = self.get_effective_stat(chosen_choice.required_stat)
             if p_stat_val < chosen_choice.required_value:
                 if chosen_choice.failure_node:
                     self.load_dialogue_node(npc, chosen_choice.failure_node)
@@ -380,12 +531,13 @@ class GameEngine:
                 else:
                     return {"error": f"Requires {chosen_choice.required_stat.capitalize()} {chosen_choice.required_value}."}
 
-        # Check sovereign cost
-        if chosen_choice.sovereign_cost > 0:
-            if self.player.sovereigns < chosen_choice.sovereign_cost:
-                return {"error": f"Requires {chosen_choice.sovereign_cost} Sovereigns (You have {self.player.sovereigns})."}
-            self.player.sovereigns -= chosen_choice.sovereign_cost
-            self.add_log("item", "Sovereigns Paid", f"You paid {chosen_choice.sovereign_cost} Sovereigns.")
+        # Check sovereign cost with silk discount
+        effective_cost = self.apply_sovereign_discount(chosen_choice.sovereign_cost)
+        if effective_cost > 0:
+            if self.player.sovereigns < effective_cost:
+                return {"error": f"Requires {effective_cost} Sovereigns (You have {self.player.sovereigns})."}
+            self.player.sovereigns -= effective_cost
+            self.add_log("item", "Sovereigns Paid", f"You paid {effective_cost} Sovereigns.")
 
         # Check required item
         if chosen_choice.item_required:
@@ -449,7 +601,6 @@ class GameEngine:
                 quest = self.quests[q_id]
                 if quest.current_stage != 99:
                     quest.current_stage = 99
-                    # Remove required quest item if present in stages
                     for st_id, st_obj in quest.stages.items():
                         if st_obj.required_item and st_obj.required_item in self.player.inventory:
                             self.player.inventory.remove(st_obj.required_item)
@@ -466,17 +617,39 @@ class GameEngine:
                         f"{quest.completion_text} (Earned {quest.reward_sovereigns} sovereigns, items: {', '.join(quest.reward_items)})."
                     )
 
-        # Handle Romance Intimacy Vignette
-        if chosen_choice.is_intimacy_action:
+        # Handle Heterosexual Romance Intimacy Encounter (Female NPCs only)
+        if chosen_choice.is_intimacy_action and npc.gender == "female" and npc.can_romance:
             npc.is_romanced = True
             if npc.id not in self.player.romanced_npcs:
                 self.player.romanced_npcs.append(npc.id)
-            # Intimacy reduces dread/sanity loss and grants passionate clarity
-            self.player.dread = max(0, self.player.dread - 20)
+            # Intimacy eradicates dread completely
+            self.player.dread = 0
             self.add_log(
                 "romance",
-                f"Solace in the Dark: {npc.name}",
-                f"You shared a night of intense, carnal intimacy with {npc.name}. The creeping terror of the purge is staved off; Dread reduced by 20."
+                f"Solace of the Flesh: {npc.name}",
+                f"You shared an ecstatic, passionate encounter with {npc.name}. All creeping terror of the purge is banished into calm (Dread reduced to 0)."
+            )
+
+            # Award unique keepsakes
+            if npc.id == "sister_vanya" and "Sister Vanya's Embroidered Rosary" not in self.player.inventory:
+                self.add_inventory_item("Sister Vanya's Embroidered Rosary")
+            elif npc.id == "madame_silve" and "Silve's Scented Silk Favor" not in self.player.inventory:
+                self.add_inventory_item("Silve's Scented Silk Favor")
+                self.player.sovereigns += 35
+
+            # If user explicitly chooses the minigame option
+            if chosen_choice.id in ("c_vanya_minigame_start", "c_silve_minigame_start"):
+                self.start_intimacy_minigame(npc.id)
+                return self.get_state()
+
+        # Handle Male Commander Malakor Blood-Brotherhood (Non-romance)
+        if npc.id == "commander_malakor" and chosen_choice.id == "c_malakor_embrace":
+            if "Malakor's Drake Whetstone" not in self.player.inventory:
+                self.add_inventory_item("Malakor's Drake Whetstone")
+            self.add_log(
+                "party",
+                "Blood-Brothers of the Iron Drake",
+                "You swore an unyielding blood-oath with Commander Malakor. He presented you with his Drake Whetstone (+2 Sinew, +4 combat damage)."
             )
 
         # Handle Hostility trigger
@@ -485,12 +658,109 @@ class GameEngine:
             self.start_combat(npc.id, ambush=False)
             return self.get_state()
 
-        # Advance node or close
+        self.advance_clock()
         next_node_id = chosen_choice.next_node
         if next_node_id in ("vanya_recruited", "malakor_recruited"):
             self.recruit_party(npc.id)
 
         self.load_dialogue_node(npc, next_node_id)
+        return self.get_state()
+
+    # --- Sensory Eroge Intimacy Minigame ---
+    def start_intimacy_minigame(self, npc_id: str) -> Dict[str, Any]:
+        if npc_id not in self.npcs:
+            return {"error": "NPC not found."}
+        npc = self.npcs[npc_id]
+        if npc.gender != "female" or not npc.can_romance:
+            return {"error": f"{npc.name} cannot be romanced."}
+
+        self.current_dialogue = None
+        self.intimacy_state = {
+            "npc_id": npc.id,
+            "npc_name": npc.name,
+            "arousal": 30,
+            "stamina": 100,
+            "turn": 1,
+            "ecstasy_rating": 1.0,
+            "log": [f"You pull {npc.name} into an intimate embrace. Her skin is feverishly warm. Build her Arousal to 100% to achieve Transcendent Climax!"],
+            "completed": False
+        }
+        return self.get_state()
+
+    def intimacy_action(self, technique: str) -> Dict[str, Any]:
+        """Techniques: 'guile_caress', 'sinew_intensity', 'lucidity_whisper', 'oral_worship'"""
+        if not self.intimacy_state:
+            return {"error": "No active intimacy minigame."}
+
+        npc_id = self.intimacy_state["npc_id"]
+        npc = self.npcs.get(npc_id)
+        if not npc:
+            self.intimacy_state = None
+            return self.get_state()
+
+        log_lines = []
+        arousal_gain = 0
+
+        if technique == "guile_caress":
+            eff_guile = self.get_effective_stat("guile")
+            bonus = max(5, eff_guile * 2)
+            arousal_gain = random.randint(22, 30) + bonus // 3
+            log_lines.append(
+                f"[Guile] Your nimble fingertips tease along {npc.name}'s inner thighs and sensitive contours, drawing a sharp, wanton gasp! (+{arousal_gain}% Arousal)"
+            )
+        elif technique == "sinew_intensity":
+            eff_sinew = self.get_effective_stat("sinew")
+            bonus = max(5, eff_sinew * 2)
+            arousal_gain = random.randint(25, 35) + bonus // 3
+            log_lines.append(
+                f"[Sinew] Gripping her hips firmly, you pull her against your muscular frame in an intense, breathless rhythm! (+{arousal_gain}% Arousal)"
+            )
+        elif technique == "lucidity_whisper":
+            eff_luc = self.get_effective_stat("lucidity")
+            arousal_gain = random.randint(18, 25) + eff_luc
+            self.intimacy_state["ecstasy_rating"] += 0.5
+            self.adjust_dread(-10)
+            log_lines.append(
+                f"[Lucidity] Reading her ragged breathing, your whispered words of adoration shatter her lingering inhibitions (+{arousal_gain}% Arousal, Ecstasy Multiplier increased!)."
+            )
+        elif technique == "oral_worship":
+            arousal_gain = random.randint(30, 42)
+            log_lines.append(
+                f"[Oral Worship] Pressing your lips directly to her glistening center, your passionate rhythm elicits breathless, arching cries of ecstasy! (+{arousal_gain}% Arousal)"
+            )
+
+        self.intimacy_state["arousal"] = min(100, self.intimacy_state["arousal"] + arousal_gain)
+        self.intimacy_state["turn"] += 1
+        self.intimacy_state["log"] = log_lines
+
+        # Check for Climax
+        if self.intimacy_state["arousal"] >= 100:
+            self.intimacy_state["completed"] = True
+            npc.is_romanced = True
+            npc.relationship = 100
+            if npc.id not in self.player.romanced_npcs:
+                self.player.romanced_npcs.append(npc.id)
+            self.player.dread = 0
+
+            climax_text = (
+                f"TRANSCENDENT ECSTASY! With a shuddering, desperate cry, {npc.name} clamps her thighs tightly around you as an overwhelming climax "
+                f"spasms through her body. You drive home to the hilt, pouring your release deep within her drenched heat. "
+                f"The darkness of Oakhaven is banished in pure sensory communion. Dread cleansed to 0! Devotion sealed at 100!"
+            )
+            self.intimacy_state["log"].append(climax_text)
+            self.add_log("romance", f"Transcendent Ecstasy: {npc.name}", climax_text)
+
+            # Award relics
+            if npc.id == "sister_vanya" and "Sister Vanya's Embroidered Rosary" not in self.player.inventory:
+                self.add_inventory_item("Sister Vanya's Embroidered Rosary")
+            elif npc.id == "madame_silve" and "Silve's Scented Silk Favor" not in self.player.inventory:
+                self.add_inventory_item("Silve's Scented Silk Favor")
+                self.player.sovereigns += 35
+
+        return self.get_state()
+
+    def close_intimacy(self) -> Dict[str, Any]:
+        self.intimacy_state = None
         return self.get_state()
 
     def close_dialogue(self) -> Dict[str, Any]:
@@ -542,6 +812,7 @@ class GameEngine:
             return
 
         self.current_dialogue = None
+        self.intimacy_state = None
         self.combat_state = {
             "npc_id": npc.id,
             "npc_name": npc.name,
@@ -556,7 +827,6 @@ class GameEngine:
             self.combat_state["combat_log"].append(
                 f"ATTACK ON SIGHT! Blinding hatred burns in {npc.name}'s eyes! They brandish their steel and lunge at you without warning!"
             )
-            # Ambush first strike on player
             dmg = max(4, npc.stats.sinew // 2 + random.randint(1, 4))
             self.player.current_hp = max(0, self.player.current_hp - dmg)
             self.combat_state["combat_log"].append(
@@ -585,7 +855,7 @@ class GameEngine:
 
         log_lines = []
 
-        # Companion assistance
+        # Companion bonus
         companion_bonus_dmg = 0
         for p_id in self.player.party:
             if p_id in self.npcs:
@@ -594,40 +864,46 @@ class GameEngine:
                 companion_bonus_dmg += c_dmg
                 log_lines.append(f"{c.name} strikes with their weapon, inflicting {c_dmg} damage!")
 
+        # Equipment Buffs
+        whetstone_bonus = 4 if "Malakor's Drake Whetstone" in self.player.inventory else 0
+        scalpel_bonus = 3 if ("Chirurgeon Scalpel" in self.player.inventory and action_type == "guile_skirmish") else 0
+        total_gear_dmg = whetstone_bonus + scalpel_bonus
+
         # Player Action Resolution
+        p_sinew = self.get_effective_stat("sinew")
+        p_guile = self.get_effective_stat("guile")
+        p_luc = self.get_effective_stat("lucidity")
+
         if action_type == "sinew_strike":
-            # Direct heavy blow
-            diff = self.player.stats.sinew - npc.stats.sinew + random.randint(-2, 4)
+            diff = p_sinew - npc.stats.sinew + random.randint(-2, 4)
             if diff >= 0:
-                dmg = max(6, self.player.stats.sinew // 2 + random.randint(2, 6)) + companion_bonus_dmg
+                dmg = max(6, p_sinew // 2 + random.randint(2, 6)) + companion_bonus_dmg + total_gear_dmg
                 npc.current_hp = max(0, npc.current_hp - dmg)
                 log_lines.append(f"[Sinew] You overpower {npc.name}'s guard, driving iron deep into flesh for {dmg} damage!")
             else:
-                dmg = max(2, random.randint(1, 3)) + companion_bonus_dmg
+                dmg = max(2, random.randint(1, 3)) + companion_bonus_dmg + total_gear_dmg
                 npc.current_hp = max(0, npc.current_hp - dmg)
-                log_lines.append(f"[Sinew] {npc.name} braces against your assault, parrying partially. You inflict {dmg} glancing damage.")
+                log_lines.append(f"[Sinew] {npc.name} braces against your assault. You inflict {dmg} glancing damage.")
 
         elif action_type == "guile_skirmish":
-            # Swift evasive puncture
-            diff = self.player.stats.guile - npc.stats.guile + random.randint(-2, 4)
+            diff = p_guile - npc.stats.guile + random.randint(-2, 4)
             if diff >= 0:
-                dmg = max(8, int(self.player.stats.guile * 0.7) + random.randint(3, 7)) + companion_bonus_dmg
+                dmg = max(8, int(p_guile * 0.7) + random.randint(3, 7)) + companion_bonus_dmg + total_gear_dmg
                 npc.current_hp = max(0, npc.current_hp - dmg)
                 log_lines.append(f"[Guile] Slipping through the shadows, your blade pierces an unarmored seam for {dmg} critical damage!")
             else:
-                dmg = 3 + companion_bonus_dmg
+                dmg = 3 + companion_bonus_dmg + total_gear_dmg
                 npc.current_hp = max(0, npc.current_hp - dmg)
-                log_lines.append(f"[Guile] {npc.name} tracks your feint, deflecting your strike! You land only {dmg} scratch damage.")
+                log_lines.append(f"[Guile] {npc.name} tracks your feint. You land only {dmg} scratch damage.")
 
         elif action_type == "lucidity_feint":
-            # Tactical manipulation or blinding dust
-            diff = self.player.stats.lucidity - npc.stats.lucidity + random.randint(-1, 5)
+            diff = p_luc - npc.stats.lucidity + random.randint(-1, 5)
             if diff >= 0:
-                dmg = max(7, self.player.stats.lucidity // 2 + random.randint(4, 8)) + companion_bonus_dmg
+                dmg = max(7, p_luc // 2 + random.randint(4, 8)) + companion_bonus_dmg + total_gear_dmg
                 npc.current_hp = max(0, npc.current_hp - dmg)
                 log_lines.append(f"[Lucidity] You expose {npc.name}'s blind spot, exploiting their frantic breathing for {dmg} tactical damage!")
             else:
-                log_lines.append(f"[Lucidity] {npc.name}'s sheer battle instincts ignore your mind game.")
+                log_lines.append(f"[Lucidity] {npc.name}'s battle instincts ignore your mind game.")
 
         elif action_type == "use_bandage":
             if "Torn Bandage" in self.player.inventory or "Purified Bandage" in self.player.inventory:

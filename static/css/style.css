@@ -734,6 +734,109 @@ body.dark-theme {
     font-size: 13px;
     color: #c9c1d1;
     border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inv-item-usable {
+    border-color: #554466;
+    background: #16121d;
+}
+
+.inv-btn-use {
+    background: #2a1b38;
+    border: 1px solid #6b4088;
+    color: #dfc8f2;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+}
+
+.inv-btn-use:hover {
+    background: #472663;
+    border-color: #ba76ed;
+}
+
+/* Intimacy Arena (Eroge Minigame) */
+.intimacy-arena {
+    background: radial-gradient(circle at top, #240d18 0%, #0d060a 100%);
+    border: 1px solid #852150;
+    border-radius: 4px;
+    margin: 16px;
+    padding: 16px;
+    box-shadow: 0 0 35px rgba(210, 30, 110, 0.35);
+    animation: fadeIn 0.25s ease;
+}
+
+.intimacy-header {
+    border-bottom: 1px solid #571736;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.arousal-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.arousal-bar {
+    flex: 1;
+    height: 12px;
+    background: #200d18;
+    border: 1px solid #63193e;
+}
+
+.arousal-fill {
+    background: linear-gradient(90deg, #991b5b, #ff4081) !important;
+}
+
+.intimacy-log {
+    background: #12070e;
+    border: 1px solid #4a152e;
+    padding: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 80px;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+    color: #f7cce1;
+    font-family: var(--font-prose);
+}
+
+.intimacy-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.btn-intimacy {
+    background: #2b111f;
+    border: 1px solid #6e1f48;
+    color: #fce2ef;
+    padding: 10px;
+    font-family: var(--font-prose);
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.btn-intimacy:hover {
+    background: #471933;
+    border-color: #ff4081;
+}
+
+.intimacy-footer {
+    margin-top: 12px;
+    text-align: center;
 }
 
 /* Modal */

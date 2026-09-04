@@ -1,4 +1,4 @@
-﻿"""Flask Web Server for the Dark, Tragic Adult Text RPG."""
+"""Flask Web Server for the Dark, Tragic Adult Text RPG."""
 
 from flask import Flask, render_template, request, jsonify, session
 from game.engine import GameEngine
@@ -54,6 +54,14 @@ def api_action():
     elif action == "combat_action":
         act_type = data.get("combat_type")
         res = engine.combat_action(act_type)
+    elif action == "intimacy_action":
+        technique = data.get("technique")
+        res = engine.intimacy_action(technique)
+    elif action == "close_intimacy":
+        res = engine.close_intimacy()
+    elif action == "use_item":
+        item_name = data.get("item_name")
+        res = engine.use_item(item_name)
     elif action == "escape":
         method = data.get("method")
         res = engine.attempt_escape(method)
