@@ -6,26 +6,43 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeSmoothTransitions();
 });
 
-// Typewriter effect for story text
+// Typewriter effect for story text - sequential from top to bottom
 function initializeTypewriterEffect() {
     const paragraphs = document.querySelectorAll('.story-paragraph');
     
-    paragraphs.forEach((paragraph, index) => {
+    // Store original text and clear all paragraphs
+    const paragraphData = [];
+    paragraphs.forEach((paragraph) => {
         const originalText = paragraph.textContent;
         paragraph.textContent = '';
         paragraph.style.opacity = '0';
-        
-        setTimeout(() => {
-            paragraph.style.opacity = '1';
-            typeText(paragraph, originalText, 0);
-        }, index * 500);
+        paragraphData.push({ element: paragraph, text: originalText });
     });
+    
+    // Type paragraphs one at a time, waiting for each to finish
+    let currentIndex = 0;
+    
+    function typeNextParagraph() {
+        if (currentIndex >= paragraphData.length) return;
+        
+        const { element, text } = paragraphData[currentIndex];
+        currentIndex++;
+        
+        element.style.opacity = '1';
+        typeText(element, text, 0, typeNextParagraph);
+    }
+    
+    // Start with the first paragraph
+    typeNextParagraph();
 }
 
-function typeText(element, text, index) {
+function typeText(element, text, index, onComplete) {
     if (index < text.length) {
         element.textContent += text.charAt(index);
-        setTimeout(() => typeText(element, text, index + 1), 15);
+        setTimeout(() => typeText(element, text, index + 1, onComplete), 15);
+    } else if (onComplete) {
+        // Current paragraph finished, move to next after a short pause
+        setTimeout(onComplete, 300);
     }
 }
 
