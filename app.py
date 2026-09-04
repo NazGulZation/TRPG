@@ -30,10 +30,14 @@ def game():
     if scene is None:
         return redirect(url_for('index'))
     
-    return render_template('game.html', 
+    # Get stat changes for display animation, then clear them
+    stat_changes = session.pop('last_stat_changes', {})
+
+    return render_template('game.html',
                          scene=scene,
                          stats=session.get('stats', {}),
-                         inventory=session.get('inventory', []))
+                         inventory=session.get('inventory', []),
+                         stat_changes=stat_changes)
 
 @app.route('/choose', methods=['POST'])
 def choose():
@@ -55,9 +59,12 @@ def choose():
     stat_changes = game_data.get_stat_changes(current_scene_id, choice_index)
     if 'stats' not in session:
         session['stats'] = {'hope': 50, 'guilt': 50, 'resolve': 50}
-    
+
     for stat, change in stat_changes.items():
         session['stats'][stat] = max(0, min(100, session['stats'][stat] + change))
+
+    # Store stat changes for display animation
+    session['last_stat_changes'] = stat_changes
     
     # Add items if any
     items_gained = game_data.get_items_gained(current_scene_id, choice_index)

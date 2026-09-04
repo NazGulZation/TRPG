@@ -290,7 +290,6 @@ body {
 .stat-fill {
     height: 100%;
     border-radius: 4px;
-    transition: width 0.5s ease;
 }
 
 .hope-fill {
@@ -306,6 +305,59 @@ body {
 .resolve-fill {
     background: linear-gradient(to right, #3a5a7a, #4a6fa5);
     box-shadow: 0 0 8px rgba(74, 111, 165, 0.5);
+}
+
+/* === Stat Header with Value === */
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* === Floating Stat Changes === */
+
+.stat-changes-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.stat-change-indicator {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.8s ease-out;
+}
+
+.stat-change-indicator.show {
+    opacity: 1;
+    transform: translateY(-30px);
+}
+
+.stat-change-indicator.positive {
+    color: #7ecf6c;
+    text-shadow: 0 0 10px rgba(126, 207, 108, 0.5);
+}
+
+.stat-change-indicator.negative {
+    color: #cf6c6c;
+    text-shadow: 0 0 10px rgba(207, 108, 108, 0.5);
 }
 
 .inventory {
@@ -384,6 +436,16 @@ body {
 .story-paragraph em {
     color: var(--text-secondary);
     font-style: italic;
+}
+
+/* === Scene Divider === */
+
+.scene-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent-orange), transparent);
+    margin: 2rem 0;
+    opacity: 0.5;
 }
 
 /* === Choices === */

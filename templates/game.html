@@ -10,22 +10,31 @@
 <body class="game-screen atmosphere-{{ scene.atmosphere }}">
     <div class="game-container">
         <!-- Stats Panel -->
-        <div class="stats-panel">
+        <div class="stats-panel" id="stats-panel" data-stat-changes='{{ stat_changes | tojson | safe }}'>
             <h3 class="panel-title">Vigil</h3>
-            <div class="stat">
-                <span class="stat-label">Hope</span>
+            <div class="stat" id="stat-hope">
+                <div class="stat-header">
+                    <span class="stat-label">Hope</span>
+                    <span class="stat-value">{{ stats.hope }}</span>
+                </div>
                 <div class="stat-bar">
                     <div class="stat-fill hope-fill" style="width: {{ stats.hope }}%"></div>
                 </div>
             </div>
-            <div class="stat">
-                <span class="stat-label">Guilt</span>
+            <div class="stat" id="stat-guilt">
+                <div class="stat-header">
+                    <span class="stat-label">Guilt</span>
+                    <span class="stat-value">{{ stats.guilt }}</span>
+                </div>
                 <div class="stat-bar">
                     <div class="stat-fill guilt-fill" style="width: {{ stats.guilt }}%"></div>
                 </div>
             </div>
-            <div class="stat">
-                <span class="stat-label">Resolve</span>
+            <div class="stat" id="stat-resolve">
+                <div class="stat-header">
+                    <span class="stat-label">Resolve</span>
+                    <span class="stat-value">{{ stats.resolve }}</span>
+                </div>
                 <div class="stat-bar">
                     <div class="stat-fill resolve-fill" style="width: {{ stats.resolve }}%"></div>
                 </div>
@@ -41,6 +50,9 @@
             </div>
             {% endif %}
         </div>
+
+        <!-- Floating Stat Changes Container -->
+        <div class="stat-changes-container" id="stat-changes-container"></div>
 
         <!-- Main Story Area -->
         <div class="story-panel">
