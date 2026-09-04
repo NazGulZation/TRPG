@@ -23,9 +23,7 @@
     "dialogue_root": "root",
     "active_quest_id": "q_mercy_hemlock",
     "loot": [
-      "Silver Dawnshroud Seal",
-      "Chirurgeon Scalpel",
-      "Purified Bandage"
+      "Silver Dawnshroud Seal"
     ],
     "dialogue_file": "dialogues/sister_vanya.json"
   },
@@ -53,9 +51,7 @@
     "dialogue_root": "root",
     "active_quest_id": "q_blood_brass",
     "loot": [
-      "Draketooth Greatsword",
-      "Wolfsbane Nectar",
-      "Iron Drake Insignia"
+      "Wolfsbane Nectar"
     ],
     "dialogue_file": "dialogues/commander_malakor.json"
   },
@@ -83,9 +79,7 @@
     "dialogue_root": "root",
     "active_quest_id": "q_silk_cyanide",
     "loot": [
-      "Imperial Transit Pass",
-      "Poison-Tipped Stiletto",
-      "Velvet Coin Purse"
+      "Imperial Transit Pass"
     ],
     "dialogue_file": "dialogues/madame_silve.json"
   },

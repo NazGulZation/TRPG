@@ -5,13 +5,14 @@ import json
 import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-from game.models import Player, NPC, Location, Quest, Stats
+from game.models import Player, NPC, Location, Quest, Stats, Item
 from game.data.prologue import (
     get_prologue_locations,
     get_prologue_npcs,
     get_prologue_quests,
     get_prologue_factions,
     get_prologue_metadata,
+    get_prologue_items,
     SUITABLE_INTIMACY_LOCATIONS,
 )
 
@@ -23,6 +24,7 @@ class GameEngine:
         self.npcs: Dict[str, NPC] = get_prologue_npcs()
         self.quests: Dict[str, Quest] = get_prologue_quests()
         self.factions = get_prologue_factions()
+        self.items: Dict[str, Item] = get_prologue_items()
         self.logs: List[Dict[str, Any]] = []
         self.current_dialogue: Optional[Dict[str, Any]] = None
         self.combat_state: Optional[Dict[str, Any]] = None
@@ -135,111 +137,39 @@ class GameEngine:
                     "You secured the Turnkey's Stolen Ledger. Deliver it to Madame Silve at the Gilded Rat Parlour."
                 )
 
+    def get_item(self, key: str) -> Optional[Item]:
+        """Look up item definition by ID or display name."""
+        return self.items.get(key)
+
     def use_item(self, item_name: str) -> Dict[str, Any]:
-        """Activate consumable and tool items directly from player inventory."""
+        """Activate usable items directly from player inventory."""
         if item_name not in self.player.inventory:
             return {"error": f"You do not possess {item_name}."}
 
-        curr_loc_id = self.player.current_location_id
+        item = self.get_item(item_name)
+        if not item or not item.is_usable:
+            return {"error": f"{item_name} has no immediate active use here."}
 
-        if item_name == "Spiced Plum Wine":
-            self.player.inventory.remove("Spiced Plum Wine")
-            heal = 12
+        if item.effect_type == "dread_relief":
+            relief = item.effect_value if item.effect_value else 10
+            self.adjust_dread(-relief)
+            log_title = f"Used {item.name}"
+            log_text = item.effect_description or f"Using {item.name} drives back the dread (-{relief} Dread)."
+            self.add_log("item", log_title, log_text)
+            return self.get_state()
+
+        elif item.effect_type == "combat_buff":
+            log_title = f"Prepared {item.name}"
+            log_text = item.effect_description or f"You hone your weapon with {item.name} for combat."
+            self.add_log("item", log_title, log_text)
+            return self.get_state()
+
+        elif item.effect_type == "heal":
+            heal = item.effect_value if item.effect_value else 15
             self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
-            self.adjust_dread(-15)
-            self.add_log(
-                "item",
-                "Consumed Spiced Plum Wine",
-                f"You drink the rich plum vintage. The burning alcohol warms your shivering bones (+{heal} HP, Dread reduced by 15)."
-            )
-            return self.get_state()
-
-        elif item_name == "Purified Bandage":
-            self.player.inventory.remove("Purified Bandage")
-            heal = 25
-            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
-            self.add_log("item", "Applied Purified Bandage", f"You bind your wounds with sanctified linen, restoring {heal} HP.")
-            return self.get_state()
-
-        elif item_name == "Torn Bandage":
-            self.player.inventory.remove("Torn Bandage")
-            heal = 18
-            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
-            self.add_log("item", "Applied Torn Bandage", f"You tie off your cuts with rough cloth, restoring {heal} HP.")
-            return self.get_state()
-
-        elif item_name == "Charred Rations":
-            self.player.inventory.remove("Charred Rations")
-            heal = 8
-            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
-            self.add_log("item", "Ate Charred Rations", f"You chew the smoked tallow rations, restoring {heal} HP.")
-            return self.get_state()
-
-        elif item_name == "Corroded Crowbar":
-            if curr_loc_id == "sluice_trench":
-                self.add_log(
-                    "item",
-                    "Crowbar Applied to Sluice Gears",
-                    "Using the crowbar as leverage, you unjam the secondary drainage valve, draining toxic sludge from the canal."
-                )
-                self.player.faction_reputation["pariahs"] += 10
-            elif curr_loc_id == "iron_bastion":
-                self.add_log(
-                    "item",
-                    "Pried Open Drake Armory Crate",
-                    "You force open a neglected mercenary strongbox, liberating 20 Sovereigns and a Purified Bandage!"
-                )
-                self.player.sovereigns += 20
-                self.add_inventory_item("Purified Bandage")
-            else:
-                self.add_log("item", "Corroded Crowbar", "A sturdy tool for prying rusted iron grates, barricades, or supply crates.")
-            return self.get_state()
-
-        elif item_name == "Tarnished Iron Nail":
-            if curr_loc_id == "gallow_square":
-                q = self.quests.get("q_blood_brass")
-                if q and q.current_stage == 1 and "Loras's Iron Signet" not in self.player.inventory:
-                    self.add_inventory_item("Loras's Iron Signet")
-                    self.add_log(
-                        "item",
-                        "Picked Hanging Gibbet Lock",
-                        "Using the bent nail as an improvised pick, you pop open a high charred iron cage and retrieve Loras's Iron Signet!"
-                    )
-                else:
-                    self.add_log(
-                        "item",
-                        "Picked Scaffold Lockbox",
-                        "You pick open an executioner's lockbox beneath the gibbet, finding 15 discarded silver Sovereigns!"
-                    )
-                    self.player.sovereigns += 15
-            else:
-                self.add_log("item", "Tarnished Iron Nail", "Can be bent into an improvised lockpick to open locked cages in Gallow-Square.")
-            return self.get_state()
-
-        elif item_name == "Sister Vanya's Embroidered Rosary":
-            self.adjust_dread(-20)
-            self.add_log(
-                "item",
-                "Prayed with Vanya's Rosary",
-                "Holding the silver rosary in your palms, memories of her passionate warmth flood your mind, driving away the dread (-20 Dread)."
-            )
-            return self.get_state()
-
-        elif item_name == "Malakor's Drake Whetstone":
-            self.add_log(
-                "item",
-                "Sharpened Blade with Drake Whetstone",
-                "You hone your weapon's edge along the oiled stone. Your strikes deal +4 flat damage in all combat."
-            )
-            return self.get_state()
-
-        elif item_name == "Silve's Scented Silk Favor":
-            self.adjust_dread(-10)
-            self.add_log(
-                "item",
-                "Inhaled Silve's Silk Perfume",
-                "The intoxicating scent of jasmine, opium, and silk clears your thoughts (-10 Dread, 25% discount on all merchant costs active)."
-            )
+            log_title = f"Used {item.name}"
+            log_text = item.effect_description or f"You restore {heal} HP."
+            self.add_log("item", log_title, log_text)
             return self.get_state()
 
         return {"error": f"{item_name} has no immediate active use here."}
@@ -311,6 +241,16 @@ class GameEngine:
             "lucidity": self.get_effective_stat("lucidity")
         }
 
+        inventory_items = []
+        for itm_name in self.player.inventory:
+            itm_obj = self.get_item(itm_name)
+            inventory_items.append({
+                "name": itm_name,
+                "is_usable": itm_obj.is_usable if itm_obj else False,
+                "description": itm_obj.description if itm_obj else "",
+                "item_type": itm_obj.item_type if itm_obj else "quest"
+            })
+
         return {
             "player": {
                 "name": self.player.name,
@@ -323,10 +263,12 @@ class GameEngine:
                 "dread": self.player.dread,
                 "sovereigns": self.player.sovereigns,
                 "inventory": self.player.inventory,
+                "inventory_details": inventory_items,
                 "party": party_members,
                 "romanced": self.player.romanced_npcs,
                 "factions": self.player.faction_reputation
             },
+            "usable_items": list({itm.name for itm in self.items.values() if itm.is_usable}),
             "location": {
                 "id": curr_loc.id if curr_loc else "",
                 "name": curr_loc.name if curr_loc else "",
@@ -684,12 +626,8 @@ class GameEngine:
             self.add_log("party", "Sister Vanya Tended Wounds", f"Vanya cleans and binds your wounds (+{heal} HP, -10 Dread).")
 
         elif chosen_choice.id == "c_silve_companion_contraband":
-            if "Spiced Plum Wine" not in self.player.inventory:
-                self.add_inventory_item("Spiced Plum Wine")
-                self.add_log("item", "Received Contraband Wine", "Silve slips a flask of Spiced Plum Wine into your pouch.")
-            else:
-                self.player.sovereigns += 15
-                self.add_log("item", "Received Sovereigns", "Silve slips 15 Sovereigns into your hand with a wink.")
+            self.player.sovereigns += 20
+            self.add_log("item", "Received Contraband Sovereigns", "Silve slips a purse of 20 Sovereigns into your hand with a sly wink.")
 
         elif chosen_choice.id == "c_malakor_companion_drink":
             self.adjust_dread(-5)
@@ -918,9 +856,7 @@ class GameEngine:
                 log_lines.append(f"{c.name} strikes with their weapon, inflicting {c_dmg} damage!")
 
         # Equipment Buffs
-        whetstone_bonus = 4 if "Malakor's Drake Whetstone" in self.player.inventory else 0
-        scalpel_bonus = 3 if ("Chirurgeon Scalpel" in self.player.inventory and action_type == "guile_skirmish") else 0
-        total_gear_dmg = whetstone_bonus + scalpel_bonus
+        total_gear_dmg = 4 if "Malakor's Drake Whetstone" in self.player.inventory else 0
 
         # Player Action Resolution
         p_sinew = self.get_effective_stat("sinew")
@@ -959,17 +895,9 @@ class GameEngine:
                 log_lines.append(f"[Lucidity] {npc.name}'s battle instincts ignore your mind game.")
 
         elif action_type == "use_bandage":
-            if "Torn Bandage" in self.player.inventory or "Purified Bandage" in self.player.inventory:
-                heal = 18
-                if "Purified Bandage" in self.player.inventory:
-                    self.player.inventory.remove("Purified Bandage")
-                    heal = 25
-                else:
-                    self.player.inventory.remove("Torn Bandage")
-                self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
-                log_lines.append(f"You hurriedly bind your gashes, recovering {heal} HP!")
-            else:
-                log_lines.append("You frantically search your pouch, but have no bandages left!")
+            heal = 15
+            self.player.current_hp = min(self.player.max_hp, self.player.current_hp + heal)
+            log_lines.append(f"You catch your breath under guard, rallying your fortitude and recovering {heal} HP!")
 
         self.combat_state["npc_hp"] = npc.current_hp
 

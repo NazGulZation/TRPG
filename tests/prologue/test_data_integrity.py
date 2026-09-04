@@ -6,6 +6,7 @@ from game.data.prologue import (
     get_prologue_factions,
     get_prologue_quests,
     get_prologue_npcs,
+    get_prologue_items,
 )
 
 
@@ -74,6 +75,25 @@ class TestDataIntegrity(unittest.TestCase):
                             npc.dialogue_nodes,
                             f"NPC {npc_id} node {node_id} choice {choice.id} targets non-existent failure_node {choice.failure_node}"
                         )
+
+    def test_items_configuration(self):
+        items = get_prologue_items()
+        self.assertGreater(len(items), 0)
+        core_quest_items = [
+            "wolfsbane_nectar",
+            "loras_signet",
+            "turnkey_ledger",
+            "master_sluice_key",
+            "silver_seal",
+            "transit_pass",
+        ]
+        for itm_id in core_quest_items:
+            self.assertIn(itm_id, items, f"Missing core item {itm_id} in items.json")
+            itm = items[itm_id]
+            self.assertEqual(itm.id, itm_id)
+            self.assertTrue(len(itm.name) > 0)
+            self.assertTrue(len(itm.description) > 0)
+            self.assertEqual(itm.item_type, "quest")
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, List
 
-from game.models import Location, NPC, Quest, DialogueNode
+from game.models import Location, NPC, Quest, DialogueNode, Item
 
 DATA_DIR = Path(__file__).resolve().parent / "prologue"
 
@@ -12,7 +12,7 @@ DATA_DIR = Path(__file__).resolve().parent / "prologue"
 def _load_json(filename: str) -> Any:
     """Load a JSON file from the prologue data directory."""
     filepath = DATA_DIR / filename
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 
@@ -24,6 +24,18 @@ def get_prologue_metadata() -> Dict[str, Any]:
 def get_prologue_factions() -> Dict[str, Dict[str, str]]:
     """Return prologue factions dictionary."""
     return _load_json("factions.json")
+
+
+def get_prologue_items() -> Dict[str, Item]:
+    """Return prologue items instantiated as Item models, indexed by ID and Name."""
+    data = _load_json("items.json")
+    items: Dict[str, Item] = {}
+    for item_id, item_data in data.items():
+        item = Item.from_dict(item_data)
+        items[item_id] = item
+        # Also index by display name for flexible lookup
+        items[item.name] = item
+    return items
 
 
 def get_prologue_locations() -> Dict[str, Location]:

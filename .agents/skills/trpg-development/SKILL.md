@@ -46,6 +46,7 @@ game/data/<chapter_id>/
 ├── locations.json          # Zones, descriptions, connections, ground inspection loot
 ├── quests.json             # Quest definitions, stages, and completion targets
 ├── npcs.json               # NPC stats, faction alignments, combatant/romance/recruitment flags
+├── items.json              # Configurable quest items, progression keys, and romance relics
 └── dialogues/              # Fully decoupled dialogue trees
     ├── <npc_1>.json
     ├── <npc_2>.json
@@ -105,24 +106,60 @@ game/data/<chapter_id>/
 }
 ```
 
-### 3. Chapter Loader Pattern (`game/data/<chapter>.py`)
+### 3. `items.json` and Configurable Item Models
+```json
+{
+  "wolfsbane_nectar": {
+    "id": "wolfsbane_nectar",
+    "name": "Wolfsbane Nectar",
+    "description": "A sealed glass vial containing a potent narcotic extract distilled from purple mountain flowers.",
+    "item_type": "quest",
+    "is_usable": false,
+    "effect_type": null,
+    "effect_value": 0,
+    "effect_description": ""
+  },
+  "vanya_rosary": {
+    "id": "vanya_rosary",
+    "name": "Sister Vanya's Embroidered Rosary",
+    "description": "A silver rosary stitched with sacred prayer threads (+2 Lucidity, halves Dread gain; pray to purge 20 Dread).",
+    "item_type": "quest",
+    "is_usable": true,
+    "effect_type": "dread_relief",
+    "effect_value": 20,
+    "effect_description": "Holding the silver rosary in your palms, memories of her passionate warmth flood your mind, driving away the dread."
+  }
+}
+```
+
+### 4. Chapter Loader Pattern (`game/data/<chapter>.py`)
 Python chapter modules serve as typed loaders:
 ```python
 import json
 from pathlib import Path
-from game.models import Location, NPC, Quest, DialogueNode, DialogueChoice
+from game.models import Location, NPC, Quest, DialogueNode, DialogueChoice, Item
 
 DATA_DIR = Path(__file__).resolve().parent / "prologue"
 
+def get_prologue_items() -> dict[str, Item]:
+    with open(DATA_DIR / "items.json", "r", encoding="utf-8-sig") as f:
+        data = json.load(f)
+    items = {}
+    for item_id, item_data in data.items():
+        item = Item.from_dict(item_data)
+        items[item_id] = item
+        items[item.name] = item
+    return items
+
 def get_prologue_npcs():
-    with open(DATA_DIR / "npcs.json", "r", encoding="utf-8") as f:
+    with open(DATA_DIR / "npcs.json", "r", encoding="utf-8-sig") as f:
         npcs_data = json.load(f)
     npcs = {}
     for npc_id, data in npcs_data.items():
         dialogue_file = DATA_DIR / "dialogues" / f"{npc_id}.json"
         dialogue_nodes = {}
         if dialogue_file.exists():
-            with open(dialogue_file, "r", encoding="utf-8") as df:
+            with open(dialogue_file, "r", encoding="utf-8-sig") as df:
                 d_data = json.load(df)
                 for nid, n_dict in d_data.items():
                     dialogue_nodes[nid] = DialogueNode.from_dict(n_dict)
@@ -286,8 +323,8 @@ tests/
 
 ## 8. Development & Verification Checklist
 
-When authoring new chapters, characters, or mechanics:
-- [ ] **JSON Separation**: Story, dialogue trees, NPC profiles, locations, and quests reside in `game/data/<chapter>/` as JSON files, not hardcoded Python dicts.
+- [ ] **JSON Separation**: Story, dialogue trees, NPC profiles, locations, quests, and items reside in `game/data/<chapter>/` as JSON files, not hardcoded Python dicts.
+- [ ] **Items Configuration & Anti-Bloat**: Items are defined in `items.json` using `Item` dataclasses. Filler consumable bloat is eliminated in favor of quest items, escape keys, and romance/brotherhood relics.
 - [ ] **Dialogue Integrity**: Dialogue graphs validated: every `next_node` and `failure_node` targets an existing node with no broken links.
 - [ ] **Recruitment Constraints**: Non-recruitable characters have `can_recruit: false`, have no party invitation choices in dialogues, and cannot be recruited via API.
 - [ ] **Party Cap**: Max party size of 4 is respected across engine, API, and UI.

@@ -234,6 +234,43 @@ class Location:
 
 
 @dataclass
+class Item:
+    id: str
+    name: str
+    description: str
+    item_type: str = "quest"
+    is_usable: bool = False
+    effect_type: Optional[str] = None
+    effect_value: int = 0
+    effect_description: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "item_type": self.item_type,
+            "is_usable": self.is_usable,
+            "effect_type": self.effect_type,
+            "effect_value": self.effect_value,
+            "effect_description": self.effect_description,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Item":
+        return cls(
+            id=data["id"],
+            name=data["name"],
+            description=data.get("description", ""),
+            item_type=data.get("item_type", "quest"),
+            is_usable=data.get("is_usable", False),
+            effect_type=data.get("effect_type"),
+            effect_value=data.get("effect_value", 0),
+            effect_description=data.get("effect_description", ""),
+        )
+
+
+@dataclass
 class Player:
     name: str = "Wanderer"
     gender: str = "male"
@@ -243,7 +280,7 @@ class Player:
     current_hp: int = 40
     dread: int = 15       # 0 (calm) to 100 (abject despair/madness)
     sovereigns: int = 25  # Currency
-    inventory: List[str] = field(default_factory=lambda: ["Dulled Dirk", "Torn Bandage", "Charred Rations"])
+    inventory: List[str] = field(default_factory=list)
     current_location_id: str = "gallow_square"
     party: List[str] = field(default_factory=list)  # NPC IDs in party
     romanced_npcs: List[str] = field(default_factory=list)

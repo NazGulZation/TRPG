@@ -13,9 +13,7 @@
     "npc_ids": [
       "little_toby"
     ],
-    "items_on_ground": [
-      "Tarnished Iron Nail"
-    ],
+    "items_on_ground": [],
     "danger_level": 1
   },
   "ruined_chantry": {
@@ -31,9 +29,7 @@
     "npc_ids": [
       "sister_vanya"
     ],
-    "items_on_ground": [
-      "Purified Bandage"
-    ],
+    "items_on_ground": [],
     "danger_level": 2
   },
   "iron_bastion": {
@@ -50,9 +46,7 @@
     "npc_ids": [
       "commander_malakor"
     ],
-    "items_on_ground": [
-      "Heavy Whetstone"
-    ],
+    "items_on_ground": [],
     "danger_level": 3
   },
   "gilded_rat": {
@@ -68,9 +62,7 @@
     "npc_ids": [
       "madame_silve"
     ],
-    "items_on_ground": [
-      "Spiced Plum Wine"
-    ],
+    "items_on_ground": [],
     "danger_level": 1
   },
   "sluice_trench": {
@@ -84,9 +76,7 @@
       "gilded_rat"
     ],
     "npc_ids": [],
-    "items_on_ground": [
-      "Corroded Crowbar"
-    ],
+    "items_on_ground": [],
     "danger_level": 4
   }
 }

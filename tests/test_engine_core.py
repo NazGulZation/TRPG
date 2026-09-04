@@ -17,9 +17,14 @@ class TestEngineCore(unittest.TestCase):
         self.assertTrue(len(st["location"]["npcs"]) > 0)
 
     def test_travel_and_inspection(self):
-        # Inspect gallow square
+        # Inspect gallow square without quest -> ground is clean of bloat
         res = self.engine.inspect_ground()
-        self.assertIn("Tarnished Iron Nail", self.engine.player.inventory)
+        self.assertEqual(len(self.engine.player.inventory), 0)
+
+        # Activate Blood & Brass quest and inspect to discover Loras's Iron Signet
+        self.engine.quests["q_blood_brass"].current_stage = 1
+        res = self.engine.inspect_ground()
+        self.assertIn("Loras's Iron Signet", self.engine.player.inventory)
 
         # Travel to ruined chantry
         res = self.engine.travel("ruined_chantry")
@@ -85,21 +90,19 @@ class TestEngineCore(unittest.TestCase):
         disc_cost = self.engine.apply_sovereign_discount(100)
         self.assertEqual(disc_cost, 75)
 
-        # Test item usage: Spiced Plum Wine restores 12 HP & removes 15 Dread
-        self.engine.player.inventory.append("Spiced Plum Wine")
-        self.engine.player.current_hp = 20
+        # Test usable item: Sister Vanya's Rosary purges 20 Dread
         self.engine.player.dread = 40
-        res = self.engine.use_item("Spiced Plum Wine")
-        self.assertEqual(self.engine.player.current_hp, 32)
-        self.assertEqual(self.engine.player.dread, 25)
-        self.assertNotIn("Spiced Plum Wine", self.engine.player.inventory)
+        res = self.engine.use_item("Sister Vanya's Embroidered Rosary")
+        self.assertEqual(self.engine.player.dread, 20)
 
-        # Test Crowbar usage in Sluice Trench
-        self.engine.player.inventory.append("Corroded Crowbar")
-        self.engine.player.current_location_id = "sluice_trench"
-        init_rep = self.engine.player.faction_reputation["pariahs"]
-        res = self.engine.use_item("Corroded Crowbar")
-        self.assertEqual(self.engine.player.faction_reputation["pariahs"], init_rep + 10)
+        # Test usable item: Silve's Favor purges 10 Dread
+        res = self.engine.use_item("Silve's Scented Silk Favor")
+        self.assertEqual(self.engine.player.dread, 10)
+
+        # Test unusable quest item returns error
+        self.engine.player.inventory.append("Loras's Iron Signet")
+        res = self.engine.use_item("Loras's Iron Signet")
+        self.assertIn("error", res)
 
     def test_escape_endings(self):
         # Sluice escape

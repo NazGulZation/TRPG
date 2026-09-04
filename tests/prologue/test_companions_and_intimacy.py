@@ -299,7 +299,7 @@ class TestCompanionsAndIntimacy(unittest.TestCase):
         # Win spar via Sinew 14
         res = self.engine.choose_dialogue("c_malakor_spar_sinew")
         self.assertEqual(res["dialogue"]["current_node"], "malakor_spar_win")
-        self.assertIn("Heavy Whetstone", self.engine.player.inventory)
+        self.assertGreater(self.engine.npcs["commander_malakor"].relationship, 10)
 
         # Test blood-oath turn-in giving Drake Whetstone
         self.engine.player.inventory.append("Loras's Iron Signet")

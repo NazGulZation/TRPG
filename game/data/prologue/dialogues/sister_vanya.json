@@ -129,7 +129,7 @@
       },
       {
         "id": "c_vanya_triage_youth",
-        "text": "[Guile 11] Use your scalpel or dirk with surgical precision to drain the carbuncle cleanly.",
+        "text": "[Guile 11] Use your keen reflexes and steady precision to drain the carbuncle cleanly.",
         "next_node": "vanya_triage_youth_success",
         "required_stat": "guile",
         "required_value": 11,
@@ -138,7 +138,7 @@
         "quest_trigger": null,
         "quest_stage_set": null,
         "item_required": null,
-        "item_reward": "Purified Bandage",
+        "item_reward": null,
         "item_rewards": [],
         "sovereign_cost": 0,
         "is_romance_action": false,
@@ -196,7 +196,7 @@
   "vanya_triage_youth_success": {
     "id": "vanya_triage_youth_success",
     "speaker_name": "Sister Vanya",
-    "text": "Your steady hands lance the lethal pocket with microscopic care. The feverish boy sighs in relief as the poisonous pressure abates. Vanya wraps him in clean dressings, pressing a spare Purified Bandage into your palm. 'Extraordinary dexterity. You would have made a brilliant surgeon in the capital.'",
+    "text": "Your steady hands lance the lethal pocket with microscopic care. The feverish boy sighs in relief as the poisonous pressure abates. Vanya wraps him in clean dressings, gazing at you with profound admiration. 'Extraordinary dexterity. You would have made a brilliant surgeon in the capital.'",
     "choices": [
       {
         "id": "c_vanya_after_triage2",

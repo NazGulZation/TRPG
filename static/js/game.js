@@ -427,20 +427,28 @@ const GameApp = {
         // Inventory
         const invListEl = document.getElementById('inventory-list');
         document.getElementById('inv-count').textContent = `${player.inventory.length} items`;
-        const usableItems = [
-            "Spiced Plum Wine", "Purified Bandage", "Torn Bandage", "Charred Rations",
-            "Corroded Crowbar", "Tarnished Iron Nail", "Sister Vanya's Embroidered Rosary",
-            "Malakor's Drake Whetstone", "Silve's Scented Silk Favor"
+        const usableItems = state.usable_items || [
+            "Sister Vanya's Embroidered Rosary",
+            "Malakor's Drake Whetstone",
+            "Silve's Scented Silk Favor"
         ];
-        invListEl.innerHTML = player.inventory.map(item => {
-            const isUsable = usableItems.includes(item);
-            return `
-                <li class="inv-item ${isUsable ? 'inv-item-usable' : ''}">
-                    <span>&#9671; ${item}</span>
-                    ${isUsable ? `<button class="inv-btn-use" onclick="GameApp.useItem('${item}')">Use</button>` : ''}
-                </li>
-            `;
-        }).join('');
+        const detailsMap = {};
+        if (player.inventory_details) {
+            player.inventory_details.forEach(d => { detailsMap[d.name] = d; });
+        }
+        invListEl.innerHTML = player.inventory.length === 0 
+            ? `<li class="empty-note" style="padding:0.4rem 0;">Haversack is empty.</li>`
+            : player.inventory.map(item => {
+                const detail = detailsMap[item];
+                const isUsable = detail ? detail.is_usable : usableItems.includes(item);
+                const desc = detail && detail.description ? detail.description : '';
+                return `
+                    <li class="inv-item ${isUsable ? 'inv-item-usable' : ''}" title="${desc}">
+                        <span>&#9671; ${item}</span>
+                        ${isUsable ? `<button class="inv-btn-use" onclick="GameApp.useItem('${item}')">Use</button>` : ''}
+                    </li>
+                `;
+            }).join('');
 
         // Narrative Scroll
         const logEl = document.getElementById('narrative-log');

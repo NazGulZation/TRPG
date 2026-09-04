@@ -89,16 +89,16 @@
     "choices": [
       {
         "id": "c_silve_buy_wine",
-        "text": "Buy Spiced Plum Wine (10 Sovereigns) [Restores 12 HP, -15 Dread].",
+        "text": "Share a glass of fine spiced wine and quiet solace (10 Sovereigns) [Eases tension].",
         "next_node": "silve_bought_item",
         "required_stat": null,
         "required_value": 0,
-        "relationship_change": 5,
+        "relationship_change": 10,
         "faction_changes": {},
         "quest_trigger": null,
         "quest_stage_set": null,
         "item_required": null,
-        "item_reward": "Spiced Plum Wine",
+        "item_reward": null,
         "item_rewards": [],
         "sovereign_cost": 10,
         "is_romance_action": false,
@@ -108,16 +108,18 @@
       },
       {
         "id": "c_silve_buy_bandage",
-        "text": "Buy Purified Bandage (15 Sovereigns) [Restores 25 HP in combat].",
+        "text": "Purchase underworld intelligence regarding Drake patrols (15 Sovereigns).",
         "next_node": "silve_bought_item",
         "required_stat": null,
         "required_value": 0,
         "relationship_change": 5,
-        "faction_changes": {},
+        "faction_changes": {
+          "pariahs": 15
+        },
         "quest_trigger": null,
         "quest_stage_set": null,
         "item_required": null,
-        "item_reward": "Purified Bandage",
+        "item_reward": null,
         "item_rewards": [],
         "sovereign_cost": 15,
         "is_romance_action": false,
@@ -1769,7 +1771,7 @@
   "silve_companion_contraband": {
     "id": "silve_companion_contraband",
     "speaker_name": "Madame Silve",
-    "text": "Silve winks slyly and reaches into a secret pocket of her velvet cloak, pulling out a sealed flask of Spiced Plum Wine (or extra Sovereigns if you already carry wine). 'A little something to keep your heart warm and your steel sharp, darling.'",
+    "text": "Silve winks slyly and reaches into a secret pocket of her velvet cloak, pulling out a purse of silver Sovereigns. 'A little something to keep your purse heavy and your steel sharp, darling.'",
     "choices": [
       {
         "id": "c_silve_contraband_return",
