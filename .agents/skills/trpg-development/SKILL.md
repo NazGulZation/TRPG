@@ -4,9 +4,9 @@ description: >-
   Develop, maintain, test, and expand adult eroge text RPG web applications.
   Use when authoring story chapters, designing NPCs and attribute systems,
   configuring JSON chapter content, heterosexual eroge romance, writing lengthy explicit narrative erotic scenes
-  (without redundant minigames), implementing party companion interactions (dialogue hubs and intimacy initiation),
-  party recruitment constraints, max party capacity, save/load/continue persistence, functional items,
-  hostility mechanics, factions, and testing modular Flask and engine components.
+  (without redundant minigames, with unique steps 4-10 branch progression and step 1 decline/leave options),
+  implementing party companion interactions (dialogue hubs and intimacy initiation), party recruitment constraints,
+  max party capacity, save/load/continue persistence, functional items, hostility mechanics, factions, and testing modular Flask and engine components.
 ---
 
 # Adult Eroge Text RPG Development Skill
@@ -61,7 +61,7 @@ game/data/<chapter_id>/
   "opening_log": "The great bell of the Bastion groans...",
   "suitable_intimacy_locations": {
     "sister_vanya": ["ruined_chantry", "gilded_rat"],
-    "madame_silve": ["gilded_rat", "ruined_chantry"]
+    "madame_silve": ["gilded_rat"]
   }
 }
 ```
@@ -233,36 +233,39 @@ Maintain a **50% gameplay / 50% erotic romance** balance:
 - Avoid mechanical intimacy mini-games (arousal bars, stamina friction gauges, rhythm QTEs, technique check loops). They disrupt narrative immersion.
 - All intimate encounters flow naturally through **rich, multi-stage narrative dialogue trees**.
 
-### The 10-Step Narrative Progression
-Structure major erotic sequences into a continuous, richly descriptive 10-node progression:
+### The 10-Step Narrative Progression & Unique Branch Paths
+Structure major erotic sequences into continuous, richly descriptive 10-node progressions. Crucially, **each foreplay branch must maintain its own unique narrative nodes from Step 4 through Step 10 Climax and Afterglow** without merging into shared mid-scene nodes.
 
-1. **Step 1: Initiating (Seclusion & Disrobing)** (`<npc>_<loc>_step1_initiate` / `<npc>_intimacy_scene`):
+1. **Step 1: Initiating & Voluntary Retreat** (`<npc>_<loc>_step1_initiate` / `<npc>_intimacy_scene`):
    - Private retreat, atmospheric immersion, emotional vulnerability, and shedding armor/garments.
+   - **Step 1 Decline / Leave Option**: The player must always have an explicit choice to pause, decline, or step back before committing to intimacy (e.g. returning to the companion hub or quest completion node).
+   - **Deferred Intimacy Flags**: Step 1 entry and continuation choices must set `"is_intimacy_action": false`. Intimacy flags (`is_romanced = True`, Dread reduction to 0, keepsake rewards) must only trigger upon reaching the Step 10 Climax.
 2. **Step 2: Sensual Foreplay & Branching Choices** (`<npc>_<loc>_step2_foreplay`):
    - At least 3 distinct narrative choices (e.g., Tender Romance, Dominant Passion, Devoted Oral / Sensory Indulgence).
 3. **Step 3: Deepening Foreplay & Sensory Reaction** (`<npc>_<loc>_step3_<branch>`):
    - Visceral physical and vocal reactions to the chosen branch (flushed skin, wanton gasps, trembling thighs, lubrication).
-4. **Step 4: Intimate Caresses & Lubrication** (`<npc>_<loc>_step4_caress`):
-   - Tactile exploration, parting thighs, and spreading natural lubrication in anticipation of entry.
-5. **Step 5: Penetration & Alignment** (`<npc>_<loc>_step5_entry`):
+4. **Step 4: Intimate Caresses & Lubrication** (`<npc>_<loc>_<branch>_step4_caress`):
+   - Tactile exploration, parting thighs, and spreading natural lubrication tailored to the branch's tone.
+5. **Step 5: Penetration & Alignment** (`<npc>_<loc>_<branch>_step5_entry`):
    - Deliberate, explicit description of penetration: alignment, stretching snug walls, taking full length to the root.
-6. **Step 6: Initial Cadence & Deep Friction** (`<npc>_<loc>_step6_rhythm`):
-   - Finding the rhythm, internal friction, suction, and breathless shared gasps.
-7. **Step 7: Positional Shift & Escalation** (`<npc>_<loc>_step7_shift`):
+6. **Step 6: Initial Cadence & Deep Friction** (`<npc>_<loc>_<branch>_step6_rhythm`):
+   - Finding the rhythm, internal friction, suction, and breathless shared gasps unique to the chosen position.
+7. **Step 7: Positional Shift & Escalation** (`<npc>_<loc>_<branch>_step7_shift`):
    - Altering posture, angles, or elevation to target sensitive nerve centers with wet rhythmic impacts.
-8. **Step 8: Fierce Cadence & Vocal Surrender** (`<npc>_<loc>_step8_frenzy`):
+8. **Step 8: Fierce Cadence & Vocal Surrender** (`<npc>_<loc>_<branch>_step8_frenzy`):
    - Relentless strokes, sweat-sheened skin, and uninhibited wanton cries drowning out external noise.
-9. **Step 9: The Precipice (Edging / Pre-Climax)** (`<npc>_<loc>_step9_precipice`):
+9. **Step 9: The Precipice (Edging / Pre-Climax)** (`<npc>_<loc>_<branch>_step9_precipice`):
    - Involuntary passage spasms, desperate clutching, frantic breathing, and mutual surrender on the brink.
-10. **Step 10: Explosive Climax** (`<npc>_<loc>_step10_climax`):
+10. **Step 10: Explosive Climax** (`<npc>_<loc>_<branch>_step10_climax`):
     - Mutual, overwhelming orgasmic release: internal flooding, violent contractions, vocal release, and total surrender.
+    - Set `"is_intimacy_action": true` on the Climax / Afterglow transition choice.
     - **Tangible Gameplay Rewards**:
       - Complete purge of negative mental states (Dread, Stress, or Insanity reset to 0).
       - Full devotion / relationship set to maximum (100).
       - Character marked as `is_romanced = True`.
       - Awarding unique permanent relics, accessories, or romantic perks.
 
-- **Afterglow & Bonding** (`<npc>_<loc>_afterglow`):
+- **Afterglow & Bonding** (`<npc>_<loc>_afterglow` or `<npc>_<loc>_<branch>_afterglow`):
   - Quiet, lingering embrace, shared warmth, and emotional pillow talk.
   - Smooth narrative transition back to companion traveling hub (`<npc>_companion_hub`) or party recruitment (`<npc>_recruited`).
 
@@ -273,13 +276,14 @@ Intimacy requires seclusion, privacy, and atmospheric comfort. Companions will n
      ```python
      SUITABLE_INTIMACY_LOCATIONS = {
          "sister_vanya": ["ruined_chantry", "gilded_rat"],
-         "madame_silve": ["gilded_rat", "ruined_chantry"]
+         "madame_silve": ["gilded_rat"]
      }
      ```
+   - Unrecruitable characters who never leave their home base must only map to their home district (e.g. Madame Silve only at `gilded_rat`).
 2. **Starting Location as Default Scene**:
    - The character's home district hosts their default erotic sequence (e.g., Sister Vanya in the sanctified crypt of the Ruined Chantry; Madame Silve in her velvet boudoir at the Gilded Rat).
 3. **Location-Unique Intimate Narratives**:
-   - Traveling to other suitable havens unlocks completely distinct 10-step erotic scenes reflecting environmental contrast (e.g., pious nun yielding to luxury on opium-scented crimson silks; worldly courtesan experiencing sacrilegious altar passion in a moonlit sanctuary).
+   - Traveling to other suitable havens unlocks completely distinct 10-step erotic scenes reflecting environmental contrast (e.g., pious nun yielding to luxury on opium-scented crimson silks).
 4. **Companion Dialogue Hub Gating**:
    - In `<npc>_companion_hub`, choices with `is_intimacy_action = True` are hidden dynamically unless `can_initiate_companion_erotic(npc_id)` evaluates to `True`.
 5. **Direct Erotic Scene Dispatch**:
@@ -330,5 +334,7 @@ tests/
 - [ ] **Party Cap**: Max party size of 4 is respected across engine, API, and UI.
 - [ ] **Save / Load Integrity**: All newly introduced player or NPC fields are serialized in `save_to_dict` / `load_from_dict`.
 - [ ] **Location Suitability**: Romanceable NPCs define suitable private sectors in `metadata.json`; public or hostile sectors block intimacy.
-- [ ] **10-Step Narrative Arc**: Major erotic encounters follow the full 10-step progression to climax and afterglow with appropriate mental purge rewards.
+- [ ] **10-Step Narrative Arc & Unique Branching**: Major erotic encounters follow the full 10-step progression to climax and afterglow with appropriate mental purge rewards. Each foreplay branch has dedicated unique dialogue nodes from Step 4 through Step 10 Climax.
+- [ ] **Step 1 Leave / Voluntary Retreat**: Erotic scenes provide an explicit option at Step 1 to decline or retreat back to safe hubs without triggering romance flags or rewards.
+- [ ] **Deferred Intimacy Flags**: Step 1 choices set `is_intimacy_action: false`; `is_intimacy_action: true` is reserved exclusively for the Step 10 Climax transition.
 - [ ] **Chapter Test Isolation**: Chapter-specific test suites reside under `tests/<chapter>/`, passing independently via `discover -s tests/<chapter>`.
